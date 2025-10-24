@@ -6,6 +6,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 
+import { HeaderSection } from "@/app/_pages/header/header-section";
 import { routing } from "@/shared/i18n/routing";
 import { ThemeProvider } from "@/shared/ui/theme-provider";
 
@@ -44,6 +45,7 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <HeaderSection />
           <NextIntlClientProvider>{children}</NextIntlClientProvider>
         </ThemeProvider>
       </body>
