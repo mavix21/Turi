@@ -2,6 +2,7 @@ import { IconBrandGithub, IconRocket } from "@tabler/icons-react";
 
 import { CollectionSection } from "@/app/_pages/collection";
 import { ExploreSection } from "@/app/_pages/explore";
+import { HeroSection } from "@/app/_pages/hero";
 import { PartnerDiscountSection } from "@/app/_pages/partner-discount";
 import { ThemeSwitcher } from "@/shared/ui/theme-switcher";
 
@@ -170,18 +171,21 @@ export default function HomePage() {
     },
   ];
 
+  const peruDestinations = [
+    "Cusco, Peru",
+    "Lima, Peru",
+    "Arequipa, Peru",
+    "Puno, Peru",
+    "Iquitos, Peru",
+    "Paracas, Peru",
+    "Huaraz, Peru",
+    "Trujillo, Peru",
+  ];
+
   return (
     <div className="bg-background min-h-screen">
       {/* Header */}
-      <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 fixed top-0 right-0 left-0 z-50 border-b px-4 backdrop-blur">
-        <div className="flex h-16 items-center justify-between">
-          <div className="flex items-center gap-2">
-            <IconRocket className="size-6" />
-            <span className="text-xl font-bold">Next.js Monorepo</span>
-          </div>
-          <ThemeSwitcher />
-        </div>
-      </header>
+      <HeroSection peruDestinations={peruDestinations} />
 
       {/* Main Content */}
       <main className="container mx-auto pt-24">
