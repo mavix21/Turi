@@ -16,7 +16,6 @@
   },
   "dependencies": {
     "@turi/convex": "workspace:*",
-    "@turi/db": "workspace:*",
     "@turi/ui": "workspace:*",
     "@t3-oss/env-nextjs": "^0.13.8",
     "@tabler/icons-react": "^3.35.0",
