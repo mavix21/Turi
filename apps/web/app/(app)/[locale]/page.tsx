@@ -1,5 +1,6 @@
 import { IconBrandGithub, IconRocket } from "@tabler/icons-react";
 
+import { CollectionSection } from "@/app/_pages/collection";
 import { ExploreSection } from "@/app/_pages/explore";
 import { ThemeSwitcher } from "@/shared/ui/theme-switcher";
 
@@ -82,6 +83,57 @@ export default function HomePage() {
     },
   ];
 
+  const nftPostcards = [
+    {
+      id: "1",
+      name: "Machu Picchu",
+      image: "/flat-vector-illustration-of-machu-picchu-peru-with.jpg",
+      collected: true,
+      collectionProgress: 5,
+      totalInCollection: 5,
+    },
+    {
+      id: "2",
+      name: "Cusco",
+      image: "/stylized-illustration-of-cusco-peru-historic-plaza.jpg",
+      collected: true,
+      collectionProgress: 4,
+      totalInCollection: 5,
+    },
+    {
+      id: "3",
+      name: "Lake Titicaca",
+      image: "/artistic-illustration-of-lake-titicaca-peru-with-t.jpg",
+      collected: true,
+      collectionProgress: 3,
+      totalInCollection: 5,
+    },
+    {
+      id: "4",
+      name: "Nazca Lines",
+      image: "/flat-vector-illustration-of-nazca-lines-peru-deser.jpg",
+      collected: false,
+      collectionProgress: 2,
+      totalInCollection: 5,
+    },
+    {
+      id: "5",
+      name: "Colca Canyon",
+      image: "/stylized-illustration-of-colca-canyon-peru-with-co.jpg",
+      collected: false,
+      collectionProgress: 1,
+      totalInCollection: 5,
+    },
+    {
+      id: "6",
+      name: "Lima",
+      image: "/flat-vector-illustration-of-lima-peru-coastal-city.jpg",
+      collected: false,
+      collectionProgress: 0,
+      totalInCollection: 5,
+    },
+  ];
+
   return (
     <div className="bg-background min-h-screen">
       {/* Header */}
@@ -99,6 +151,7 @@ export default function HomePage() {
       <main className="container mx-auto pt-24">
         {/* Explore Section */}
         <ExploreSection exploreCategories={exploreCategories} places={places} />
+        <CollectionSection nftPostcards={nftPostcards} />
       </main>
 
       {/* Footer */}
