@@ -1,5 +1,5 @@
 {
-  "name": "@myapp/eslint-config",
+  "name": "@turi/eslint-config",
   "version": "0.0.0",
   "type": "module",
   "private": true,
@@ -31,12 +31,12 @@
     "typescript-eslint": "catalog:"
   },
   "devDependencies": {
-    "@myapp/prettier-config": "workspace:*",
-    "@myapp/tsconfig": "workspace:*",
+    "@turi/prettier-config": "workspace:*",
+    "@turi/tsconfig": "workspace:*",
     "@types/node": "catalog:",
     "eslint": "catalog:",
     "prettier": "catalog:",
     "typescript": "catalog:"
   },
-  "prettier": "@myapp/prettier-config"
+  "prettier": "@turi/prettier-config"
 }

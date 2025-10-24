@@ -1,5 +1,5 @@
 {
-  "name": "@myapp/tailwind-config",
+  "name": "@turi/tailwind-config",
   "private": true,
   "type": "module",
   "exports": {
@@ -19,13 +19,13 @@
     "@tailwindcss/postcss": "catalog:"
   },
   "devDependencies": {
-    "@myapp/eslint-config": "workspace:*",
-    "@myapp/prettier-config": "workspace:*",
-    "@myapp/tsconfig": "workspace:*",
+    "@turi/eslint-config": "workspace:*",
+    "@turi/prettier-config": "workspace:*",
+    "@turi/tsconfig": "workspace:*",
     "@types/node": "^24.5.2",
     "eslint": "catalog:",
     "prettier": "catalog:",
     "typescript": "catalog:"
   },
-  "prettier": "@myapp/prettier-config"
+  "prettier": "@turi/prettier-config"
 }

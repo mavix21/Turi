@@ -15,9 +15,9 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@myapp/convex": "workspace:*",
-    "@myapp/db": "workspace:*",
-    "@myapp/ui": "workspace:*",
+    "@turi/convex": "workspace:*",
+    "@turi/db": "workspace:*",
+    "@turi/ui": "workspace:*",
     "@t3-oss/env-nextjs": "^0.13.8",
     "@tabler/icons-react": "^3.35.0",
     "@tanstack/react-query": "catalog:",
@@ -33,8 +33,8 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@myapp/eslint-config": "workspace:*",
-    "@myapp/tsconfig": "workspace:*",
+    "@turi/eslint-config": "workspace:*",
+    "@turi/tsconfig": "workspace:*",
     "@types/node": "catalog:",
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
@@ -43,7 +43,7 @@
     "jiti": "^1.21.7",
     "typescript": "catalog:"
   },
-  "prettier": "@myapp/prettier-config",
+  "prettier": "@turi/prettier-config",
   "pnpm": {
     "overrides": {
       "@types/react": "19.2.2",

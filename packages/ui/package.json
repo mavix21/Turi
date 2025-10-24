@@ -1,5 +1,5 @@
 {
-  "name": "@myapp/ui",
+  "name": "@turi/ui",
   "version": "0.0.0",
   "type": "module",
   "private": true,
@@ -40,8 +40,8 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@myapp/eslint-config": "workspace:*",
-    "@myapp/tsconfig": "workspace:*",
+    "@turi/eslint-config": "workspace:*",
+    "@turi/tsconfig": "workspace:*",
     "@tailwindcss/postcss": "^4.1.16",
     "@turbo/gen": "^2.5.8",
     "@types/node": "catalog:",
@@ -67,5 +67,5 @@
     "react": "catalog:react19",
     "zod": "catalog:"
   },
-  "prettier": "@myapp/prettier-config"
+  "prettier": "@turi/prettier-config"
 }

@@ -25,16 +25,7 @@ catalogs:
     react-dom: 19.1.0
 
 onlyBuiltDependencies:
-  - "@tailwindcss/oxide"
-  - bufferutil
-  - core-js-pure
   - esbuild
-  - keccak
-  - msgpackr-extract
-  - secp256k1
-  - sharp
-  - unrs-resolver
-  - utf-8-validate
 
 overrides:
   "@types/minimatch": 5.1.2

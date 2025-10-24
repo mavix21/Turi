@@ -1,4 +1,4 @@
-import baseConfig from "@myapp/eslint-config/base";
+import baseConfig from "@turi/eslint-config/base";
 
 /** @type {import('typescript-eslint').Config} */
 export default [
