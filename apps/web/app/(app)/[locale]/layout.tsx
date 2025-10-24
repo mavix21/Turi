@@ -20,8 +20,8 @@ const fontMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Next.js Monorepo Template",
-  description: "Next.js Monorepo Template",
+  title: "Turi",
+  description: "Your friendly tour guide",
 };
 
 export default async function RootLayout({

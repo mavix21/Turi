@@ -1,10 +1,87 @@
 import { IconBrandGithub, IconRocket } from "@tabler/icons-react";
 
-import { Button } from "@turi/ui/components/button";
-
+import { ExploreSection } from "@/app/_pages/explore";
 import { ThemeSwitcher } from "@/shared/ui/theme-switcher";
 
 export default function HomePage() {
+  const exploreCategories = [
+    { id: "popular", label: "Popular" },
+    { id: "all", label: "All Places" },
+    { id: "archaeological", label: "Archaeological Sites" },
+    { id: "natural", label: "Natural Wonders" },
+    { id: "museums", label: "Museums" },
+    { id: "historic", label: "Historic Sites" },
+  ];
+
+  const places = [
+    {
+      id: "1",
+      name: "Machu Picchu",
+      province: "Urubamba",
+      department: "Cusco",
+      rating: 4.9,
+      price: 148,
+      image: "/tropical-island-mindanao-philippines.jpg",
+      category: "archaeological",
+      popular: true,
+    },
+    {
+      id: "2",
+      name: "Sacsayhuamán",
+      province: "Cusco",
+      department: "Cusco",
+      rating: 4.8,
+      price: 85,
+      image: "/disneyland-tokyo-castle.jpg",
+      category: "archaeological",
+      popular: true,
+    },
+    {
+      id: "3",
+      name: "Colca Canyon",
+      province: "Caylloma",
+      department: "Arequipa",
+      rating: 4.9,
+      price: 120,
+      image: "/thousand-islands-indonesia-tropical.jpg",
+      category: "natural",
+      popular: true,
+    },
+    {
+      id: "4",
+      name: "Lake Titicaca",
+      province: "Puno",
+      department: "Puno",
+      rating: 4.9,
+      price: 95,
+      image: "/basilica-venice-italy.jpg",
+      category: "natural",
+      popular: true,
+    },
+    {
+      id: "5",
+      name: "Chan Chan",
+      province: "Trujillo",
+      department: "La Libertad",
+      rating: 4.7,
+      price: 75,
+      image: "/tropical-island-mindanao-philippines.jpg",
+      category: "archaeological",
+      popular: false,
+    },
+    {
+      id: "6",
+      name: "Nazca Lines",
+      province: "Nazca",
+      department: "Ica",
+      rating: 4.8,
+      price: 110,
+      image: "/mountain-volcano-landscape-scenic.jpg",
+      category: "archaeological",
+      popular: false,
+    },
+  ];
+
   return (
     <div className="bg-background min-h-screen">
       {/* Header */}
@@ -20,45 +97,8 @@ export default function HomePage() {
 
       {/* Main Content */}
       <main className="container mx-auto pt-24">
-        {/* Hero Section */}
-        <section className="flex flex-col items-center justify-center space-y-8 py-24 text-center">
-          <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
-            Next.js Monorepo Template
-          </h1>
-          <p className="text-muted-foreground max-w-[42rem] sm:text-xl">
-            A modern, scalable template for building full-stack applications
-            with Next.js, featuring a monorepo structure and beautiful UI
-            components.
-          </p>
-          <div className="flex gap-4">
-            <Button size="lg" className="gap-2">
-              <IconRocket className="size-4" />
-              Get Started
-            </Button>
-            <Button size="lg" variant="outline" className="gap-2">
-              <IconBrandGithub className="size-4" />
-              GitHub
-            </Button>
-          </div>
-        </section>
-
-        {/* Features Section */}
-        <section className="py-24">
-          <div className="grid gap-8 md:grid-cols-3">
-            {features.map((feature, index) => (
-              <div
-                key={index}
-                className="bg-card text-card-foreground rounded-lg border p-6 shadow-sm"
-              >
-                <feature.icon className="text-primary size-10" />
-                <h3 className="mt-4 text-xl font-semibold">{feature.title}</h3>
-                <p className="text-muted-foreground mt-2">
-                  {feature.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
+        {/* Explore Section */}
+        <ExploreSection exploreCategories={exploreCategories} places={places} />
       </main>
 
       {/* Footer */}
