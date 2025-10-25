@@ -63,7 +63,7 @@ export function BookingCard({ location }: { location: BookingCardProps }) {
                   id="date"
                   className="w-full justify-between font-normal"
                 >
-                  {date ? date.toLocaleDateString() : "Select date"}
+                  {date.toLocaleDateString()}
                   <ChevronDownIcon />
                 </Button>
               </PopoverTrigger>
@@ -73,7 +73,7 @@ export function BookingCard({ location }: { location: BookingCardProps }) {
                   selected={date}
                   captionLayout="dropdown"
                   onSelect={(date) => {
-                    setDate(date);
+                    setDate(date ?? new Date());
                     setOpen(false);
                   }}
                   disabled={{ before: new Date() }}
