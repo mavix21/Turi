@@ -19,7 +19,7 @@ export function PartnerCard({
   image,
 }: PartnerCardProps) {
   return (
-    <div className="bg-card card-shadow group overflow-hidden rounded-2xl transition-all duration-300 hover:shadow-xl">
+    <div className="bg-card card-shadow group overflow-hidden rounded-2xl border transition-all duration-300 hover:shadow-xl">
       {/* Image */}
       <div className="relative h-48 overflow-hidden">
         <Image
