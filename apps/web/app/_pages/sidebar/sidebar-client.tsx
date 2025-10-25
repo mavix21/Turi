@@ -36,11 +36,7 @@ export function SidebarClient() {
         return (
           <Button
             key={item.id}
-            className={`flex items-center gap-3 rounded-xl px-4 py-3 whitespace-nowrap transition-all ${
-              isActive
-                ? "bg-muted text-foreground font-medium"
-                : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
-            }`}
+            variant={isActive ? "default" : "secondary"}
             asChild
           >
             <Link href={href}>
