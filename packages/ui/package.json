@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
+    "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-avatar": "^1.1.10",
     "@radix-ui/react-collapsible": "^1.1.12",
     "@radix-ui/react-dialog": "^1.1.15",
@@ -40,10 +41,10 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@turi/eslint-config": "workspace:*",
-    "@turi/tsconfig": "workspace:*",
     "@tailwindcss/postcss": "^4.1.16",
     "@turbo/gen": "^2.5.8",
+    "@turi/eslint-config": "workspace:*",
+    "@turi/tsconfig": "workspace:*",
     "@types/node": "catalog:",
     "@types/react": "catalog:react19",
     "@types/react-dom": "catalog:react19",

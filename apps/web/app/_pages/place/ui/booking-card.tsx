@@ -28,6 +28,7 @@ import {
 import { ProviderList } from "./provider-list";
 
 interface BookingCardProps {
+  _id: string;
   name: string;
 }
 
@@ -104,6 +105,7 @@ export function BookingCard({ location }: { location: BookingCardProps }) {
       </Card>
 
       <ProviderList
+        locationId={location._id}
         participants={participants}
         selectedDate={date ?? new Date()}
       />

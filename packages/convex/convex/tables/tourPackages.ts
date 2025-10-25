@@ -11,6 +11,7 @@ export const tourPackages = defineTable({
   guarantees: v.array(v.string()),
   locationId: v.id("locations"),
   companyId: v.id("companies"),
+  availableTickets: v.number(),
 })
   .index("by_location", ["locationId"])
   .index("by_company", ["companyId"]);

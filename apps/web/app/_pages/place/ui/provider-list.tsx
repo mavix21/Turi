@@ -1,5 +1,9 @@
+import { useState } from "react";
+import { useQuery } from "convex/react";
 import { Users } from "lucide-react";
 
+import { api } from "@turi/convex/_generated/api";
+import { Id } from "@turi/convex/_generated/dataModel";
 import {
   Card,
   CardContent,
@@ -7,13 +11,26 @@ import {
   CardTitle,
 } from "@turi/ui/components/card";
 
+import { ProviderCard } from "./provider-card";
+
 export function ProviderList({
+  locationId,
   participants,
   selectedDate,
 }: {
+  locationId: string;
   participants: number;
   selectedDate: Date;
 }) {
+  const providers = useQuery(api.tourPackages.getTourPackagesByLocation, {
+    locationId: locationId as Id<"locations">,
+  });
+  const [selectedProvider, setSelectedProvider] = useState({});
+
+  if (!providers) {
+    return <div>No providers found</div>;
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -23,15 +40,15 @@ export function ProviderList({
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3 p-4">
-        {/*{providers.map((provider) => (
+        {providers.map((provider) => (
           <ProviderCard
-            key={provider.id}
+            key={provider._id}
             provider={provider}
             participants={participants}
             selectedDate={selectedDate}
             onViewDetails={() => setSelectedProvider(provider)}
           />
-        ))}*/}
+        ))}
       </CardContent>
     </Card>
   );
