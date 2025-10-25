@@ -3,6 +3,13 @@
     "en": "Inglés",
     "es": "Español"
   },
+
+  "auth-actions": {
+    "signIn": "Iniciar sesión",
+    "signUp": "Registrarse",
+    "signOut": "Cerrar sesión"
+  },
+
   "landing": {
     "navigation": {
       "features": "Características",

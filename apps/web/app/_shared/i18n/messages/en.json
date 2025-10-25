@@ -3,6 +3,10 @@
     "en": "English",
     "es": "Spanish"
   },
+  "auth-actions": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up"
+  },
   "landing": {
     "navigation": {
       "features": "Features",
