@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Calendar, MapPin, Users } from "lucide-react";
 
 import { Button } from "@turi/ui/components/button";
@@ -39,11 +40,14 @@ export function HeroSection({
           </h1>
         </div>
 
-        <div className="relative mx-auto max-w-6xl overflow-hidden rounded-3xl shadow-2xl">
-          <img
+        <div className="max-w-8xl relative mx-auto overflow-hidden rounded-3xl shadow-2xl">
+          <Image
             src="/images/design-mode/machu-pichu-optimized.jpg"
             alt="Machu Picchu"
-            className="h-[550px] w-full object-cover md:h-[650px]"
+            className="aspect-video w-full object-cover"
+            width={1600}
+            height={900}
+            priority
           />
 
           <div className="absolute top-1/2 right-8 hidden -translate-y-1/2 lg:block">
@@ -109,7 +113,7 @@ export function HeroSection({
             </div>
           </div>
 
-          <div className="bg-card/95 border-border absolute right-6 bottom-6 max-w-xs rounded-xl border p-4 shadow-lg backdrop-blur-sm">
+          {/* <div className="bg-card/95 border-border absolute top-6 right-6 max-w-xs rounded-xl border p-4 shadow-lg backdrop-blur-sm">
             <div className="flex items-start gap-3">
               <img
                 src="/flat-vector-illustration-of-machu-picchu-peru-with.jpg"
@@ -126,7 +130,7 @@ export function HeroSection({
                 <p className="text-muted-foreground text-xs">Cusco, Peru</p>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 
