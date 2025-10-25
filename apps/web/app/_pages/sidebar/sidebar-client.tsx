@@ -37,8 +37,6 @@ export function SidebarClient() {
       {navigationItems.map((item) => {
         const href = `/${params.locale}/profile/${profileId}/${item.id}`;
         const isActive = pathname === href;
-        console.log("pathname:", pathname);
-        console.log("href:", href);
         const Icon = Icons[item.icon as keyof typeof Icons] as LucideIcon;
         return (
           <Button

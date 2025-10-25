@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Cormorant, Geist, Geist_Mono, Space_Grotesk } from "next/font/google";
 
 import "@turi/ui/globals.css";
 
@@ -20,6 +20,16 @@ const fontMono = Geist_Mono({
   variable: "--font-mono",
 });
 
+const fontCormorant = Cormorant({
+  subsets: ["latin"],
+  variable: "--font-cormorant",
+});
+
+const fontSpaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+});
+
 export const metadata: Metadata = {
   title: "Turi",
   description: "Your friendly tour guide",
@@ -36,9 +46,7 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
-      <body
-        className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased`}
-      >
+      <body className={`${fontSpaceGrotesk.className} `}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
