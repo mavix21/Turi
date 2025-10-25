@@ -16,13 +16,8 @@ export default function AboutPage() {
     "/placeholder.svg?height=200&width=200",
   );
 
-  const {
-    user,
-    claimHistory,
-    updateUserPoints,
-    addDigitalPostcard,
-    addClaimHistory,
-  } = useTuriState();
+  const { user, updateUserPoints, addDigitalPostcard, addClaimHistory } =
+    useTuriState();
 
   const levels = [
     { name: "Explorer", minPoints: 0, maxPoints: 500 },

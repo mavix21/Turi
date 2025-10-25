@@ -88,6 +88,7 @@ export function ExploreSection({
           {filteredPlaces.map((place) => (
             <PlaceCard
               key={place.id}
+              id={place.id}
               name={place.name}
               location={`${place.province}, ${place.department}`}
               province={place.province}
