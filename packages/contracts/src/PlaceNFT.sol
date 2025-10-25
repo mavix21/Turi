@@ -1,22 +1,19 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "@openzeppelin/contracts/access/AccessControl.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
+import {ERC721URIStorage} from "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
 
 /// @title PlaceNFT
 /// @notice Representa lugares turísticos como NFTs únicos otorgados a visitantes al hacer check-in.
 contract PlaceNFT is ERC721URIStorage, AccessControl {
-    using Counters for Counters.Counter;
-
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
-    Counters.Counter private _tokenIdCounter;
+    uint256 private _tokenIdCounter;
 
     struct Place {
-        string placeId;        // Identificador único, ej: "machupicchu-peru"
-        string name;           // Nombre del sitio
-        string metadataURI;    // IPFS o URL con datos del lugar
+        string placeId; // Identificador único, ej: "machupicchu-peru"
+        string name; // Nombre del sitio
+        string metadataURI; // IPFS o URL con datos del lugar
         bool active;
     }
 
@@ -24,6 +21,9 @@ contract PlaceNFT is ERC721URIStorage, AccessControl {
 
     event PlaceRegistered(string placeId, string name, string metadataURI);
     event PlaceNFTMinted(address indexed to, string placeId, uint256 tokenId);
+
+    error PlaceInactiveOrNotRegistered();
+    error PlaceAlreadyRegistered();
 
     constructor() ERC721("PlaceNFT", "PLCNFT") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
@@ -35,22 +35,20 @@ contract PlaceNFT is ERC721URIStorage, AccessControl {
         string memory name,
         string memory metadataURI
     ) external onlyRole(DEFAULT_ADMIN_ROLE) {
-        require(!places[placeId].active, "Lugar ya registrado");
+        if (places[placeId].active) revert PlaceAlreadyRegistered();
         places[placeId] = Place(placeId, name, metadataURI, true);
         emit PlaceRegistered(placeId, name, metadataURI);
     }
 
     /// @notice Emitir un NFT representando la visita a un lugar
-    function mintPlaceNFT(address to, string memory placeId)
-        external
-        onlyRole(MINTER_ROLE)
-        returns (uint256)
-    {
+    function mintPlaceNFT(
+        address to,
+        string memory placeId
+    ) external onlyRole(MINTER_ROLE) returns (uint256) {
         Place memory place = places[placeId];
-        require(place.active, "Lugar no registrado o inactivo");
+        if (!place.active) revert PlaceInactiveOrNotRegistered();
 
-        _tokenIdCounter.increment();
-        uint256 newId = _tokenIdCounter.current();
+        uint256 newId = ++_tokenIdCounter;
 
         _safeMint(to, newId);
         _setTokenURI(newId, place.metadataURI);

@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "@openzeppelin/contracts/access/AccessControl.sol";
-import "./TravelToken.sol";
-import "./PlaceNFT.sol";
+import { AccessControl } from "@openzeppelin/contracts/access/AccessControl.sol";
+import { TravelToken } from "./TravelToken.sol";
+import { PlaceNFT } from "./PlaceNFT.sol";
 
 /// @title TravelCheckin
 /// @notice Sistema de check-in turístico con entrega de tokens y NFTs del lugar.
