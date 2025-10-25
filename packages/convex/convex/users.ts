@@ -19,6 +19,7 @@ export const createUser = mutation({
     const userId = await ctx.db.insert("users", {
       walletAddress: args.address,
       name: args.address,
+      reputationScore: 0,
     });
 
     return userId;

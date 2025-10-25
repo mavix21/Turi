@@ -7,6 +7,7 @@ export const users = defineTable({
   pfpUrl: v.optional(v.string()),
   walletAddress: v.string(),
   verifiedAt: v.optional(v.number()),
+  reputationScore: v.number(),
 })
   .index("by_email", ["email"])
   .index("by_wallet", ["walletAddress"]);
