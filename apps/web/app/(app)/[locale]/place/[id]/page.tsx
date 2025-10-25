@@ -23,7 +23,7 @@ const placeData: Record<string, any> = {
     rating: 4.9,
     reviews: 14000,
     price: 148,
-    image: "/tropical-island-mindanao-philippines.jpg",
+    image: "/machu-picchu.png",
     category: "Archaeological Site",
     tags: ["UNESCO World Heritage", "Archaeological Site", "Mountain"],
     description:
@@ -68,7 +68,7 @@ const placeData: Record<string, any> = {
     rating: 4.8,
     reviews: 9500,
     price: 125,
-    image: "/disneyland-tokyo-castle.jpg",
+    image: "/sacsayhuaman.jpg",
     category: "Cultural Experience",
     tags: ["Cultural Heritage", "Mountain Valley", "Local Markets"],
     description:
@@ -104,8 +104,13 @@ const placeData: Record<string, any> = {
   },
 };
 
-export default function PlacePage({ params }: PlacePageProps) {
-  const place = placeData[params.id] || placeData["1"];
+export default async function PlacePage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const place = placeData[id] || placeData["1"];
 
   return (
     <main className="bg-background min-h-screen">
