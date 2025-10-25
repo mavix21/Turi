@@ -1,6 +1,7 @@
 import Image from "next/image";
-import Link from "next/link";
 import { MapPin, Star } from "lucide-react";
+
+import { Link } from "@/app/_shared/i18n";
 
 interface PlaceCardProps {
   id: string;
