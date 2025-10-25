@@ -4,6 +4,7 @@ import {
   getAddressFromMessage /* verifySignature, */,
   getChainIdFromMessage,
 } from "@reown/appkit-siwe";
+import { importPKCS8, SignJWT } from "jose";
 import NextAuth, { AuthOptions, getServerSession } from "next-auth";
 import credentialsProvider from "next-auth/providers/credentials";
 import { createPublicClient, http } from "viem";
@@ -30,6 +31,8 @@ const projectId = env.NEXT_PUBLIC_PROJECT_ID;
 if (!projectId) {
   throw new Error("NEXT_PUBLIC_PROJECT_ID is not set");
 }
+
+const CONVEX_SITE_URL = env.NEXT_PUBLIC_CONVEX_URL.replace(/.cloud$/, ".site");
 
 const providers = [
   credentialsProvider({
@@ -98,7 +101,7 @@ export const authOptions: AuthOptions = NextAuth({
     strategy: "jwt",
   },
   callbacks: {
-    session({ session, token }) {
+    async session({ session, token }) {
       if (!token.sub) {
         return session;
       }
@@ -108,6 +111,22 @@ export const authOptions: AuthOptions = NextAuth({
         session.address = address as `0x${string}`;
         session.chainId = parseInt(chainId, 10);
       }
+
+      const privateKey = await importPKCS8(
+        env.CONVEX_AUTH_PRIVATE_KEY.replace(/\\n/g, "\n"),
+        "RS256",
+      );
+      const convexToken = await new SignJWT({
+        sub: session.userId,
+      })
+        .setProtectedHeader({ alg: "RS256" })
+        .setIssuedAt()
+        .setIssuer(CONVEX_SITE_URL)
+        .setAudience("convex")
+        .setExpirationTime("1h")
+        .sign(privateKey);
+
+      session.convexToken = convexToken;
 
       return session;
     },
