@@ -13,10 +13,13 @@ import { Button } from "@turi/ui/components/button";
 import { Card } from "@turi/ui/components/card";
 import { Clock, Eye, Star, Ticket } from "@turi/ui/index";
 
+import { BookingConfirmDialog } from "./booking-confirm-dialog";
+
 interface ProviderCardProps {
   name: string;
   basePricePerPerson: number;
   availableTickets: number;
+  guarantees: string[];
 }
 
 export function ProviderCard({
@@ -117,14 +120,14 @@ export function ProviderCard({
         </div>
       </Card>
 
-      {/*<BookingConfirmDialog
+      <BookingConfirmDialog
         open={showConfirm}
         onOpenChange={setShowConfirm}
-        provider={provider}
+        provider={{ name: provider.name, guarantees: provider.guarantees }}
         participants={participants}
         selectedDate={selectedDate}
         total={total}
-      />*/}
+      />
     </>
   );
 }

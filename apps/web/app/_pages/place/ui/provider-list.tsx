@@ -39,7 +39,7 @@ export function ProviderList({
           Choose Your Provider
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-3 p-4">
+      <CardContent className="space-y-3 px-4">
         {providers.map((provider) => (
           <ProviderCard
             key={provider._id}
