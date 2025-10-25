@@ -31,7 +31,7 @@ export function HeroSection({
   };
 
   return (
-    <section className="bg-background relative pt-24 pb-48">
+    <section className="bg-background relative py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-12 text-center">
           <h1 className="text-foreground mb-6 text-6xl leading-tight font-extrabold md:text-8xl">
