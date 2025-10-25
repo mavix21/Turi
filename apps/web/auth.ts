@@ -93,7 +93,7 @@ const providers = [
   }),
 ];
 
-export const authOptions: AuthOptions = NextAuth({
+export const authOptions: AuthOptions = {
   // https://next-auth.js.org/configuration/providers/oauth
   secret: nextAuthSecret,
   providers,
@@ -131,7 +131,7 @@ export const authOptions: AuthOptions = NextAuth({
       return session;
     },
   },
-});
+};
 
 export const auth = cache(async () => {
   try {
