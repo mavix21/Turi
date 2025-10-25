@@ -1,35 +1,11 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import Link from "next/link";
 
 import { Button } from "@turi/ui/components/button";
 
 export function HeaderSection() {
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 100);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
-    <header
-      className={`bg-background fixed top-0 right-0 left-0 z-50 transition-all duration-500 ease-in-out ${
-        isScrolled
-          ? "border-border border-b shadow-lg"
-          : "border-b border-transparent"
-      }`}
-    >
-      <div
-        className={`mx-auto flex max-w-7xl items-center justify-between px-4 transition-all duration-300 sm:px-6 lg:px-8 ${
-          isScrolled ? "py-3" : "py-4"
-        }`}
-      >
+    <header className="bg-background border-border fixed top-0 right-0 left-0 z-50 border-b shadow-lg transition-all duration-500 ease-in-out">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 transition-all duration-300 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-3">
           <div className="bg-primary flex h-10 w-10 items-center justify-center rounded-lg shadow-lg">
             <span className="text-primary-foreground text-lg font-bold">T</span>
