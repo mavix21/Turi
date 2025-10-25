@@ -22,3 +22,6 @@ build:; forge build
 test :; forge test 
 
 format :; forge fmt
+
+deploy:
+	forge script script/Deploy.s.sol:Deploy --rpc-url $(SEPOLIA_RPC_URL) --account dev --verify --etherscan-api-key $(ETHERSCAN_API_KEY) --broadcast -vvvv
