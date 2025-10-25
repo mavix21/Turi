@@ -8,12 +8,16 @@ import NextAuth, { AuthOptions, getServerSession } from "next-auth";
 import credentialsProvider from "next-auth/providers/credentials";
 import { createPublicClient, http } from "viem";
 
+import type { Id } from "@turi/convex/_generated/dataModel";
+
 import { env } from "./src/env";
 
 declare module "next-auth" {
   interface Session extends SIWESession {
     address: `0x${string}`;
     chainId: number;
+    userId: Id<"users">;
+    convexToken: string;
   }
 }
 
