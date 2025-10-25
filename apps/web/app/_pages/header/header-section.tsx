@@ -1,7 +1,6 @@
-import { Button } from "@turi/ui/components/button";
-
 import { Link } from "@/app/_shared/i18n";
-import { ConnectButton } from "@/app/_shared/ui/connect-button";
+
+import { AuthMenu } from "./auth-menu";
 
 export function HeaderSection() {
   return (
@@ -33,9 +32,7 @@ export function HeaderSection() {
             Activity
           </a>
         </nav>
-        <div className="flex items-center gap-3">
-          <ConnectButton />
-        </div>
+        <AuthMenu />
       </div>
     </header>
   );
