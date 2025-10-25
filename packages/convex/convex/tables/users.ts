@@ -5,8 +5,8 @@ export const users = defineTable({
   name: v.string(),
   email: v.optional(v.string()),
   pfpUrl: v.optional(v.string()),
-  currentWalletAddress: v.string(),
+  walletAddress: v.string(),
   verifiedAt: v.optional(v.number()),
 })
   .index("by_email", ["email"])
-  .index("by_wallet", ["currentWalletAddress"]);
+  .index("by_wallet", ["walletAddress"]);

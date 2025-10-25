@@ -5,7 +5,7 @@ import {
   getChainIdFromMessage,
 } from "@reown/appkit-siwe";
 import { importPKCS8, SignJWT } from "jose";
-import NextAuth, { AuthOptions, getServerSession } from "next-auth";
+import { AuthOptions, DefaultUser, getServerSession } from "next-auth";
 import credentialsProvider from "next-auth/providers/credentials";
 import { createPublicClient, http } from "viem";
 
@@ -19,6 +19,10 @@ declare module "next-auth" {
     chainId: number;
     userId: Id<"users">;
     convexToken: string;
+  }
+
+  interface User extends DefaultUser {
+    userId: Id<"users">;
   }
 }
 
@@ -82,6 +86,7 @@ const providers = [
         if (isValid) {
           return {
             id: `${chainId}:${address}`,
+            userId: `${chainId}:${address}` as Id<"users">,
           };
         }
 
