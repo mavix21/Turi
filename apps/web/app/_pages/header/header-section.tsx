@@ -1,6 +1,6 @@
-import Link from "next/link";
-
 import { Button } from "@turi/ui/components/button";
+
+import { Link } from "@/app/_shared/i18n";
 
 export function HeaderSection() {
   return (
@@ -33,16 +33,9 @@ export function HeaderSection() {
           </a>
         </nav>
         <div className="flex items-center gap-3">
-          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-            Sign In
-          </Button>
+          <Button>Sign In</Button>
           <Link href="/profile/me/about">
-            <Button
-              variant="outline"
-              className="border-border hover:bg-muted bg-transparent"
-            >
-              Profile
-            </Button>
+            <Button variant="outline">Profile</Button>
           </Link>
         </div>
       </div>
