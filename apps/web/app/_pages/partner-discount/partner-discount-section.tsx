@@ -14,7 +14,7 @@ export function PartnerDiscountSection() {
   }
 
   return (
-    <section className="bg-card rounded-3xl py-16 md:py-24">
+    <section className="bg-card rounded-3xl py-16 md:py-0">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-12">
           <h2 className="text-foreground mb-3 text-4xl font-bold md:text-5xl">

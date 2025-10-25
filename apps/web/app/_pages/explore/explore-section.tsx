@@ -42,7 +42,7 @@ export function ExploreSection({
           );
 
   return (
-    <section className="bg-card rounded-3xl py-16 md:py-24">
+    <section className="bg-card rounded-3xl py-16 md:py-0">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
