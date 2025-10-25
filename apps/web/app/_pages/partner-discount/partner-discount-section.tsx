@@ -1,18 +1,18 @@
+"use client";
+
+import { useQuery } from "convex/react";
+
+import { api } from "@turi/convex/_generated/api";
+
 import { PartnerCard } from "./ui/partner-card";
 
-interface PartnerDiscountProps {
-  id: string;
-  name: string;
-  discount: string;
-  pointsCost: number;
-  description: string;
-  image: string;
-}
-export function PartnerDiscountSection({
-  partnerDiscounts,
-}: {
-  partnerDiscounts: PartnerDiscountProps[];
-}) {
+export function PartnerDiscountSection() {
+  const partnerDiscounts = useQuery(api.benefits.getAllBenefits);
+
+  if (!partnerDiscounts) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <section className="bg-card rounded-3xl py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -27,12 +27,12 @@ export function PartnerDiscountSection({
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           {partnerDiscounts.map((partner) => (
             <PartnerCard
-              key={partner.id}
-              name={partner.name}
-              discount={partner.discount}
-              pointsCost={partner.pointsCost}
+              key={partner._id}
+              name={partner.title}
+              discount={partner.discountPercentage.toString()}
+              pointsCost={partner.requiredReputation}
               description={partner.description}
-              image={partner.image}
+              image={partner.imageUrl}
             />
           ))}
         </div>

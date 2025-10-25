@@ -101,7 +101,6 @@ export function ExploreSection({
               province={location.address.state}
               department={location.address.city}
               rating={4.5}
-              price={100}
               image={location.imageUrl}
             />
           ))}

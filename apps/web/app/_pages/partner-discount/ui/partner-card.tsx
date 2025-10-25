@@ -5,7 +5,7 @@ import { Button } from "@turi/ui/components/button";
 
 interface PartnerCardProps {
   name: string;
-  discount: string;
+  discount: number;
   pointsCost: number;
   description: string;
   image: string;
@@ -30,7 +30,9 @@ export function PartnerCard({
         />
         {/* Discount Badge */}
         <div className="bg-card absolute top-4 right-4 rounded-full px-3 py-1.5 shadow-lg">
-          <span className="text-primary text-sm font-bold">{discount}</span>
+          <span className="text-primary text-sm font-bold">
+            {discount}% OFF
+          </span>
         </div>
       </div>
 

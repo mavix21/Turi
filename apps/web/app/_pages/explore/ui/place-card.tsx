@@ -1,5 +1,11 @@
+"use client";
+
 import Image from "next/image";
+import { useQuery } from "convex/react";
 import { MapPin, Star } from "lucide-react";
+
+import { api } from "@turi/convex/_generated/api";
+import { Id } from "@turi/convex/_generated/dataModel";
 
 import { Link } from "@/app/_shared/i18n";
 
@@ -10,7 +16,6 @@ interface PlaceCardProps {
   province: string;
   department: string;
   rating: number;
-  price: number;
   image: string;
 }
 
@@ -20,12 +25,21 @@ export function PlaceCard({
   province,
   department,
   rating,
-  price,
   image,
 }: PlaceCardProps) {
   const handleNavigate = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  const providers = useQuery(api.tourPackages.getTourPackagesByLocation, {
+    locationId: id as Id<"locations">,
+  });
+
+  if (!providers) {
+    return null;
+  }
+
+  const price = providers[0]?.basePricePerPerson + providers[0]?.taxesAndFees;
 
   return (
     <Link href={`/place/${id}`} onClick={handleNavigate}>
