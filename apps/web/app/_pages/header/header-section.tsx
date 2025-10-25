@@ -26,15 +26,15 @@ export function HeaderSection() {
             >
               {t("home")}
             </Link>
-            <a
-              href="#"
+            <Link
+              href="/map"
               className="text-muted-foreground hover:text-foreground text-sm transition"
             >
               {t("map")}
-            </a>
+            </Link>
           </nav>
         </div>
-        <div className="flex justify-end gap-3">
+        <div className="flex items-center justify-end gap-3">
           <ThemeSwitcher />
           <LanguageSwitcher />
           <AuthMenu />
