@@ -29,7 +29,7 @@ export function PartnerDiscountSection() {
             <PartnerCard
               key={partner._id}
               name={partner.title}
-              discount={partner.discountPercentage.toString()}
+              discount={partner.discountPercentage}
               pointsCost={partner.requiredReputation}
               description={partner.description}
               image={partner.imageUrl}
