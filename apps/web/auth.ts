@@ -17,7 +17,7 @@ declare module "next-auth" {
   }
 }
 
-const nextAuthSecret = env.AUTH_SECRET;
+const nextAuthSecret = env.NEXTAUTH_SECRET;
 if (!nextAuthSecret) {
   throw new Error("NEXTAUTH_SECRET is not set");
 }
