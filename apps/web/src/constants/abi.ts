@@ -1,3 +1,4 @@
+import { Abi } from "viem"
 
 export const PlaceNFTAddress = "0xYourPlaceNFTContractAddress"
 export const ProductVaultAddress = "0xYourProductVaultContractAddress"
@@ -837,7 +838,7 @@ export const PlaceNFTAbi = [
         "name": "PlaceInactiveOrNotRegistered",
         "type": "error"
     }
-]
+] as Abi
 
 export const ProductVaultAbi = [
     {
@@ -1542,7 +1543,7 @@ export const ProductVaultAbi = [
         "name": "TransferFailed",
         "type": "error"
     }
-]
+] as Abi
 
 export const TravelTokenAbi = [
     {
@@ -2020,7 +2021,7 @@ export const TravelTokenAbi = [
         "name": "hasToBeMoreThanZero",
         "type": "error"
     }
-]
+] as Abi
 
 export const USDXAbi = [
     {
@@ -2611,7 +2612,7 @@ export const USDXAbi = [
         "name": "ERC20InvalidSpender",
         "type": "error"
     }
-]
+] as Abi
 
 export const TuriToken = [
     {
@@ -3183,4 +3184,4 @@ export const TuriToken = [
         "name": "ERC20InvalidSpender",
         "type": "error"
     }
-]
+] as Abi
