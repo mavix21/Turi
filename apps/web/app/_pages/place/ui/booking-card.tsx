@@ -1,8 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useQuery } from "convex/react";
 import { Calendar, ChevronDown, ChevronDownIcon, Users } from "lucide-react";
 
+import { api } from "@turi/convex/_generated/api";
+import { Id } from "@turi/convex/_generated/dataModel";
 import { Button } from "@turi/ui/components/button";
 import { Calendar as CalendarComponent } from "@turi/ui/components/calendar";
 import {
@@ -37,6 +40,14 @@ export function BookingCard({ location }: { location: BookingCardProps }) {
   const [date, setDate] = useState<Date>(new Date());
   const [participants, setParticipants] = useState(1);
 
+  const providers = useQuery(api.tourPackages.getTourPackagesByLocation, {
+    locationId: location._id as Id<"locations">,
+  });
+
+  if (!providers) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="space-y-4 lg:sticky lg:top-4">
       <Card className="border-2">
@@ -44,7 +55,7 @@ export function BookingCard({ location }: { location: BookingCardProps }) {
           <div className="space-y-1">
             <p className="text-muted-foreground text-sm">Starting from</p>
             <CardTitle className="text-3xl">
-              {/*TODO: add minPrice in base of tourPackages*/}${20}
+              ${providers[0]?.basePricePerPerson + providers[0]?.taxesAndFees}
               <span className="text-muted-foreground text-lg font-normal">
                 /person
               </span>
@@ -105,7 +116,7 @@ export function BookingCard({ location }: { location: BookingCardProps }) {
       </Card>
 
       <ProviderList
-        locationId={location._id}
+        providers={providers}
         participants={participants}
         selectedDate={date ?? new Date()}
       />

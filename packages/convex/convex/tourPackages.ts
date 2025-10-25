@@ -10,6 +10,7 @@ export const getTourPackagesByLocation = query({
       await ctx.db
         .query("tourPackages")
         .withIndex("by_location", (q) => q.eq("locationId", args.locationId))
+        .order("desc")
         .collect(),
       async (q) => {
         const company = await ctx.db.get(q.companyId);

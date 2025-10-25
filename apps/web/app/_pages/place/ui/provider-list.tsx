@@ -3,7 +3,7 @@ import { useQuery } from "convex/react";
 import { Users } from "lucide-react";
 
 import { api } from "@turi/convex/_generated/api";
-import { Id } from "@turi/convex/_generated/dataModel";
+import { Doc, Id } from "@turi/convex/_generated/dataModel";
 import {
   Card,
   CardContent,
@@ -14,17 +14,14 @@ import {
 import { ProviderCard } from "./provider-card";
 
 export function ProviderList({
-  locationId,
+  providers,
   participants,
   selectedDate,
 }: {
-  locationId: string;
+  providers: Doc<"tourPackages">[];
   participants: number;
   selectedDate: Date;
 }) {
-  const providers = useQuery(api.tourPackages.getTourPackagesByLocation, {
-    locationId: locationId as Id<"locations">,
-  });
   const [selectedProvider, setSelectedProvider] = useState({});
 
   if (!providers) {

@@ -14,7 +14,12 @@ export const locations = defineTable({
     }),
   }),
   imageUrl: v.string(),
-
+  highlights: v.array(
+    v.object({
+      title: v.string(),
+      description: v.string(),
+    }),
+  ),
   category: v.union(
     v.object({
       type: v.literal("Attraction"),

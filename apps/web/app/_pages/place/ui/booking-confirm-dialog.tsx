@@ -104,16 +104,16 @@ export function BookingConfirmDialog({
               </div>
               <div className="flex items-center gap-2">
                 <CreditCard className="text-muted-foreground h-4 w-4" />
-                <span className="text-lg font-semibold">${total} USD</span>
+                <span className="text-lg font-semibold">${total}</span>
               </div>
             </div>
           </CardContent>
         </Card>
 
         <div className="bg-muted/50 space-y-1 rounded-lg p-4 text-sm">
-          <div className="flex items-start gap-2">
+          <div className="flex flex-col items-start gap-2">
             {provider.guarantees.map((guarantee) => (
-              <div className="flex items-start gap-2">
+              <div className="flex items-start gap-2" key={guarantee}>
                 <CheckCircle2 className="text-primary mt-0.5 h-4 w-4 flex-shrink-0" />
                 <span className="text-muted-foreground">{guarantee}</span>
               </div>

@@ -18,7 +18,7 @@ export function PlaceDetailPage({ id }: { id: string }) {
   return (
     <main className="bg-background min-h-screen">
       {/* Hero Section */}
-      <section className="relative overflow-hidden pt-16 pb-0">
+      <section className="relative overflow-hidden pt-16">
         <div className="relative h-[600px] overflow-hidden md:h-[700px]">
           <img
             src={location.imageUrl || "/placeholder.svg"}
@@ -26,7 +26,7 @@ export function PlaceDetailPage({ id }: { id: string }) {
             className="h-full w-full object-cover"
           />
 
-          <div className="to-background absolute inset-0 bg-gradient-to-b from-black/50 via-black/30" />
+          <div className="absolute inset-0 bg-linear-to-b from-black/50 from-0% via-transparent via-50% to-black to-100%" />
 
           {/* Hero Content */}
           <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-12">
@@ -52,11 +52,6 @@ export function PlaceDetailPage({ id }: { id: string }) {
                   <span className="text-lg font-medium">
                     {location.address.city}, {location.address.country}
                   </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-                  <span className="text-lg font-semibold">{4.5}</span>
-                  <span className="text-sm opacity-95">({5} reviews)</span>
                 </div>
               </div>
             </div>
@@ -86,7 +81,7 @@ export function PlaceDetailPage({ id }: { id: string }) {
       </section>
 
       {/* Main Content */}
-      <section className="bg-background py-12 md:py-20">
+      <section className="bg-background">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-12">
             {/* Left Column - Description & Highlights */}
@@ -102,12 +97,12 @@ export function PlaceDetailPage({ id }: { id: string }) {
               </div>
 
               {/* Highlights Grid */}
-              {/*<div className="mb-12">
+              <div className="mb-12">
                 <h2 className="text-foreground mb-8 text-3xl font-bold">
                   Highlights
                 </h2>
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                  {location.highlights.map((highlight: any, index: number) => (
+                  {location.highlights.map((highlight, index: number) => (
                     <div
                       key={index}
                       className="bg-card border-border hover:border-primary/50 rounded-xl border p-6 transition"
@@ -121,7 +116,7 @@ export function PlaceDetailPage({ id }: { id: string }) {
                     </div>
                   ))}
                 </div>
-              </div>*/}
+              </div>
 
               {/* Details */}
               {/*<div className="mb-12">
