@@ -8,7 +8,6 @@ import {
   nftPostcards,
   partnerDiscounts,
   peruDestinations,
-  places,
 } from "./mock-data";
 
 export default function HomePage() {
@@ -20,7 +19,7 @@ export default function HomePage() {
       {/* Main Content */}
       <main className="container mx-auto mb-24">
         {/* Explore Section */}
-        <ExploreSection exploreCategories={exploreCategories} places={places} />
+        <ExploreSection exploreCategories={exploreCategories} />
         <CollectionSection nftPostcards={nftPostcards} />
         <PartnerDiscountSection partnerDiscounts={partnerDiscounts} />
       </main>

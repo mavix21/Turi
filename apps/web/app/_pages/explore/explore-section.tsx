@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useQuery } from "convex/react";
 
+import { api } from "@turi/convex/_generated/api";
 import { Button } from "@turi/ui/components/button";
 
 import { PlaceCard } from "./ui/place-card";
@@ -19,20 +21,25 @@ interface PlaceProp {
 }
 
 export function ExploreSection({
-  places,
   exploreCategories,
 }: {
-  places: PlaceProp[];
   exploreCategories: { id: string; label: string }[];
 }) {
+  const locations = useQuery(api.locations.getAllLocations);
   const [exploreFilter, setExploreFilter] = useState("all");
+
+  if (!locations) {
+    return <div>Loading...</div>;
+  }
 
   const filteredPlaces =
     exploreFilter === "all"
-      ? places
+      ? locations
       : exploreFilter === "popular"
-        ? places.filter((place) => place.popular)
-        : places.filter((place) => place.category === exploreFilter);
+        ? locations.filter((location) => location.category.type)
+        : locations.filter(
+            (location) => location.category.type === exploreFilter,
+          );
 
   return (
     <section className="bg-card rounded-3xl py-16 md:py-24">
@@ -85,17 +92,17 @@ export function ExploreSection({
           </button>
         </div>
         <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {filteredPlaces.map((place) => (
+          {locations.map((location) => (
             <PlaceCard
-              key={place.id}
-              id={place.id}
-              name={place.name}
-              location={`${place.province}, ${place.department}`}
-              province={place.province}
-              department={place.department}
-              rating={place.rating}
-              price={place.price}
-              image={place.image}
+              key={location._id}
+              id={location._id}
+              name={location.name}
+              location={`${location.address.city}, ${location.address.country}`}
+              province={location.address.state}
+              department={location.address.city}
+              rating={4.5}
+              price={100}
+              image={location.imageUrl}
             />
           ))}
         </div>
