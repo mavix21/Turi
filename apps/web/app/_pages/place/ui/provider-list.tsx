@@ -7,7 +7,13 @@ import {
   CardTitle,
 } from "@turi/ui/components/card";
 
-export function ProviderList() {
+export function ProviderList({
+  participants,
+  selectedDate,
+}: {
+  participants: number;
+  selectedDate: Date;
+}) {
   return (
     <Card>
       <CardHeader>

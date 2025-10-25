@@ -189,7 +189,7 @@ export function PlaceDetailPage({ id }: { id: string }) {
               </div>
             </div>
 
-            {/*<BookingCard location={location} />*/}
+            <BookingCard location={location} />
           </div>
         </div>
       </section>
