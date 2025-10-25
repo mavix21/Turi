@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.24;
+pragma solidity 0.8.30;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
@@ -9,7 +9,7 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 contract TravelToken is ERC20, AccessControl {
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
-    constructor() ERC20("Travel Reputation Token", "TRVL") {
+    constructor() ERC20("Turist Reputation Token", "TURI") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
     }
 

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity 0.8.30;
 
 import {ERC721URIStorage} from "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
@@ -26,7 +26,7 @@ contract PlaceNFT is ERC721URIStorage, AccessControl {
     error PlaceInactiveOrNotRegistered();
     error PlaceAlreadyRegistered();
 
-    constructor() ERC721("PlaceNFT", "PLCNFT") {
+    constructor() ERC721("TuristNFT", "TURINFT") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
     }
 
