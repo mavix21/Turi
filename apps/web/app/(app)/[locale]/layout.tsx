@@ -1,4 +1,4 @@
-import { Cormorant, Geist, Geist_Mono, Space_Grotesk } from "next/font/google";
+import { Geist, Space_Grotesk } from "next/font/google";
 
 import "@turi/ui/globals.css";
 
@@ -9,9 +9,11 @@ import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 
 import { HeaderSection } from "@/app/_pages/header/header-section";
+import { auth } from "@/auth";
 import { routing } from "@/shared/i18n/routing";
 import { ThemeProvider } from "@/shared/ui/theme-provider";
 
+import { ConvexClientProvider } from "./convex.provider";
 import { Providers } from "./providers";
 
 const fontSans = Geist({
@@ -38,10 +40,12 @@ export default async function RootLayout({
     notFound();
   }
 
+  setRequestLocale(locale);
+
   const headersObj = await headers();
   const cookies = headersObj.get("cookie");
 
-  setRequestLocale(locale);
+  const session = await auth();
 
   return (
     <html lang={locale} suppressHydrationWarning>
@@ -54,8 +58,10 @@ export default async function RootLayout({
         >
           <NextIntlClientProvider>
             <Providers cookies={cookies}>
-              <HeaderSection />
-              {children}
+              <ConvexClientProvider session={session}>
+                <HeaderSection />
+                {children}
+              </ConvexClientProvider>
             </Providers>
           </NextIntlClientProvider>
         </ThemeProvider>
