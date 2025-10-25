@@ -2,6 +2,7 @@
 pragma solidity ^0.8.20;
 
 import {ERC721URIStorage} from "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
 
 /// @title PlaceNFT
@@ -27,6 +28,16 @@ contract PlaceNFT is ERC721URIStorage, AccessControl {
 
     constructor() ERC721("PlaceNFT", "PLCNFT") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+    }
+
+    /// @notice Override supportsInterface to resolve inheritance conflict
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        override(ERC721URIStorage, AccessControl)
+        returns (bool)
+    {
+        return super.supportsInterface(interfaceId);
     }
 
     /// @notice Registrar un nuevo lugar turístico
