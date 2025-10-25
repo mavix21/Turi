@@ -40,12 +40,6 @@ export function PlaceCard({
             className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
           />
           {/* Rating Badge */}
-          <div className="absolute top-4 right-4 flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 shadow-md">
-            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-            <span className="text-foreground text-sm font-semibold">
-              {rating}
-            </span>
-          </div>
         </div>
 
         {/* Content */}

@@ -43,7 +43,7 @@ export function UserDropdown({ address, username }: UserDropdownProps) {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <Link href={`/profile/me/about`} className="w-full">
+          <Link href={`/profile/me/tourist-passport`} className="w-full">
             Profile
           </Link>
         </DropdownMenuItem>
