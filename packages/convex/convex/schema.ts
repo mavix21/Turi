@@ -1,3 +1,4 @@
+import { typedV } from "convex-helpers/validators";
 import { defineSchema } from "convex/server";
 
 import { benefits } from "./tables/benefits";
@@ -15,3 +16,5 @@ const schema = defineSchema({
 });
 
 export default schema;
+
+export const vv = typedV(schema);
