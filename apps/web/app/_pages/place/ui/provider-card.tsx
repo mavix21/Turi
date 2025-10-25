@@ -18,6 +18,7 @@ import { BookingConfirmDialog } from "./booking-confirm-dialog";
 interface ProviderCardProps {
   name: string;
   basePricePerPerson: number;
+  taxesAndFees: number;
   availableTickets: number;
   guarantees: string[];
 }
@@ -35,7 +36,7 @@ export function ProviderCard({
 }) {
   const [showConfirm, setShowConfirm] = useState(false);
   const subtotal = provider.basePricePerPerson * participants;
-  const taxes = Math.round(subtotal * 0.1);
+  const taxes = provider.taxesAndFees;
   const total = subtotal + taxes;
 
   const canBook = selectedDate && provider.availableTickets >= participants;
