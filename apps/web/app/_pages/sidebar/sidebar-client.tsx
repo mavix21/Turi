@@ -14,11 +14,6 @@ export function SidebarClient() {
 
   const navigationItems = [
     {
-      id: "about",
-      label: "About me",
-      icon: "User",
-    },
-    {
       id: "tourist-passport",
       label: "My Turi Passport",
       icon: "Ticket",

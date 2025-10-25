@@ -1,10 +1,29 @@
 "use client";
 
 import { useState } from "react";
-import { Award, CheckCircle2, MapPin, Ticket } from "lucide-react";
+import {
+  Award,
+  Calendar,
+  CheckCircle2,
+  CreditCard,
+  Globe,
+  MapPin,
+  Shield,
+  Ticket,
+  User,
+} from "lucide-react";
 
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@turi/ui/components/avatar";
+import { Badge } from "@turi/ui/components/badge";
 import { Button } from "@turi/ui/components/button";
+import { Card, CardContent } from "@turi/ui/components/card";
 import { useTuriState } from "@turi/ui/hooks/use-turi-state";
+
+import { StatisticsPanel } from "@/app/_pages/profile/ui/statistics-panel";
 
 export default function TouristPassportPage() {
   const { user } = useTuriState();
@@ -69,93 +88,183 @@ export default function TouristPassportPage() {
     },
   ]);
 
+  const userData = {
+    name: "María Elena Rodríguez",
+    passportNumber: "PE-127845693",
+    nationality: "Peruana",
+    dateOfBirth: "15 de Marzo, 1992",
+    issueDate: "10 de Enero, 2022",
+    expiryDate: "10 de Enero, 2032",
+    photo:
+      "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=400",
+  };
+
+  const travelStamps = [
+    {
+      id: "0x7f9c8e2a1b5d3f6e",
+      destination: "Machu Picchu",
+      location: "Cusco",
+      visitDate: "2024-03-15",
+      verificationStatus: "verified",
+      image:
+        "https://images.pexels.com/photos/2356045/pexels-photo-2356045.jpeg?auto=compress&cs=tinysrgb&w=600",
+      blockchainHash: "0x7f9c8e2a1b5d3f6e4c8a9d2b7f1e5c3a",
+    },
+    {
+      id: "0x3a6d8f1c2e5b9a4d",
+      destination: "Líneas de Nazca",
+      location: "Nazca",
+      visitDate: "2024-05-22",
+      verificationStatus: "verified",
+      image:
+        "https://images.pexels.com/photos/14654471/pexels-photo-14654471.jpeg?auto=compress&cs=tinysrgb&w=600",
+      blockchainHash: "0x3a6d8f1c2e5b9a4d7e2f8c1b6a3d9e5c",
+    },
+    {
+      id: "0x9e4b2f7a1d6c8e3b",
+      destination: "Lago Titicaca",
+      location: "Puno",
+      visitDate: "2024-07-08",
+      verificationStatus: "verified",
+      image:
+        "https://images.pexels.com/photos/12697283/pexels-photo-12697283.jpeg?auto=compress&cs=tinysrgb&w=600",
+      blockchainHash: "0x9e4b2f7a1d6c8e3b5a9d2f7c1e4b8a6d",
+    },
+    {
+      id: "0x5c8a3e9f2b1d7a4c",
+      destination: "Cañón del Colca",
+      location: "Arequipa",
+      visitDate: "2024-08-19",
+      verificationStatus: "verified",
+      image:
+        "https://images.pexels.com/photos/19058522/pexels-photo-19058522.jpeg?auto=compress&cs=tinysrgb&w=600",
+      blockchainHash: "0x5c8a3e9f2b1d7a4c6e8b3f9d2a7c5e1b",
+    },
+    {
+      id: "0x2d7f4b8e1c6a9d3f",
+      destination: "Reserva Nacional Paracas",
+      location: "Ica",
+      visitDate: "2024-09-30",
+      verificationStatus: "verified",
+      image:
+        "https://images.pexels.com/photos/19638308/pexels-photo-19638308.jpeg?auto=compress&cs=tinysrgb&w=600",
+      blockchainHash: "0x2d7f4b8e1c6a9d3f5b7e2a8c4d9f1e6a",
+    },
+  ];
+
+  const statistics = {
+    totalDestinations: travelStamps.length,
+    verifiedStamps: travelStamps.filter(
+      (s) => s.verificationStatus === "verified",
+    ).length,
+    verificationScore: 98.5,
+    memberSince: "2022",
+  };
+
   return (
-    <div className="space-y-8">
-      <div>
-        <h2 className="text-foreground mb-2 text-3xl font-bold">
-          My Turi Passport
-        </h2>
-        <p className="text-muted-foreground">
-          Your achievements and digital collectibles
-        </p>
-      </div>
-
-      {/* Achievements */}
-      <div>
-        <div className="mb-6 flex items-center justify-between">
-          <h3 className="text-foreground text-xl font-bold">Achievements</h3>
-          <div className="bg-secondary/10 flex items-center gap-2 rounded-full px-4 py-2">
-            <Award className="text-primary h-5 w-5" />
-            <span className="text-foreground text-sm font-semibold">
-              {badges.filter((b) => b.earned).length}/{badges.length}
-            </span>
-          </div>
-        </div>
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-          {badges.map((badge) => (
-            <div
-              key={badge.id}
-              className={`rounded-2xl p-6 text-center transition-all hover:scale-105 ${
-                badge.earned
-                  ? "from-primary/10 to-secondary/10 border-primary/30 border-2 bg-gradient-to-br shadow-lg"
-                  : "bg-muted border-border border-2"
-              }`}
-            >
-              <div className="mb-3 text-4xl">{badge.icon}</div>
-              <p className="text-foreground mb-1 text-sm font-bold">
-                {badge.name}
-              </p>
-              <p className="text-muted-foreground mb-2 text-xs">
-                {badge.description}
-              </p>
-              {badge.earned ? (
-                <div className="text-primary flex items-center justify-center gap-1 text-xs">
-                  <CheckCircle2 className="h-3 w-3" />
-                  <span>Earned</span>
-                </div>
-              ) : (
-                <p className="text-muted-foreground text-xs font-semibold">
-                  {badge.pointsRequired} pts
-                </p>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Digital Postcards */}
-      <div>
-        <h3 className="text-foreground mb-6 text-xl font-bold">
-          Digital Postcards
-        </h3>
-        {user.digitalPostcards.length > 0 ? (
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-            {user.digitalPostcards.map((postcard, idx) => (
-              <div
-                key={idx}
-                className="bg-card border-border rounded-xl border p-4 transition-all hover:shadow-lg"
-              >
-                <div className="bg-muted mb-3 flex aspect-square items-center justify-center rounded-lg">
-                  <MapPin className="text-muted-foreground h-8 w-8" />
-                </div>
-                <p className="text-foreground text-sm font-semibold">
-                  {postcard}
-                </p>
+    <>
+      <Card className="border-border/50 from-card via-card to-accent/5 overflow-hidden border bg-gradient-to-br shadow-2xl">
+        <CardContent className="p-8 lg:p-10">
+          <div className="flex flex-col items-start gap-8 lg:flex-row">
+            <div className="group relative">
+              <div className="from-accent via-primary to-accent absolute -inset-4 rounded-2xl bg-gradient-to-r opacity-20 blur-2xl transition-all duration-500 group-hover:opacity-30"></div>
+              <div className="relative">
+                <Avatar className="border-accent/50 ring-accent/10 h-40 w-40 border-4 shadow-2xl ring-4 lg:h-48 lg:w-48">
+                  <AvatarImage
+                    src={userData.photo}
+                    alt={userData.name}
+                    className="object-cover"
+                  />
+                  <AvatarFallback className="from-primary to-primary/80 text-secondary bg-gradient-to-br font-serif text-4xl">
+                    {userData.name
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")}
+                  </AvatarFallback>
+                </Avatar>
+                <Badge className="bg-accent text-accent-foreground absolute -bottom-2 left-1/2 -translate-x-1/2 border-0 px-4 py-1 shadow-lg">
+                  <Shield className="mr-1 h-3 w-3" />
+                  Verificado
+                </Badge>
               </div>
-            ))}
-          </div>
-        ) : (
-          <div className="bg-card border-border rounded-2xl border p-12 text-center">
-            <div className="bg-muted mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full">
-              <Ticket className="text-muted-foreground h-10 w-10" />
             </div>
-            <p className="text-muted-foreground mb-4">
-              No postcards collected yet
-            </p>
-            <Button>Claim Your First Postcard</Button>
+
+            <div className="flex-1 space-y-6">
+              <div className="space-y-2">
+                <h2 className="from-primary via-primary to-accent bg-gradient-to-r bg-clip-text font-serif text-4xl font-bold text-transparent lg:text-5xl">
+                  {userData.name}
+                </h2>
+                <div className="text-muted-foreground flex items-center gap-3">
+                  <CreditCard className="h-4 w-4" />
+                  <span className="bg-muted/50 rounded-full px-3 py-1 font-mono text-sm tracking-wider">
+                    {userData.passportNumber}
+                  </span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-4 pt-4 sm:grid-cols-2">
+                <div className="group from-muted/30 to-muted/10 border-border/50 hover:border-accent/30 flex items-start gap-4 rounded-xl border bg-gradient-to-br p-5 transition-all duration-300 hover:shadow-lg">
+                  <div className="from-accent/20 to-accent/5 rounded-lg bg-gradient-to-br p-2.5 transition-transform duration-300 group-hover:scale-110">
+                    <Globe className="text-primary h-5 w-5" />
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground mb-1 text-xs font-medium tracking-widest uppercase">
+                      Nacionalidad
+                    </p>
+                    <p className="text-foreground text-lg font-semibold">
+                      {userData.nationality}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="group from-muted/30 to-muted/10 border-border/50 hover:border-accent/30 flex items-start gap-4 rounded-xl border bg-gradient-to-br p-5 transition-all duration-300 hover:shadow-lg">
+                  <div className="from-accent/20 to-accent/5 rounded-lg bg-gradient-to-br p-2.5 transition-transform duration-300 group-hover:scale-110">
+                    <User className="text-primary h-5 w-5" />
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground mb-1 text-xs font-medium tracking-widest uppercase">
+                      Fecha de Nacimiento
+                    </p>
+                    <p className="text-foreground text-lg font-semibold">
+                      {userData.dateOfBirth}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="group from-muted/30 to-muted/10 border-border/50 hover:border-accent/30 flex items-start gap-4 rounded-xl border bg-gradient-to-br p-5 transition-all duration-300 hover:shadow-lg">
+                  <div className="from-accent/20 to-accent/5 rounded-lg bg-gradient-to-br p-2.5 transition-transform duration-300 group-hover:scale-110">
+                    <Calendar className="text-primary h-5 w-5" />
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground mb-1 text-xs font-medium tracking-widest uppercase">
+                      Fecha de Emisión
+                    </p>
+                    <p className="text-foreground text-lg font-semibold">
+                      {userData.issueDate}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="group from-muted/30 to-muted/10 border-border/50 hover:border-accent/30 flex items-start gap-4 rounded-xl border bg-gradient-to-br p-5 transition-all duration-300 hover:shadow-lg">
+                  <div className="from-accent/20 to-accent/5 rounded-lg bg-gradient-to-br p-2.5 transition-transform duration-300 group-hover:scale-110">
+                    <Calendar className="text-primary h-5 w-5" />
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground mb-1 text-xs font-medium tracking-widest uppercase">
+                      Fecha de Vencimiento
+                    </p>
+                    <p className="text-foreground text-lg font-semibold">
+                      {userData.expiryDate}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        )}
-      </div>
-    </div>
+        </CardContent>
+      </Card>
+
+      <StatisticsPanel statistics={statistics} />
+    </>
   );
 }
