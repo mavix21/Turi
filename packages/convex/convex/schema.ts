@@ -5,3 +5,5 @@ import { locations } from "./tables/locations";
 const schema = defineSchema({
   locations,
 });
+
+export default schema;
