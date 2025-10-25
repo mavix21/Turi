@@ -60,7 +60,7 @@ export function HeaderSection() {
           <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
             Sign In
           </Button>
-          <Link href="/profile">
+          <Link href="/profile/me/about">
             <Button
               variant="outline"
               className="border-border hover:bg-muted bg-transparent"
