@@ -19,16 +19,6 @@ const fontSans = Geist({
   variable: "--font-sans",
 });
 
-const fontMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-});
-
-const fontCormorant = Cormorant({
-  subsets: ["latin"],
-  variable: "--font-cormorant",
-});
-
 const fontSpaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-space-grotesk",
