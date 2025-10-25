@@ -3,12 +3,16 @@ import { Cormorant, Geist, Geist_Mono, Space_Grotesk } from "next/font/google";
 import "@turi/ui/globals.css";
 
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
+import { setRequestLocale } from "next-intl/server";
 
 import { HeaderSection } from "@/app/_pages/header/header-section";
 import { routing } from "@/shared/i18n/routing";
 import { ThemeProvider } from "@/shared/ui/theme-provider";
+
+import { Providers } from "./providers";
 
 const fontSans = Geist({
   subsets: ["latin"],
@@ -44,6 +48,11 @@ export default async function RootLayout({
     notFound();
   }
 
+  const headersObj = await headers();
+  const cookies = headersObj.get("cookie");
+
+  setRequestLocale(locale);
+
   return (
     <html lang={locale} suppressHydrationWarning>
       <body className={`${fontSpaceGrotesk.className} `}>
@@ -53,8 +62,12 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <HeaderSection />
-          <NextIntlClientProvider>{children}</NextIntlClientProvider>
+          <NextIntlClientProvider>
+            <Providers cookies={cookies}>
+              <HeaderSection />
+              {children}
+            </Providers>
+          </NextIntlClientProvider>
         </ThemeProvider>
       </body>
     </html>
