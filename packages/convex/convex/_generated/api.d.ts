@@ -10,10 +10,14 @@
 
 import type * as http from "../http.js";
 import type * as tables_benefits from "../tables/benefits.js";
+import type * as tables_bookings from "../tables/bookings.js";
 import type * as tables_checkIns from "../tables/checkIns.js";
 import type * as tables_collectibles from "../tables/collectibles.js";
+import type * as tables_companies from "../tables/companies.js";
 import type * as tables_locations from "../tables/locations.js";
+import type * as tables_tourPackages from "../tables/tourPackages.js";
 import type * as tables_users from "../tables/users.js";
+import type * as users from "../users.js";
 
 import type {
   ApiFromModules,
@@ -32,10 +36,14 @@ import type {
 declare const fullApi: ApiFromModules<{
   http: typeof http;
   "tables/benefits": typeof tables_benefits;
+  "tables/bookings": typeof tables_bookings;
   "tables/checkIns": typeof tables_checkIns;
   "tables/collectibles": typeof tables_collectibles;
+  "tables/companies": typeof tables_companies;
   "tables/locations": typeof tables_locations;
+  "tables/tourPackages": typeof tables_tourPackages;
   "tables/users": typeof tables_users;
+  users: typeof users;
 }>;
 declare const fullApiWithMounts: typeof fullApi;
 
