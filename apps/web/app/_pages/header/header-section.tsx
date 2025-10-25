@@ -1,6 +1,7 @@
 import { Button } from "@turi/ui/components/button";
 
 import { Link } from "@/app/_shared/i18n";
+import { ConnectButton } from "@/app/_shared/ui/connect-button";
 
 export function HeaderSection() {
   return (
@@ -33,10 +34,7 @@ export function HeaderSection() {
           </a>
         </nav>
         <div className="flex items-center gap-3">
-          <Button>Sign In</Button>
-          <Link href="/profile/me/about">
-            <Button variant="outline">Profile</Button>
-          </Link>
+          <ConnectButton />
         </div>
       </div>
     </header>
