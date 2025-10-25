@@ -15,6 +15,7 @@ export const env = createEnv({
    */
   server: {
     // POSTGRES_URL: z.string().url(),
+    AUTH_SECRET: z.string().min(32),
   },
 
   /**
@@ -23,12 +24,14 @@ export const env = createEnv({
    */
   client: {
     // NEXT_PUBLIC_CLIENTVAR: z.string(),
+    NEXT_PUBLIC_PROJECT_ID: z.string(),
   },
   /**
    * Destructure all variables from `process.env` to make sure they aren't tree-shaken away.
    */
   experimental__runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
+    NEXT_PUBLIC_PROJECT_ID: process.env.NEXT_PUBLIC_PROJECT_ID,
   },
   skipValidation:
     !!process.env.CI || process.env.npm_lifecycle_event === "lint",
