@@ -12,8 +12,6 @@ export function ConnectButton() {
   const t = useTranslations("auth-actions");
 
   return (
-    <Button size="lg" onClick={() => open({ view: "Connect" })}>
-      {t("signIn")}
-    </Button>
+    <Button onClick={() => open({ view: "Connect" })}>{t("signIn")}</Button>
   );
 }
