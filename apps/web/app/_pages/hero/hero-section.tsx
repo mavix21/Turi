@@ -281,8 +281,8 @@ export function HeroSection({
                     value={`${rooms}-${guests}`}
                     onChange={(e) => {
                       const [r, g] = e.target.value.split("-").map(Number);
-                      setRooms(r);
-                      setGuests(g);
+                      setRooms(r ?? 1);
+                      setGuests(g ?? 1);
                     }}
                     className="text-foreground w-full cursor-pointer bg-transparent pl-6 text-sm font-medium outline-none"
                   >
