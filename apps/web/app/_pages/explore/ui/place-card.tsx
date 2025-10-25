@@ -33,8 +33,8 @@ export function PlaceCard({
         {/* Image */}
         <div className="relative h-64 overflow-hidden">
           <Image
-            width={100}
-            height={100}
+            width={400}
+            height={400}
             src={image || "/placeholder.svg"}
             alt={name}
             className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
