@@ -48,7 +48,16 @@
       "outputs": []
     }
   },
-  "globalEnv": ["POSTGRES_URL", "AUTH_REDIRECT_PROXY_URL", "PORT"],
+  "globalEnv": [
+    "AUTH_REDIRECT_PROXY_URL",
+    "PORT",
+    "NEXTAUTH_SECRET",
+    "CONVEX_AUTH_ADAPTER_SECRET",
+    "CONVEX_AUTH_PRIVATE_KEY",
+    "CONVEX_DEPLOY_KEY",
+    "CONVEX_SITE_URL",
+    "NEXTAUTH_URL"
+  ],
   "globalPassThroughEnv": [
     "NODE_ENV",
     "CI",
