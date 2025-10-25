@@ -8,7 +8,9 @@
  * @module
  */
 
+import type * as tables_collectibles from "../tables/collectibles.js";
 import type * as tables_locations from "../tables/locations.js";
+import type * as tables_users from "../tables/users.js";
 
 import type {
   ApiFromModules,
@@ -25,7 +27,9 @@ import type {
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  "tables/collectibles": typeof tables_collectibles;
   "tables/locations": typeof tables_locations;
+  "tables/users": typeof tables_users;
 }>;
 declare const fullApiWithMounts: typeof fullApi;
 
