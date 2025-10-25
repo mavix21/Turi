@@ -8,11 +8,13 @@ import { collectibles } from "./tables/collectibles";
 import { companies } from "./tables/companies";
 import { locations } from "./tables/locations";
 import { tourPackages } from "./tables/tourPackages";
+import { userProfile } from "./tables/userProfile";
 import { users } from "./tables/users";
 
 const schema = defineSchema({
   locations,
   users,
+  userProfile,
   collectibles,
   checkIns,
   benefits,

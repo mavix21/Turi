@@ -18,6 +18,7 @@ import type * as tables_collectibles from "../tables/collectibles.js";
 import type * as tables_companies from "../tables/companies.js";
 import type * as tables_locations from "../tables/locations.js";
 import type * as tables_tourPackages from "../tables/tourPackages.js";
+import type * as tables_userProfile from "../tables/userProfile.js";
 import type * as tables_users from "../tables/users.js";
 import type * as tourPackages from "../tourPackages.js";
 import type * as users from "../users.js";
@@ -47,6 +48,7 @@ declare const fullApi: ApiFromModules<{
   "tables/companies": typeof tables_companies;
   "tables/locations": typeof tables_locations;
   "tables/tourPackages": typeof tables_tourPackages;
+  "tables/userProfile": typeof tables_userProfile;
   "tables/users": typeof tables_users;
   tourPackages: typeof tourPackages;
   users: typeof users;
