@@ -4,12 +4,14 @@ import {
   getAddressFromMessage /* verifySignature, */,
   getChainIdFromMessage,
 } from "@reown/appkit-siwe";
+import { fetchMutation } from "convex/nextjs";
 import { importPKCS8, SignJWT } from "jose";
 import { AuthOptions, DefaultUser, getServerSession } from "next-auth";
-import credentialsProvider from "next-auth/providers/credentials";
+import CredentialsProvider from "next-auth/providers/credentials";
 import { createPublicClient, http } from "viem";
 
 import type { Id } from "@turi/convex/_generated/dataModel";
+import { api } from "@turi/convex/_generated/api";
 
 import { env } from "./src/env";
 
@@ -22,6 +24,10 @@ declare module "next-auth" {
   }
 
   interface User extends DefaultUser {
+    userId: Id<"users">;
+  }
+
+  interface JWT {
     userId: Id<"users">;
   }
 }
@@ -39,7 +45,7 @@ if (!projectId) {
 const CONVEX_SITE_URL = env.NEXT_PUBLIC_CONVEX_URL.replace(/.cloud$/, ".site");
 
 const providers = [
-  credentialsProvider({
+  CredentialsProvider({
     name: "Ethereum",
     credentials: {
       message: {
@@ -82,15 +88,19 @@ const providers = [
           signature: signature as `0x${string}`,
         });
         // end o view verifyMessage
-
-        if (isValid) {
-          return {
-            id: `${chainId}:${address}`,
-            userId: `${chainId}:${address}` as Id<"users">,
-          };
+        if (!isValid) {
+          console.error("Invalid SIWE signature");
+          return null;
         }
 
-        return null;
+        const userId = await fetchMutation(api.users.createUser, {
+          address,
+        });
+
+        return {
+          id: `${chainId}:${address}`,
+          userId,
+        };
       } catch (e) {
         return null;
       }
@@ -116,6 +126,9 @@ export const authOptions: AuthOptions = {
         session.address = address as `0x${string}`;
         session.chainId = parseInt(chainId, 10);
       }
+      if (token.userId) {
+        session.userId = token.userId as Id<"users">;
+      }
 
       const privateKey = await importPKCS8(
         env.CONVEX_AUTH_PRIVATE_KEY.replace(/\\n/g, "\n"),
@@ -134,6 +147,13 @@ export const authOptions: AuthOptions = {
       session.convexToken = convexToken;
 
       return session;
+    },
+    jwt: ({ token, user }) => {
+      if (user) {
+        token.userId = user.userId;
+      }
+
+      return token;
     },
   },
 };
