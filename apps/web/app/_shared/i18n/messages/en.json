@@ -3,10 +3,53 @@
     "en": "English",
     "es": "Spanish"
   },
+
   "auth-actions": {
     "signIn": "Sign In",
     "signUp": "Sign Up"
   },
+
+  "home": {
+    "navigation": {
+      "home": "Home",
+      "map": "Map"
+    },
+    "header": {
+      "cta": {
+        "primary": "Get Started"
+      }
+    },
+    "hero": {
+      "title": "Discover Peru",
+      "description": "(TODO) Description",
+      "cta": {
+        "primary": "Get Started",
+        "secondary": "Learn More"
+      }
+    },
+    "explore": {
+      "title": "Explore",
+      "subheader": "Let's go on an adventure",
+      "description": "Discover Peru's incredible destinations, including archaeological sites, natural wonders, and historical sanctuaries across all departments.",
+      "filters": {
+        "popular": "Popular",
+        "all": "All",
+        "archaeological": "Archaeological Sites",
+        "natural": "Natural Wonders",
+        "museums": "Museums",
+        "historical": "Historical Sanctuaries",
+        "more": {
+          "title": "Filters"
+        }
+      },
+      "showMore": "Show More"
+    },
+    "visitAndCollect": {
+      "title": "Visit and Collect",
+      "description": "Get a blockchain-verified proof of your adventures in Peru."
+    }
+  },
+
   "landing": {
     "navigation": {
       "features": "Features",

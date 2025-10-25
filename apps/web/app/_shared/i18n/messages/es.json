@@ -10,6 +10,47 @@
     "signOut": "Cerrar sesión"
   },
 
+  "home": {
+    "navigation": {
+      "home": "Inicio",
+      "map": "Mapa"
+    },
+    "header": {
+      "cta": {
+        "primary": "Empezar"
+      }
+    },
+    "hero": {
+      "title": "Descubre Perú",
+      "description": "(TODO) Descripción",
+      "cta": {
+        "primary": "Empieza ahora",
+        "secondary": "Saber más"
+      }
+    },
+    "explore": {
+      "title": "Explora",
+      "subheader": "Vámonos de aventura",
+      "description": "Descubra los increíbles destinos de Perú, incluyendo sitios arqueológicos, maravillas naturales y santuarios históricos en todos los departamentos.",
+      "filters": {
+        "popular": "Popular",
+        "all": "Todos",
+        "archaeological": "Sitios Arqueológicos",
+        "natural": "Maravillas Naturales",
+        "museums": "Museos",
+        "historical": "Santuarios Históricos",
+        "more": {
+          "title": "Filtros"
+        }
+      },
+      "showMore": "Mostrar más"
+    },
+    "visitAndCollect": {
+      "title": "Visita y Colecciona",
+      "description": "Obtenga una prueba verificada por blockchain de sus aventuras en Perú."
+    }
+  },
+
   "landing": {
     "navigation": {
       "features": "Características",
