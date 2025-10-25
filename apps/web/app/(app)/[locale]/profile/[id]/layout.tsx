@@ -22,7 +22,7 @@ export default function ProfileLayout({
               <SidebarClient />
             </div>
           </aside>
-          {children}
+          <div className="min-w-0 flex-1">{children}</div>
         </div>
       </div>
     </main>
