@@ -18,9 +18,9 @@ export function PostcardCard({
   return (
     <div className="group relative">
       {/* Card Container */}
-      <div className="bg-card card-shadow transform overflow-hidden rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+      <div className="bg-card card-shadow transform overflow-hidden rounded-2xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
         {/* Image Container */}
-        <div className="relative aspect-[4/3] overflow-hidden">
+        <div className="relative aspect-4/3 overflow-hidden">
           <img
             src={image || "/placeholder.svg"}
             alt={name}
@@ -38,7 +38,7 @@ export function PostcardCard({
           )}
 
           {/* Gradient Overlay */}
-          <div className="from-foreground/20 absolute inset-0 bg-gradient-to-t to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+          <div className="from-foreground/20 absolute inset-0 bg-linear-to-t to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
         </div>
 
         {/* Card Content */}

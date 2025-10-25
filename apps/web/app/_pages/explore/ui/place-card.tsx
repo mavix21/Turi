@@ -28,7 +28,7 @@ export function PlaceCard({
 
   return (
     <Link href={`/place/${id}`} onClick={handleNavigate}>
-      <div className="bg-card card-shadow group overflow-hidden rounded-2xl transition hover:shadow-xl">
+      <div className="bg-card card-shadow group overflow-hidden rounded-2xl border transition hover:shadow-xl">
         {/* Image */}
         <div className="relative h-64 overflow-hidden">
           <Image
