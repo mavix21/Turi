@@ -58,7 +58,7 @@ export function HeroSection({
                 <div className="relative">
                   <img
                     src="/flat-vector-illustration-of-machu-picchu-peru-with.jpg"
-                    alt="Cusco NFT Postcard"
+                    alt="Machu Picchu Postcard"
                     className="h-48 w-full object-cover"
                   />
                   <div className="bg-primary absolute top-2 left-2 flex h-6 w-6 items-center justify-center rounded-full shadow-lg">
@@ -79,7 +79,7 @@ export function HeroSection({
                 </div>
                 <div className="bg-card p-2">
                   <p className="text-foreground text-center text-xs font-bold tracking-wide uppercase">
-                    Cusco
+                    Machu Picchu
                   </p>
                 </div>
               </div>

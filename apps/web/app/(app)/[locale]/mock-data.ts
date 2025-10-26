@@ -17,14 +17,6 @@ export const nftPostcards = [
     totalInCollection: 5,
   },
   {
-    id: "2",
-    name: "Cusco",
-    image: "/stylized-illustration-of-cusco-peru-historic-plaza.jpg",
-    collected: true,
-    collectionProgress: 4,
-    totalInCollection: 5,
-  },
-  {
     id: "3",
     name: "Lake Titicaca",
     image: "/artistic-illustration-of-lake-titicaca-peru-with-t.jpg",
@@ -46,14 +38,6 @@ export const nftPostcards = [
     image: "/stylized-illustration-of-colca-canyon-peru-with-co.jpg",
     collected: false,
     collectionProgress: 1,
-    totalInCollection: 5,
-  },
-  {
-    id: "6",
-    name: "Lima",
-    image: "/flat-vector-illustration-of-lima-peru-coastal-city.jpg",
-    collected: false,
-    collectionProgress: 0,
     totalInCollection: 5,
   },
 ];
