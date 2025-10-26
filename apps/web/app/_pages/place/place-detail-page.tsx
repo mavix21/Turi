@@ -4,7 +4,7 @@ import { useQuery } from "convex/react";
 
 import { api } from "@turi/convex/_generated/api";
 import { Button } from "@turi/ui/components/button";
-import { MapPin, Share2, Star } from "@turi/ui/index";
+import { MapPin } from "@turi/ui/index";
 
 import { BookingCard } from "./ui/booking-card";
 
