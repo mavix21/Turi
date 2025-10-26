@@ -1,16 +1,18 @@
 "use client";
 
 import { useQuery } from "convex/react";
+import { useTranslations } from "next-intl";
 
 import { api } from "@turi/convex/_generated/api";
 
 import { PartnerCard } from "./ui/partner-card";
 
 export function PartnerDiscountSection() {
+  const t = useTranslations("home.partnerDiscounts");
   const partnerDiscounts = useQuery(api.benefits.getAllBenefits);
 
   if (!partnerDiscounts) {
-    return <div>Loading...</div>;
+    return <div>{t("loading")}</div>;
   }
 
   return (
@@ -18,11 +20,9 @@ export function PartnerDiscountSection() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-12">
           <h2 className="text-foreground mb-3 text-4xl font-bold md:text-5xl">
-            Partner Discount Bundles
+            {t("title")}
           </h2>
-          <p className="text-muted-foreground text-lg">
-            Exclusive Peru travel offers for Turi members
-          </p>
+          <p className="text-muted-foreground text-lg">{t("description")}</p>
         </div>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           {partnerDiscounts.map((partner) => (

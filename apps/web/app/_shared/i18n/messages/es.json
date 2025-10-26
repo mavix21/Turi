@@ -73,6 +73,11 @@
       "showMore": "Mostrar más",
       "loading": "Cargando..."
     },
+    "partnerDiscounts": {
+      "title": "Paquetes de Descuentos de Socios",
+      "description": "Ofertas exclusivas de viaje a Perú para miembros de Turi",
+      "loading": "Cargando..."
+    },
     "visitAndCollect": {
       "title": "Visita y Colecciona",
       "description": "Obtenga una prueba verificada por blockchain de sus aventuras en Perú."

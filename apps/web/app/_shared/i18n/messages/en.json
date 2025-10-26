@@ -72,6 +72,11 @@
       "showMore": "Show More",
       "loading": "Loading..."
     },
+    "partnerDiscounts": {
+      "title": "Partner Discount Bundles",
+      "description": "Exclusive Peru travel offers for Turi members",
+      "loading": "Loading..."
+    },
     "visitAndCollect": {
       "title": "Visit and Collect",
       "description": "Get a blockchain-verified proof of your adventures in Peru."
