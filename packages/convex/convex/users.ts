@@ -28,7 +28,7 @@ export const createUser = mutation({
       documentNumber: "76543210",
       dateOfBirth: new Date("1990-01-01").toISOString(),
       issueDate: new Date().toISOString(),
-      nationality: "Peruvian",
+      nationality: "Peruana",
       reputationScore: 0,
       expiryDate: new Date(
         new Date().setFullYear(new Date().getFullYear() + 10),
