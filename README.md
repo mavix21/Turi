@@ -1,4 +1,3 @@
-````markdown
 # Turi Passport
 
 <p align="center">
@@ -109,4 +108,7 @@ The Next.js application in `apps/web` requires some environment variables to run
     ```
 
     The application should now be running on [http://localhost:3000](http://localhost:3000) (or the port specified in your Next.js configuration).
-````
+
+```
+
+```
