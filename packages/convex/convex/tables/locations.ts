@@ -25,27 +25,27 @@ export const locations = defineTable({
   ),
   category: v.union(
     v.object({
-      type: v.literal("Attraction"),
+      type: v.literal("Atracción"),
       kind: v.union(
         v.object({
-          subtype: v.literal("Archaeological Site"),
+          subtype: v.literal("Sitio Arqueológico"),
         }),
         v.object({
-          subtype: v.literal("Historical Site"),
+          subtype: v.literal("Sitio Histórico"),
         }),
         v.object({
-          subtype: v.literal("Museum"),
+          subtype: v.literal("Museo"),
         }),
       ),
     }),
     v.object({
-      type: v.literal("Business"),
+      type: v.literal("Negocio"),
       kind: v.union(
         v.object({
           subtype: v.literal("Restaurant"),
         }),
         v.object({
-          subtype: v.literal("Artisan Shop"),
+          subtype: v.literal("Tienda de Artesanías"),
         }),
         v.object({
           subtype: v.literal("Hotel"),
