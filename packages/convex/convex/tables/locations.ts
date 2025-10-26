@@ -4,6 +4,7 @@ import { v } from "convex/values";
 export const locations = defineTable({
   name: v.string(),
   description: v.string(),
+  slug: v.string(),
   rating: v.optional(v.number()),
   address: v.object({
     country: v.string(),
