@@ -7,6 +7,15 @@ export const tourPackages = defineTable({
   basePricePerPerson: v.number(),
   taxesAndFees: v.number(),
   currency: v.union(v.literal("USX"), v.literal("USDC")),
+
+  // Opción 2: Pago mixto (solo si el tour lo ofrece)
+  mixedPayment: v.optional(
+    v.object({
+      turiTokens: v.number(), // Parte que se paga con Turi Tokens
+      remainingUSX: v.number(), // Resto que se paga con USX
+    }),
+  ),
+
   whatIsIncluded: v.array(v.string()),
   guarantees: v.array(v.string()),
   locationId: v.id("locations"),
