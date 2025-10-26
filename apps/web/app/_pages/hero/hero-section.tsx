@@ -57,7 +57,7 @@ export function HeroSection({
               <div className="bg-card border-border w-40 rotate-3 transform overflow-hidden rounded-lg border-2 shadow-2xl transition-transform duration-300 hover:rotate-0">
                 <div className="relative">
                   <img
-                    src="/stylized-illustration-of-cusco-peru-historic-plaza.jpg"
+                    src="/flat-vector-illustration-of-machu-picchu-peru-with.jpg"
                     alt="Cusco NFT Postcard"
                     className="h-48 w-full object-cover"
                   />
