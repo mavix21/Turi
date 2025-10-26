@@ -22,6 +22,7 @@ export const getLocationsForMap = query({
         return {
           id: location._id,
           name: location.name,
+          slug: location.slug,
           description: location.description,
           address: location.address.name || location.address.city,
           rating: location.rating || 0,
@@ -32,6 +33,7 @@ export const getLocationsForMap = query({
           image: location.imageUrl,
           points: collectible?.pointsValue || 0,
           nftReward: !!collectible,
+          collectibleId: collectible?._id || null,
           nftPostcard: collectible
             ? { image: collectible.imageUrl, name: collectible.name }
             : null,

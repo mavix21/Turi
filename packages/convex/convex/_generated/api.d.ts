@@ -15,6 +15,7 @@ import type * as debug from "../debug.js";
 import type * as http from "../http.js";
 import type * as init from "../init.js";
 import type * as locations from "../locations.js";
+import type * as seedCompaniesAndTours from "../seedCompaniesAndTours.js";
 import type * as tables_benefits from "../tables/benefits.js";
 import type * as tables_bookings from "../tables/bookings.js";
 import type * as tables_checkIns from "../tables/checkIns.js";
@@ -50,6 +51,7 @@ declare const fullApi: ApiFromModules<{
   http: typeof http;
   init: typeof init;
   locations: typeof locations;
+  seedCompaniesAndTours: typeof seedCompaniesAndTours;
   "tables/benefits": typeof tables_benefits;
   "tables/bookings": typeof tables_bookings;
   "tables/checkIns": typeof tables_checkIns;

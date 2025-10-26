@@ -14,6 +14,7 @@ export interface Place {
   checkInRadius: number; // in meters
   points: number;
   nftReward: boolean;
+  collectibleId?: string | null; // ID of the associated collectible NFT
   image?: string;
   distance?: number;
   isInRange?: boolean;

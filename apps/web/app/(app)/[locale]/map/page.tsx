@@ -48,6 +48,7 @@ export default function MapPage() {
       checkInRadius: 0,
       points: 0,
       nftReward: false,
+      collectibleId: null,
     },
   });
 
@@ -71,6 +72,7 @@ export default function MapPage() {
       checkInRadius: 100,
       points: loc.points,
       nftReward: loc.nftReward,
+      collectibleId: loc.collectibleId,
       image: loc.image,
     })) || [];
 

@@ -18,10 +18,12 @@ export const getMyCheckIns = query({
     return await Promise.all(
       checkIns.map(async (checkIn) => {
         const location = await ctx.db.get(checkIn.locationId);
-        const collectible = await ctx.db.get(checkIn.collectibleId);
+        const collectible = checkIn.collectibleId
+          ? await ctx.db.get(checkIn.collectibleId)
+          : null;
         return {
           ...checkIn,
-          ...collectible,
+          ...(collectible || {}),
           locationName: location ? location.name : "Unknown location",
         };
       }),
@@ -53,7 +55,7 @@ export const hasUserCheckedIn = query({
 export const createCheckIn = mutation({
   args: {
     locationId: v.id("locations"),
-    collectibleId: v.id("collectibles"),
+    collectibleId: v.optional(v.id("collectibles")),
     transactionHash: v.string(),
     nftTokenId: v.string(),
     contractAddress: v.string(),
