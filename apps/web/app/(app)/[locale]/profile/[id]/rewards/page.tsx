@@ -70,7 +70,8 @@ export default function RewardsPage() {
   ]);
 
   const benefits = useQuery(api.benefits.getAllBenefits);
-  const myPoints = useQuery(api.users.getMyProfile)?.reputationScore;
+  const myPoints =
+    useQuery(api.users.getMyProfile)?.profile.reputationScore || 0;
 
   if (!benefits) {
     return (

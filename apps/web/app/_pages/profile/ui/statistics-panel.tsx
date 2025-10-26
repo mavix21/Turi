@@ -58,7 +58,10 @@ export function StatisticsPanel({ statistics }: StatisticsPanelProps) {
             {t("score")}
           </p>
           <p className="text-4xl font-bold">
-            {statistics.totalScorePercentage}%
+            {isNaN(statistics.totalScorePercentage)
+              ? 0
+              : statistics.totalScorePercentage}
+            %
           </p>
         </CardContent>
       </Card>
