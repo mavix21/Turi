@@ -112,7 +112,7 @@ export default function TouristPassportPage() {
             <div className="flex-1 space-y-6">
               <div className="flex items-start justify-between">
                 <div className="space-y-2">
-                  <h2 className="bg-clip-text font-serif text-4xl font-bold lg:text-5xl">
+                  <h2 className="max-w-80 truncate bg-clip-text font-serif text-4xl font-bold lg:text-5xl">
                     {userData.name}
                   </h2>
                   <div className="text-muted-foreground flex items-center gap-3">
