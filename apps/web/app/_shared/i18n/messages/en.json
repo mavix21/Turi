@@ -173,6 +173,15 @@
         "tokenId": "Token ID",
         "contract": "Contract",
         "chainId": "Chain ID"
+      },
+      "pastTrips": {
+        "title": "Past trips",
+        "subtitle": "Your travel history and visited locations",
+        "loading": "Loading your past trips...",
+        "points": "points",
+        "noTrips": "No trips yet",
+        "noTripsDescription": "You'll find your past reservations here after you've taken your first trip",
+        "startExploring": "Start Exploring"
       }
     },
     "userDropdown": {

@@ -3,18 +3,20 @@
 import { useRouter } from "next/navigation";
 import { useQuery } from "convex/react";
 import { MapPin } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { api } from "@turi/convex/_generated/api";
 import { Button } from "@turi/ui/components/button";
 
 export default function PastTripsPage() {
+  const t = useTranslations("home.profile.pastTrips");
   const checkIns = useQuery(api.checkIns.getMyCheckIns);
   const router = useRouter();
 
   if (!checkIns) {
     return (
       <div className="flex min-h-[400px] items-center justify-center">
-        <div className="text-muted-foreground">Loading your past trips...</div>
+        <div className="text-muted-foreground">{t("loading")}</div>
       </div>
     );
   }
@@ -22,10 +24,10 @@ export default function PastTripsPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-foreground mb-2 text-3xl font-bold">Past trips</h2>
-        <p className="text-muted-foreground">
-          Your travel history and claimed locations
-        </p>
+        <h2 className="text-foreground mb-2 text-3xl font-bold">
+          {t("title")}
+        </h2>
+        <p className="text-muted-foreground">{t("subtitle")}</p>
       </div>
 
       {checkIns.length > 0 ? (
@@ -53,7 +55,7 @@ export default function PastTripsPage() {
                   <p className="text-primary text-lg font-bold">
                     +{checkIn.pointsValue}
                   </p>
-                  <p className="text-muted-foreground text-xs">points</p>
+                  <p className="text-muted-foreground text-xs">{t("points")}</p>
                 </div>
               </div>
             </div>
@@ -107,14 +109,13 @@ export default function PastTripsPage() {
             </svg>
           </div>
           <p className="text-foreground mb-2 text-lg font-semibold">
-            No trips yet
+            {t("noTrips")}
           </p>
           <p className="text-muted-foreground mb-6">
-            You'll find your past reservations here after you've taken your
-            first trip
+            {t("noTripsDescription")}
           </p>
           <Button size="lg" onClick={() => router.push("/")}>
-            Start Exploring
+            {t("startExploring")}
           </Button>
         </div>
       )}
