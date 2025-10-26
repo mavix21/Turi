@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslations } from "next-intl";
 import { useQuery } from "convex/react";
 import { Gift, Star } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { api } from "@turi/convex/_generated/api";
 import { useTuriState } from "@turi/ui/hooks/use-turi-state";
@@ -93,10 +93,10 @@ export default function RewardsPage() {
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-foreground mb-2 text-3xl font-bold">{t("title")}</h2>
-          <p className="text-muted-foreground">
-            {t("subtitle")}
-          </p>
+          <h2 className="text-foreground mb-2 text-3xl font-bold">
+            {t("title")}
+          </h2>
+          <p className="text-muted-foreground">{t("subtitle")}</p>
         </div>
         <div className="bg-primary/10 flex items-center gap-2 rounded-full px-4 py-2">
           <Gift className="text-primary h-5 w-5" />
