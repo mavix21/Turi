@@ -21,7 +21,7 @@ export default function HomePage() {
         {/* Explore Section */}
         <ExploreSection exploreCategories={exploreCategories} />
         <CollectionSection nftPostcards={nftPostcards} />
-        <PartnerDiscountSection partnerDiscounts={partnerDiscounts} />
+        <PartnerDiscountSection />
       </main>
 
       {/* Footer */}

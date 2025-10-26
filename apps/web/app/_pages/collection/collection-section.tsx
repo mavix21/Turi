@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@turi/ui/components/button";
 
@@ -19,16 +20,16 @@ export function CollectionSection({
 }: {
   nftPostcards: NftPostcardProps[];
 }) {
+  const t = useTranslations("home.collection");
+
   return (
     <section className="bg-background py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-12 text-center">
           <h2 className="text-foreground mb-3 text-4xl font-bold md:text-5xl">
-            Visit and Collect
+            {t("title")}
           </h2>
-          <p className="text-muted-foreground text-lg">
-            Earn blockchain-verified proof of your Peru adventures
-          </p>
+          <p className="text-muted-foreground text-lg">{t("description")}</p>
         </div>
 
         <div className="relative">
@@ -57,7 +58,7 @@ export function CollectionSection({
 
         <div className="bg-primary/5 border-primary/20 mt-12 rounded-2xl border p-6 md:p-8">
           <div className="flex flex-col items-start gap-4 md:flex-row md:items-center">
-            <div className="bg-primary flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full">
+            <div className="bg-primary flex h-12 w-12 shrink-0 items-center justify-center rounded-full">
               <svg
                 className="text-primary-foreground h-6 w-6"
                 fill="none"
@@ -75,17 +76,15 @@ export function CollectionSection({
             </div>
             <div className="flex-1">
               <h3 className="text-foreground mb-2 text-xl font-bold">
-                Blockchain-Verified Travel Proof
+                {t("blockchainProof.title")}
               </h3>
               <p className="text-muted-foreground">
-                Each digital postcard is a unique NFT that certifies your visit
-                to iconic Peruvian destinations. Collect them all as you explore
-                Peru and build your verified travel portfolio on-chain.
+                {t("blockchainProof.description")}
               </p>
             </div>
             <Link href="/profile">
               <Button className="bg-primary hover:bg-primary/90 text-primary-foreground whitespace-nowrap">
-                View Collection
+                {t("viewCollection")}
               </Button>
             </Link>
           </div>

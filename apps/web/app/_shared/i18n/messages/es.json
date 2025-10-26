@@ -70,11 +70,21 @@
           "title": "Filtros"
         }
       },
-      "showMore": "Mostrar más"
+      "showMore": "Mostrar más",
+      "loading": "Cargando..."
     },
     "visitAndCollect": {
       "title": "Visita y Colecciona",
       "description": "Obtenga una prueba verificada por blockchain de sus aventuras en Perú."
+    },
+    "collection": {
+      "title": "Visita y Colecciona",
+      "description": "Obtén prueba verificada en blockchain de tus aventuras en Perú",
+      "blockchainProof": {
+        "title": "Prueba de Viaje Verificada en Blockchain",
+        "description": "Cada postal digital es un NFT único que certifica tu visita a destinos icónicos peruanos. Colecciónalas todas mientras exploras Perú y construye tu portafolio de viajes verificado en cadena."
+      },
+      "viewCollection": "Ver Colección"
     }
   },
 

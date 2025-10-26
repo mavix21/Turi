@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useQuery } from "convex/react";
+import { useTranslations } from "next-intl";
 
 import { api } from "@turi/convex/_generated/api";
 import { Button } from "@turi/ui/components/button";
@@ -13,11 +14,12 @@ export function ExploreSection({
 }: {
   exploreCategories: { id: string; label: string }[];
 }) {
+  const t = useTranslations("home.explore");
   const locations = useQuery(api.locations.getAllLocations);
   const [exploreFilter, setExploreFilter] = useState("all");
 
   if (!locations) {
-    return <div>Loading...</div>;
+    return <div>{t("loading")}</div>;
   }
 
   // Simple client-side filtering based on current filter state
@@ -57,16 +59,12 @@ export function ExploreSection({
         <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <h2 className="text-foreground mb-3 text-4xl font-bold md:text-5xl">
-              Explore
+              {t("title")}
             </h2>
-            <p className="text-muted-foreground text-lg">
-              Let's go on an adventure
-            </p>
+            <p className="text-muted-foreground text-lg">{t("subheader")}</p>
           </div>
           <p className="text-muted-foreground max-w-md text-sm">
-            Discover Peru's incredible destinations including archaeological
-            sites, natural wonders, and historic sanctuaries across all
-            departments.
+            {t("description")}
           </p>
         </div>
         <div className="mb-8 flex flex-wrap items-center gap-3">
@@ -84,7 +82,7 @@ export function ExploreSection({
             </button>
           ))}
           <button className="bg-background text-muted-foreground hover:bg-muted hover:text-foreground ml-auto flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition">
-            Filters
+            {t("filters.more.title")}
             <svg
               className="h-4 w-4"
               fill="none"
@@ -118,7 +116,7 @@ export function ExploreSection({
 
         <div className="flex justify-center">
           <Button variant="outline" className="bg-transparent px-8">
-            Show more
+            {t("showMore")}
           </Button>
         </div>
       </div>
