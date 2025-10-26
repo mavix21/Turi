@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useQuery } from "convex/react";
 import { AlertCircle, CheckCircle2, Hash, Link2, MapPin } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { api } from "@turi/convex/_generated/api";
 import {
@@ -14,14 +15,13 @@ import {
 import { Badge } from "@turi/ui/components/badge";
 
 export default function CollectiblesPage() {
+  const t = useTranslations("home.profile.collectibles");
   const collectiblesWithCheckIns = useQuery(api.checkIns.getMyCheckIns);
 
   if (!collectiblesWithCheckIns) {
     return (
       <div className="flex min-h-[400px] items-center justify-center">
-        <div className="text-muted-foreground">
-          Loading your collectibles...
-        </div>
+        <div className="text-muted-foreground">{t("loading")}</div>
       </div>
     );
   }
@@ -31,19 +31,17 @@ export default function CollectiblesPage() {
       <div className="space-y-8">
         <div>
           <h2 className="text-foreground mb-2 text-3xl font-bold">
-            My Collectibles
+            {t("title")}
           </h2>
-          <p className="text-muted-foreground">
-            Your travel stamps and memories
-          </p>
+          <p className="text-muted-foreground">{t("subtitle")}</p>
         </div>
         <div className="bg-card border-border flex min-h-[300px] items-center justify-center rounded-2xl border p-12">
           <div className="text-center">
             <p className="text-muted-foreground mb-2 text-lg">
-              No collectibles yet
+              {t("noCollectibles")}
             </p>
             <p className="text-muted-foreground text-sm">
-              Check in at locations to earn collectible stamps!
+              {t("noCollectiblesDescription")}
             </p>
           </div>
         </div>
@@ -55,11 +53,14 @@ export default function CollectiblesPage() {
     <div className="space-y-8">
       <div>
         <h2 className="text-foreground mb-2 text-3xl font-bold">
-          My Collectibles
+          {t("title")}
         </h2>
         <p className="text-muted-foreground">
-          {collectiblesWithCheckIns.length} travel stamp
-          {collectiblesWithCheckIns.length !== 1 ? "s" : ""} collected
+          {collectiblesWithCheckIns.length}{" "}
+          {collectiblesWithCheckIns.length !== 1
+            ? t("stampsCollectedPlural")
+            : t("stampsCollected")}{" "}
+          {t("collected")}
         </p>
       </div>
 
@@ -87,7 +88,7 @@ export default function CollectiblesPage() {
                   {isSynced && (
                     <Badge className="flex items-center gap-1 border backdrop-blur-sm">
                       <CheckCircle2 className="h-3 w-3" />
-                      Synced
+                      {t("status.synced")}
                     </Badge>
                   )}
                   {isPending && (
@@ -96,7 +97,7 @@ export default function CollectiblesPage() {
                       className="flex items-center gap-1 backdrop-blur-sm"
                     >
                       <AlertCircle className="h-3 w-3" />
-                      Pending
+                      {t("status.pending")}
                     </Badge>
                   )}
                   {isError && (
@@ -105,15 +106,17 @@ export default function CollectiblesPage() {
                       className="flex items-center gap-1 backdrop-blur-sm"
                     >
                       <AlertCircle className="h-3 w-3" />
-                      Error
+                      {t("status.error")}
                     </Badge>
                   )}
                 </div>
                 {/* Visits Badge */}
                 <div className="absolute top-3 left-3">
                   <Badge variant="secondary" className="backdrop-blur-sm">
-                    {collectible.numberOfVisits} visit
-                    {collectible.numberOfVisits !== 1 ? "s" : ""}
+                    {collectible.numberOfVisits}{" "}
+                    {collectible.numberOfVisits !== 1
+                      ? t("visits")
+                      : t("visit")}
                   </Badge>
                 </div>
               </div>
@@ -134,7 +137,7 @@ export default function CollectiblesPage() {
                 {/* Points Badge */}
                 <div className="mb-1 flex items-center justify-between">
                   <Badge variant="outline" className="text-primary">
-                    +{collectible.pointsValue} points
+                    +{collectible.pointsValue} {t("points")}
                   </Badge>
                 </div>
 
@@ -152,7 +155,7 @@ export default function CollectiblesPage() {
                       <AccordionTrigger className="px-3 py-2 text-xs font-semibold hover:no-underline">
                         <div className="flex items-center gap-1">
                           <Link2 className="h-3 w-3" />
-                          <span>On-Chain Details</span>
+                          <span>{t("onChainDetails")}</span>
                         </div>
                       </AccordionTrigger>
                       <AccordionContent className="px-3 pb-3">
@@ -161,7 +164,7 @@ export default function CollectiblesPage() {
                             <Hash className="text-muted-foreground mt-0.5 h-3 w-3 shrink-0" />
                             <div className="min-w-0 flex-1">
                               <p className="text-muted-foreground mb-0.5">
-                                Token ID
+                                {t("tokenId")}
                               </p>
                               <p className="text-foreground font-mono break-all">
                                 {collectible.onchainStatus.tokenId}
@@ -172,7 +175,7 @@ export default function CollectiblesPage() {
                             <Link2 className="text-muted-foreground mt-0.5 h-3 w-3 shrink-0" />
                             <div className="min-w-0 flex-1">
                               <p className="text-muted-foreground mb-0.5">
-                                Contract
+                                {t("contract")}
                               </p>
                               <p className="text-foreground font-mono text-[10px] break-all">
                                 {collectible.onchainStatus.contractAddress}
@@ -181,7 +184,7 @@ export default function CollectiblesPage() {
                           </div>
                           <div className="flex items-center justify-between">
                             <span className="text-muted-foreground">
-                              Chain ID
+                              {t("chainId")}
                             </span>
                             <span className="text-foreground font-mono">
                               {collectible.onchainStatus.chainId}

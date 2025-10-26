@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
-import { useTranslations } from "next-intl";
 import * as Icons from "lucide-react";
 import { LucideIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@turi/ui/components/button";
 

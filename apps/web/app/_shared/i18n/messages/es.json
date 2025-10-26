@@ -93,7 +93,7 @@
         "description": "Cada postal digital es un NFT único que certifica tu visita a destinos icónicos peruanos. Colecciónalas todas mientras exploras Perú y construye tu portafolio de viajes verificado en cadena."
       },
       "viewCollection": "Ver Colección",
-      "verifiedOnChain": "Verificado on-chain"
+      "verifiedOnChain": "Verificado On-Chain"
     },
     "footer": {
       "about": {
@@ -152,6 +152,28 @@
         "expiryDate": "Fecha de Vencimiento",
         "cancel": "Cancelar",
         "saveChanges": "Guardar cambios"
+      },
+      "collectibles": {
+        "title": "Mis Coleccionables",
+        "subtitle": "Tus sellos de viaje y recuerdos",
+        "loading": "Cargando tus coleccionables...",
+        "noCollectibles": "Aún no hay coleccionables",
+        "noCollectiblesDescription": "¡Regístrate en ubicaciones para ganar sellos coleccionables!",
+        "stampsCollected": "sello de viaje",
+        "stampsCollectedPlural": "sellos de viaje",
+        "collected": "coleccionado",
+        "visit": "visita",
+        "visits": "visitas",
+        "points": "puntos",
+        "status": {
+          "synced": "Sincronizado",
+          "pending": "Pendiente",
+          "error": "Error"
+        },
+        "onChainDetails": "Detalles On-Chain",
+        "tokenId": "ID del Token",
+        "contract": "Contrato",
+        "chainId": "ID de Cadena"
       }
     },
     "userDropdown": {

@@ -92,7 +92,7 @@
         "description": "Each digital postcard is a unique NFT that certifies your visit to iconic Peruvian destinations. Collect them all as you explore Peru and build your verified travel portfolio on-chain."
       },
       "viewCollection": "View Collection",
-      "verifiedOnChain": "Verified on-chain"
+      "verifiedOnChain": "Verified On-Chain"
     },
     "footer": {
       "about": {
@@ -151,6 +151,28 @@
         "expiryDate": "Expiry Date",
         "cancel": "Cancel",
         "saveChanges": "Save changes"
+      },
+      "collectibles": {
+        "title": "My Collectibles",
+        "subtitle": "Your travel stamps and memories",
+        "loading": "Loading your collectibles...",
+        "noCollectibles": "No collectibles yet",
+        "noCollectiblesDescription": "Check in at locations to earn collectible stamps!",
+        "stampsCollected": "travel stamp",
+        "stampsCollectedPlural": "travel stamps",
+        "collected": "collected",
+        "visit": "visit",
+        "visits": "visits",
+        "points": "points",
+        "status": {
+          "synced": "Synced",
+          "pending": "Pending",
+          "error": "Error"
+        },
+        "onChainDetails": "On-Chain Details",
+        "tokenId": "Token ID",
+        "contract": "Contract",
+        "chainId": "Chain ID"
       }
     },
     "userDropdown": {
