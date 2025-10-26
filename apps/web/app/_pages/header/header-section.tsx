@@ -4,6 +4,7 @@ import { ThemeSwitcher } from "@/app/_shared/ui/theme-switcher";
 
 import { AuthMenu } from "./auth-menu";
 import { NavLinks } from "./nav-links";
+import { TokenBalances } from "./token-balances";
 
 export function HeaderSection() {
   return (
@@ -19,6 +20,7 @@ export function HeaderSection() {
           <NavLinks />
         </div>
         <div className="flex items-center justify-end gap-3">
+          <TokenBalances />
           <ThemeSwitcher />
           <LanguageSwitcher />
           <AuthMenu />
