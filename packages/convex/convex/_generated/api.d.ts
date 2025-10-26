@@ -10,6 +10,7 @@
 
 import type * as authUtils from "../authUtils.js";
 import type * as benefits from "../benefits.js";
+import type * as debug from "../debug.js";
 import type * as http from "../http.js";
 import type * as locations from "../locations.js";
 import type * as tables_benefits from "../tables/benefits.js";
@@ -41,6 +42,7 @@ import type {
 declare const fullApi: ApiFromModules<{
   authUtils: typeof authUtils;
   benefits: typeof benefits;
+  debug: typeof debug;
   http: typeof http;
   locations: typeof locations;
   "tables/benefits": typeof tables_benefits;
