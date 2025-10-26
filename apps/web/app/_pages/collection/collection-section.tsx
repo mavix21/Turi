@@ -1,8 +1,9 @@
-import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { Button } from "@turi/ui/components/button";
+
+import { Link } from "@/app/_shared/i18n";
 
 import { PostcardCard } from "./ui/postcard-card";
 
@@ -82,7 +83,7 @@ export function CollectionSection({
                 {t("blockchainProof.description")}
               </p>
             </div>
-            <Link href="/profile">
+            <Link href="/profile/me/tourist-passport">
               <Button className="bg-primary hover:bg-primary/90 text-primary-foreground whitespace-nowrap">
                 {t("viewCollection")}
               </Button>
