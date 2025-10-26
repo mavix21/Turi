@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 
 import { Link } from "@/app/_shared/i18n";
@@ -8,15 +9,16 @@ import { Link } from "@/app/_shared/i18n";
 export function NavLinks() {
   const t = useTranslations("home.navigation");
   const pathname = usePathname();
+  const { data: session } = useSession();
 
   // Remove locale prefix from pathname for comparison
   const currentPath = pathname.replace(/^\/(en|es)/, "") || "/";
 
   const links = [
-    { href: "/", label: t("home") },
-    { href: "/map", label: t("map") },
-    { href: "/test", label: "Faucet" },
-  ];
+    { href: "/", label: t("home"), requiresAuth: false },
+    { href: "/map", label: t("map"), requiresAuth: true },
+    { href: "/test", label: "Faucet", requiresAuth: true },
+  ].filter((link) => !link.requiresAuth || session);
 
   return (
     <nav className="hidden items-center gap-8 md:flex">

@@ -15,7 +15,7 @@ interface PlaceCardProps {
   location: string;
   province: string;
   department: string;
-  rating: number;
+  rating: number | undefined;
   image: string;
 }
 
@@ -27,10 +27,6 @@ export function PlaceCard({
   rating,
   image,
 }: PlaceCardProps) {
-  const handleNavigate = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   const providers = useQuery(api.tourPackages.getTourPackagesByLocation, {
     locationId: id as Id<"locations">,
   });
@@ -39,10 +35,17 @@ export function PlaceCard({
     return null;
   }
 
-  const price = providers[0]?.basePricePerPerson + providers[0]?.taxesAndFees;
+  const minPrice =
+    providers.length > 0
+      ? Math.min(
+          ...providers.map(
+            (provider) => provider.basePricePerPerson + provider.taxesAndFees,
+          ),
+        )
+      : null;
 
   return (
-    <Link href={`/place/${id}`} onClick={handleNavigate}>
+    <Link href={`/place/${id}`}>
       <div className="bg-card card-shadow group overflow-hidden rounded-2xl border transition hover:shadow-xl">
         {/* Image */}
         <div className="relative h-64 overflow-hidden">
@@ -54,6 +57,14 @@ export function PlaceCard({
             className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
           />
           {/* Rating Badge */}
+          {rating && (
+            <div className="bg-background/90 absolute top-3 right-3 flex items-center gap-1 rounded-full border px-3 py-1.5 backdrop-blur-2xl">
+              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+              <span className="text-sm font-semibold text-gray-900">
+                {rating.toFixed(1)}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Content */}
@@ -62,16 +73,18 @@ export function PlaceCard({
             <div className="flex-1">
               <h3 className="text-foreground mb-2 text-lg font-bold">{name}</h3>
               <div className="text-muted-foreground flex items-center gap-1.5">
-                <MapPin className="text-primary h-4 w-4 flex-shrink-0" />
+                <MapPin className="text-primary h-4 w-4 shrink-0" />
                 <span className="text-sm">
                   {province}, {department}
                 </span>
               </div>
             </div>
-            <div className="flex-shrink-0 text-right">
-              <p className="text-foreground text-xl font-bold">${price}</p>
-              <p className="text-muted-foreground text-xs">/Day</p>
-            </div>
+            {minPrice !== null && (
+              <div className="shrink-0 text-right">
+                <p className="text-foreground text-xl font-bold">${minPrice}</p>
+                <p className="text-muted-foreground text-xs">/Day</p>
+              </div>
+            )}
           </div>
         </div>
       </div>

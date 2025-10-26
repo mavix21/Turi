@@ -138,7 +138,7 @@ export function ExploreSection({
               location={`${location.address.city}, ${location.address.country}`}
               province={location.address.state}
               department={location.address.city}
-              rating={4.5}
+              rating={location.rating}
               image={location.imageUrl}
             />
           ))}
