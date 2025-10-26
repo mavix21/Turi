@@ -38,6 +38,7 @@ export default function MapPage() {
     place: selectedPlace ?? {
       id: "",
       name: "",
+      slug: "",
       type: "landmark",
       location: { lat: 0, lng: 0 },
       address: "",
@@ -60,6 +61,7 @@ export default function MapPage() {
     locationsData?.map((loc: any) => ({
       id: loc.id,
       name: loc.name,
+      slug: loc.slug,
       type: "landmark" as const, // Simplified
       location: loc.location,
       address: loc.address,

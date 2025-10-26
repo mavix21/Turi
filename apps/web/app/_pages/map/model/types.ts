@@ -2,6 +2,7 @@ export interface Place {
   id: string;
   name: string;
   type: "restaurant" | "hotel" | "museum" | "landmark" | "business";
+  slug: string;
   location: {
     lat: number;
     lng: number;

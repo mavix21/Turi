@@ -6,7 +6,7 @@ export default function TestPage() {
   const { address, chainId, isConnected } = useAccount();
 
   return (
-    <div>
+    <div className="pt-24">
       <h1>Test Page</h1>
       <p>Address: {address}</p>
       <p>Chain ID: {chainId}</p>

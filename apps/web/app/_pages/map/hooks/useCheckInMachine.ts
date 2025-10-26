@@ -120,7 +120,7 @@ export function useCheckInMachine({ place }: UseCheckInMachineProps) {
       address: TravelCheckinAddress,
       abi: TravelCheckinAbi,
       functionName: "validateCheckin",
-      args: [address, place.id, BigInt(place.points)],
+      args: [address, place.slug, BigInt(place.points)],
     });
   }, [address, chainId, place.id, place.points, writeContract, send]);
 
