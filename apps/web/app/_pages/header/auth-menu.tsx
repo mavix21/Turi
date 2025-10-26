@@ -1,21 +1,26 @@
 "use client";
 
-import { useQuery } from "convex/react";
 import { useSession } from "next-auth/react";
-
-import { api } from "@turi/convex/_generated/api";
 
 import { ConnectButton } from "@/app/_shared/ui/connect-button";
 
 import { UserDropdown } from "./user-dropdown";
 
-export function AuthMenu() {
+interface AuthMenuProps {
+  isMobile?: boolean;
+}
+
+export function AuthMenu({ isMobile = false }: AuthMenuProps = {}) {
   const { data: session } = useSession();
 
   return (
     <div className="flex items-center gap-3">
       {session ? (
-        <UserDropdown username={"Turi Traveler"} address={session.address} />
+        <UserDropdown
+          username={"Turi Traveler"}
+          address={session.address}
+          isMobile={isMobile}
+        />
       ) : (
         <ConnectButton />
       )}
