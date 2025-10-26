@@ -25,6 +25,7 @@
     "@turi/convex": "workspace:*",
     "@turi/ui": "workspace:*",
     "@vis.gl/react-google-maps": "^1.6.1",
+    "@xstate/react": "^6.0.0",
     "convex": "^1.28.0",
     "next": "16.0.0",
     "next-auth": "^4.24.11",
