@@ -22,6 +22,17 @@ export function ExploreSection({
     return <div>{t("loading")}</div>;
   }
 
+  // Helper function to check if value matches in any language
+  const matchesSubtype = (subtype: string, ...values: string[]) => {
+    const lowerSubtype = subtype.toLowerCase();
+    return values.some((value) => lowerSubtype.includes(value.toLowerCase()));
+  };
+
+  const isAttraction = (location: (typeof locations)[0]) => {
+    const type = location.category.type.toLowerCase();
+    return type === "atracción" || type === "attraction";
+  };
+
   // Simple client-side filtering based on current filter state
   let filteredPlaces = locations;
 
@@ -32,24 +43,43 @@ export function ExploreSection({
   } else if (exploreFilter === "archaeological") {
     filteredPlaces = locations.filter(
       (location) =>
-        location.category.type === "Atracción" &&
-        location.category.kind.subtype === "Sitio Arqueológico",
+        isAttraction(location) &&
+        matchesSubtype(
+          location.category.kind.subtype,
+          "arqueológico",
+          "archaeological",
+        ),
     );
   } else if (exploreFilter === "historic") {
     filteredPlaces = locations.filter(
       (location) =>
-        location.category.type === "Atracción" &&
-        location.category.kind.subtype === "Sitio Arqueológico",
+        isAttraction(location) &&
+        matchesSubtype(
+          location.category.kind.subtype,
+          "histórico",
+          "historical",
+          "heritage",
+        ),
     );
   } else if (exploreFilter === "museums") {
     filteredPlaces = locations.filter(
       (location) =>
-        location.category.type === "Atracción" &&
-        location.category.kind.subtype === "Museo",
+        isAttraction(location) &&
+        matchesSubtype(location.category.kind.subtype, "museo", "museum"),
     );
   } else if (exploreFilter === "natural") {
     filteredPlaces = locations.filter(
-      (location) => location.category.type === "Atracción",
+      (location) =>
+        isAttraction(location) &&
+        matchesSubtype(
+          location.category.kind.subtype,
+          "natural",
+          "nature",
+          "parque",
+          "park",
+          "reserva",
+          "reserve",
+        ),
     );
   }
 
