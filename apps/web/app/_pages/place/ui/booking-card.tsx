@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useQuery } from "convex/react";
-import { Calendar, ChevronDownIcon } from "lucide-react";
+import { Calendar, ChevronDownIcon, PackageX } from "lucide-react";
 
 import { api } from "@turi/convex/_generated/api";
 import { Id } from "@turi/convex/_generated/dataModel";
@@ -14,6 +14,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@turi/ui/components/card";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@turi/ui/components/empty";
 import { Label } from "@turi/ui/components/label";
 import {
   Popover,
@@ -48,6 +56,41 @@ export function BookingCard({ location }: { location: BookingCardProps }) {
     return <div>Loading...</div>;
   }
 
+  if (providers.length === 0) {
+    return (
+      <div className="space-y-4 lg:sticky lg:top-4">
+        <Card className="border-2">
+          <CardContent className="p-0">
+            <Empty className="border-0">
+              <EmptyHeader>
+                <EmptyMedia variant="icon">
+                  <PackageX className="text-muted-foreground" />
+                </EmptyMedia>
+                <EmptyTitle>No tour packages available</EmptyTitle>
+                <EmptyDescription>
+                  There are currently no tour providers offering packages for{" "}
+                  {location.name}. Check back later or explore other
+                  destinations.
+                </EmptyDescription>
+              </EmptyHeader>
+              <EmptyContent>
+                <Button variant="outline" asChild>
+                  <a href="/explore">Browse Other Locations</a>
+                </Button>
+              </EmptyContent>
+            </Empty>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  const minPrice = Math.min(
+    ...providers.map(
+      (p) => (p.basePricePerPerson ?? 0) + (p.taxesAndFees ?? 0),
+    ),
+  );
+
   return (
     <div className="space-y-4 lg:sticky lg:top-4">
       <Card className="border-2">
@@ -55,7 +98,7 @@ export function BookingCard({ location }: { location: BookingCardProps }) {
           <div className="space-y-1">
             <p className="text-muted-foreground text-sm">Starting from</p>
             <CardTitle className="text-3xl">
-              ${providers[0]?.basePricePerPerson + providers[0]?.taxesAndFees}
+              ${minPrice}
               <span className="text-muted-foreground text-lg font-normal">
                 /person
               </span>
