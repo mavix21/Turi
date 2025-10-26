@@ -66,7 +66,6 @@ export const getMyProfile = query({
       id: userId,
       name: user.name,
       imageUrl: user.imageUrl,
-      reputationScore: userProfile.reputationScore,
       profile: {
         documentNumber: userProfile.documentNumber,
         dateOfBirth: userProfile.dateOfBirth,
