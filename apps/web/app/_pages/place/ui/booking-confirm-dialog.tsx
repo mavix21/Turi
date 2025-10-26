@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { format } from "date-fns";
-import { parseUnits } from "viem";
-import { useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
+import { parseUnits, formatUnits } from "viem";
+import { useAccount, useWriteContract, useWaitForTransactionReceipt, useReadContract } from "wagmi";
 import { useMutation } from "convex/react";
 import type { Id } from "@turi/convex/_generated/dataModel";
 
@@ -80,6 +80,7 @@ export function BookingConfirmDialog({
 }: BookingConfirmDialogProps) {
   const [step, setStep] = useState<PurchaseStep>("idle");
   const [error, setError] = useState<string | null>(null);
+  const [useMixedPayment, setUseMixedPayment] = useState(true); // Default to mixed payment if available
 
   const { address, isConnected, chainId } = useAccount();
   const { open: openWallet } = useAppKit();
@@ -90,24 +91,41 @@ export function BookingConfirmDialog({
 
   const createBooking = useMutation(api.bookings.createBookingFromPurchase);
 
-  // Calculate payment amounts based on mixed payment option
+  // Read TURI balance to check if user has enough tokens for mixed payment
+  const { data: turiBalance } = useReadContract({
+    address: TuriTokenAddress,
+    abi: TuriTokenAbi,
+    functionName: "balanceOf",
+    args: address ? [address] : undefined,
+    query: {
+      enabled: !!address && !!provider.mixedPayment,
+    },
+  });
+
+  // Calculate payment amounts based on selected payment method
   // CRITICAL: USDX has 6 decimals, TuriToken has 18 decimals
   const hasMixedPayment = !!provider.mixedPayment;
 
-  // If mixedPayment exists, use per-person amounts * participants
-  // Otherwise, use total (which is already basePricePerPerson + taxesAndFees * participants)
-  const usdxAmount = hasMixedPayment && provider.mixedPayment
-    ? parseUnits((provider.mixedPayment.remainingUSX * participants).toString(), 6) // USDX: 6 decimals
-    : parseUnits(total.toString(), 6); // USDX: 6 decimals
+  // Determine payment amounts based on user selection
+  const usdxAmount = (hasMixedPayment && useMixedPayment && provider.mixedPayment)
+    ? parseUnits((provider.mixedPayment.remainingUSX * participants).toString(), 6) // Mixed: partial USDX
+    : parseUnits(total.toString(), 6); // Normal: full USDX
 
-  const travelTokensRequired = hasMixedPayment && provider.mixedPayment
-    ? parseUnits((provider.mixedPayment.turiTokens * participants).toString(), 18) // TURI: 18 decimals
-    : 0n;
+  const travelTokensRequired = (hasMixedPayment && useMixedPayment && provider.mixedPayment)
+    ? parseUnits((provider.mixedPayment.turiTokens * participants).toString(), 18) // Mixed: TURI tokens
+    : 0n; // Normal: no TURI tokens
 
-  // Reset state when dialog closes (but not during active transactions)
+  // Check if user has enough TURI tokens for mixed payment
+  const hasEnoughTuriTokens = turiBalance ? turiBalance >= travelTokensRequired : false;
+
+  // Reset state when dialog opens/closes
   useEffect(() => {
     if (!open && step === "idle") {
       setError(null);
+    }
+    if (open) {
+      // Reset to mixed payment when dialog opens (if available)
+      setUseMixedPayment(true);
     }
   }, [open, step]);
 
@@ -324,10 +342,35 @@ export function BookingConfirmDialog({
             <DialogTitle className="text-center text-2xl">
               Booking Confirmed!
             </DialogTitle>
-            <DialogDescription className="text-center">
-              Your tour has been successfully purchased on-chain.
-              <br />
-              Transaction: {receipt?.transactionHash.slice(0, 10)}...
+            <DialogDescription className="text-center space-y-2">
+              <p>Your tour has been successfully purchased on-chain.</p>
+              {receipt?.transactionHash && (
+                <div className="flex flex-col items-center gap-2 pt-2">
+                  <span className="text-xs text-muted-foreground">Transaction Hash:</span>
+                  <a
+                    href={`https://sepolia.scrollscan.com/tx/${receipt.transactionHash}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-mono text-xs text-primary hover:underline transition-all flex items-center gap-1"
+                  >
+                    {receipt.transactionHash.slice(0, 10)}...{receipt.transactionHash.slice(-8)}
+                    <svg
+                      className="h-3 w-3"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                      />
+                    </svg>
+                  </a>
+                </div>
+              )}
             </DialogDescription>
           </div>
         </DialogContent>
@@ -354,7 +397,7 @@ export function BookingConfirmDialog({
       case "saving-booking":
         return "Saving Booking...";
       default:
-        if (hasMixedPayment && provider.mixedPayment) {
+        if (hasMixedPayment && useMixedPayment && provider.mixedPayment) {
           const turiTotal = provider.mixedPayment.turiTokens * participants;
           const usxTotal = provider.mixedPayment.remainingUSX * participants;
           return `Pay ${turiTotal} TURI + $${usxTotal} USDX`;
@@ -364,7 +407,7 @@ export function BookingConfirmDialog({
   };
 
   const getStepMessage = () => {
-    const totalSteps = hasMixedPayment ? 3 : 2;
+    const totalSteps = (hasMixedPayment && useMixedPayment) ? 3 : 2;
 
     switch (step) {
       case "approving-turi":
@@ -372,9 +415,9 @@ export function BookingConfirmDialog({
       case "waiting-turi-approval":
         return `Step 1/${totalSteps}: Waiting for TURI approval confirmation...`;
       case "approving-usdx":
-        return `Step ${hasMixedPayment ? 2 : 1}/${totalSteps}: Please approve USDX in your wallet...`;
+        return `Step ${(hasMixedPayment && useMixedPayment) ? 2 : 1}/${totalSteps}: Please approve USDX in your wallet...`;
       case "waiting-usdx-approval":
-        return `Step ${hasMixedPayment ? 2 : 1}/${totalSteps}: Waiting for USDX approval confirmation...`;
+        return `Step ${(hasMixedPayment && useMixedPayment) ? 2 : 1}/${totalSteps}: Waiting for USDX approval confirmation...`;
       case "purchasing":
         return `Step ${totalSteps}/${totalSteps}: Please confirm purchase in your wallet...`;
       case "waiting-confirmation":
@@ -419,6 +462,90 @@ export function BookingConfirmDialog({
           </DialogDescription>
         </DialogHeader>
 
+        {/* Payment Method Selection - Only show if mixed payment is available */}
+        {hasMixedPayment && provider.mixedPayment && !isProcessing && (
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Payment Method</label>
+            <div className="grid grid-cols-1 gap-2">
+              {/* Mixed Payment Option */}
+              <button
+                onClick={() => setUseMixedPayment(true)}
+                className={`flex items-start justify-between rounded-lg border-2 p-3 text-left transition-all ${
+                  useMixedPayment
+                    ? "border-primary bg-primary/5"
+                    : "border-border hover:border-primary/50"
+                }`}
+              >
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <div className={`h-4 w-4 rounded-full border-2 flex items-center justify-center ${
+                      useMixedPayment ? "border-primary" : "border-muted-foreground"
+                    }`}>
+                      {useMixedPayment && (
+                        <div className="h-2 w-2 rounded-full bg-primary" />
+                      )}
+                    </div>
+                    <span className="text-sm font-semibold">Mixed Payment (Save with TURI)</span>
+                  </div>
+                  <div className="ml-6 space-y-0.5">
+                    <div className="text-sm font-medium text-purple-600 dark:text-purple-400">
+                      {provider.mixedPayment.turiTokens * participants} TURI
+                    </div>
+                    <div className="text-sm font-medium text-blue-600 dark:text-blue-400">
+                      ${provider.mixedPayment.remainingUSX * participants} USDX
+                    </div>
+                  </div>
+                </div>
+              </button>
+
+              {/* Normal Payment Option */}
+              <button
+                onClick={() => setUseMixedPayment(false)}
+                className={`flex items-start justify-between rounded-lg border-2 p-3 text-left transition-all ${
+                  !useMixedPayment
+                    ? "border-primary bg-primary/5"
+                    : "border-border hover:border-primary/50"
+                }`}
+              >
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <div className={`h-4 w-4 rounded-full border-2 flex items-center justify-center ${
+                      !useMixedPayment ? "border-primary" : "border-muted-foreground"
+                    }`}>
+                      {!useMixedPayment && (
+                        <div className="h-2 w-2 rounded-full bg-primary" />
+                      )}
+                    </div>
+                    <span className="text-sm font-semibold">Pay with USDX Only</span>
+                  </div>
+                  <div className="ml-6">
+                    <div className="text-sm font-medium text-blue-600 dark:text-blue-400">
+                      ${total} USDX
+                    </div>
+                  </div>
+                </div>
+              </button>
+            </div>
+
+            {/* Warning if user doesn't have enough TURI tokens */}
+            {useMixedPayment && !hasEnoughTuriTokens && travelTokensRequired > 0n && (
+              <div className="bg-yellow-500/10 text-yellow-600 dark:text-yellow-500 rounded-lg p-3 text-sm flex items-start gap-2 border border-yellow-500/20">
+                <AlertCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                <div className="text-xs">
+                  <p className="font-semibold mb-1">
+                    Insufficient TURI Tokens
+                  </p>
+                  <p>
+                    You need {provider.mixedPayment ? (provider.mixedPayment.turiTokens * participants).toFixed(2) : "0"} TURI but only have{" "}
+                    {turiBalance ? parseFloat(formatUnits(turiBalance, 18)).toFixed(2) : "0"} TURI.
+                    Please select "Pay with USDX Only" or earn more TURI tokens by checking in at tourist locations.
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
         <Card>
           <CardContent className="space-y-4 pt-6">
             <div>
@@ -443,26 +570,21 @@ export function BookingConfirmDialog({
                   {participants} {participants === 1 ? "Person" : "People"}
                 </span>
               </div>
-              {hasMixedPayment && provider.mixedPayment ? (
-                <>
-                  <div className="flex items-center gap-2">
-                    <CreditCard className="text-muted-foreground h-4 w-4" />
-                    <div className="flex flex-col">
-                      <span className="text-sm font-medium text-purple-600 dark:text-purple-400">
-                        {provider.mixedPayment.turiTokens * participants} TURI
-                      </span>
-                      <span className="text-sm font-medium text-blue-600 dark:text-blue-400">
-                        ${provider.mixedPayment.remainingUSX * participants} USDX
-                      </span>
-                    </div>
+              <div className="flex items-center gap-2">
+                <CreditCard className="text-muted-foreground h-4 w-4" />
+                {useMixedPayment && hasMixedPayment && provider.mixedPayment ? (
+                  <div className="flex flex-col">
+                    <span className="text-sm font-medium text-purple-600 dark:text-purple-400">
+                      {provider.mixedPayment.turiTokens * participants} TURI
+                    </span>
+                    <span className="text-sm font-medium text-blue-600 dark:text-blue-400">
+                      ${provider.mixedPayment.remainingUSX * participants} USDX
+                    </span>
                   </div>
-                </>
-              ) : (
-                <div className="flex items-center gap-2">
-                  <CreditCard className="text-muted-foreground h-4 w-4" />
+                ) : (
                   <span className="text-lg font-semibold">${total} USDX</span>
-                </div>
-              )}
+                )}
+              </div>
               {isConnected && address && (
                 <div className="flex items-center gap-2">
                   <Wallet className="text-muted-foreground h-4 w-4" />
@@ -477,9 +599,37 @@ export function BookingConfirmDialog({
 
         {/* Progress indicator */}
         {isProcessing && getStepMessage() && (
-          <div className={`${getStepColor()} rounded-lg p-3 text-sm flex items-center gap-2`}>
-            <Loader2 className="h-4 w-4 animate-spin flex-shrink-0" />
-            <span className="font-medium">{getStepMessage()}</span>
+          <div className={`${getStepColor()} rounded-lg p-3 text-sm`}>
+            <div className="flex items-center gap-2">
+              <Loader2 className="h-4 w-4 animate-spin flex-shrink-0" />
+              <span className="font-medium">{getStepMessage()}</span>
+            </div>
+            {txHash && (
+              <div className="mt-2 pt-2 border-t border-current/20">
+                <a
+                  href={`https://sepolia.scrollscan.com/tx/${txHash}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-mono text-xs hover:underline transition-all flex items-center gap-1"
+                >
+                  View transaction: {txHash.slice(0, 10)}...{txHash.slice(-8)}
+                  <svg
+                    className="h-3 w-3"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                    />
+                  </svg>
+                </a>
+              </div>
+            )}
           </div>
         )}
 
@@ -522,7 +672,7 @@ export function BookingConfirmDialog({
           ) : (
             <Button
               onClick={handlePurchase}
-              disabled={isProcessing}
+              disabled={isProcessing || (useMixedPayment && !hasEnoughTuriTokens && travelTokensRequired > 0n)}
               className="w-full sm:w-auto"
             >
               {getButtonText()}

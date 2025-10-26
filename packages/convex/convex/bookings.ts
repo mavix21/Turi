@@ -67,7 +67,7 @@ export const createBookingFromPurchase = mutation({
   },
 });
 
-// Get user bookings
+// Get user bookings with tour package and location details
 export const getUserBookings = query({
   args: {},
   handler: async (ctx) => {
@@ -80,8 +80,52 @@ export const getUserBookings = query({
     const bookings = await ctx.db
       .query("bookings")
       .withIndex("by_user", (q) => q.eq("userId", userId))
+      .order("desc")
       .collect();
 
-    return bookings;
+    // Enrich bookings with tour package and location data
+    const enrichedBookings = await Promise.all(
+      bookings.map(async (booking) => {
+        const tourPackage = await ctx.db.get(booking.tourPackageId);
+
+        if (!tourPackage) {
+          return {
+            ...booking,
+            tourPackage: null,
+            location: null,
+            company: null,
+          };
+        }
+
+        const location = await ctx.db.get(tourPackage.locationId);
+        const company = await ctx.db.get(tourPackage.companyId);
+
+        return {
+          ...booking,
+          tourPackage: {
+            _id: tourPackage._id,
+            name: tourPackage.name,
+            description: tourPackage.description,
+          },
+          location: location
+            ? {
+                _id: location._id,
+                name: location.name,
+                imageUrl: location.imageUrl,
+                address: location.address,
+              }
+            : null,
+          company: company
+            ? {
+                _id: company._id,
+                name: company.name,
+                logoUrl: company.logoUrl,
+              }
+            : null,
+        };
+      }),
+    );
+
+    return enrichedBookings;
   },
 });

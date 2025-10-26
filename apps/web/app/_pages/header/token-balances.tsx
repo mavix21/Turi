@@ -2,6 +2,7 @@
 
 import { useAccount, useReadContract } from "wagmi";
 import { formatUnits } from "viem";
+import { Wallet } from "@turi/ui/index";
 
 import {
   TuriTokenAbi,
@@ -9,6 +10,11 @@ import {
   USDXAbi,
   USDXAddress,
 } from "@/src/constants/abi";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@turi/ui/components/popover";
 
 export function TokenBalances() {
   const { address, isConnected } = useAccount();
@@ -49,24 +55,49 @@ export function TokenBalances() {
     : "0.00";
 
   return (
-    <div className="flex items-center gap-2">
-      {/* USDX Balance */}
-      <div className="flex items-center gap-1.5 rounded-full bg-blue-500/10 px-3 py-1.5 text-sm">
-        <div className="h-2 w-2 rounded-full bg-blue-500" />
-        <span className="font-mono font-medium text-blue-600 dark:text-blue-400">
-          ${formattedUSDX}
-        </span>
-        <span className="text-muted-foreground text-xs">USDX</span>
-      </div>
+    <Popover>
+      <PopoverTrigger asChild>
+        <button className="flex items-center gap-1.5 rounded-lg border border-border bg-background px-2.5 py-1.5 text-sm transition-colors hover:bg-accent">
+          <Wallet className="h-4 w-4 text-muted-foreground" />
+          <span className="font-mono text-xs font-medium">Balances</span>
+        </button>
+      </PopoverTrigger>
+      <PopoverContent className="w-64" align="end">
+        <div className="space-y-3">
+          <div className="flex items-center justify-between border-b pb-2">
+            <h4 className="text-sm font-semibold">Token Balances</h4>
+            <span className="font-mono text-xs text-muted-foreground">
+              {address.slice(0, 6)}...{address.slice(-4)}
+            </span>
+          </div>
 
-      {/* TURI Balance */}
-      <div className="flex items-center gap-1.5 rounded-full bg-purple-500/10 px-3 py-1.5 text-sm">
-        <div className="h-2 w-2 rounded-full bg-purple-500" />
-        <span className="font-mono font-medium text-purple-600 dark:text-purple-400">
-          {formattedTURI}
-        </span>
-        <span className="text-muted-foreground text-xs">TURI</span>
-      </div>
-    </div>
+          {/* USDX Balance */}
+          <div className="flex items-center justify-between rounded-lg bg-blue-500/10 p-3">
+            <div className="flex items-center gap-2">
+              <div className="h-3 w-3 rounded-full bg-blue-500" />
+              <span className="text-sm font-medium text-muted-foreground">USDX</span>
+            </div>
+            <span className="font-mono text-lg font-bold text-blue-600 dark:text-blue-400">
+              ${formattedUSDX}
+            </span>
+          </div>
+
+          {/* TURI Balance */}
+          <div className="flex items-center justify-between rounded-lg bg-purple-500/10 p-3">
+            <div className="flex items-center gap-2">
+              <div className="h-3 w-3 rounded-full bg-purple-500" />
+              <span className="text-sm font-medium text-muted-foreground">TURI</span>
+            </div>
+            <span className="font-mono text-lg font-bold text-purple-600 dark:text-purple-400">
+              {formattedTURI}
+            </span>
+          </div>
+
+          <p className="text-center text-xs text-muted-foreground pt-2 border-t">
+            Updates every 10 seconds
+          </p>
+        </div>
+      </PopoverContent>
+    </Popover>
   );
 }
