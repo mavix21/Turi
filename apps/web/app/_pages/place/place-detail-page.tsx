@@ -31,17 +31,6 @@ export function PlaceDetailPage({ id }: { id: string }) {
           {/* Hero Content */}
           <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-12">
             <div className="max-w-4xl">
-              {/*<div className="mb-6 flex flex-wrap gap-2">
-                {location.tags.map((tag: string) => (
-                  <span
-                    key={tag}
-                    className="text-foreground rounded-full bg-white/90 px-4 py-2 text-sm font-medium shadow-lg backdrop-blur-sm"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>*/}
-
               <h1 className="mb-4 text-5xl leading-tight font-bold text-balance text-white drop-shadow-lg md:text-7xl">
                 {location.name}
               </h1>
@@ -55,13 +44,6 @@ export function PlaceDetailPage({ id }: { id: string }) {
                 </div>
               </div>
             </div>
-          </div>
-
-          {/* Action Buttons - Top Right */}
-          <div className="absolute top-6 right-6 z-10 flex gap-3">
-            <button className="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 shadow-lg backdrop-blur-sm transition hover:bg-white">
-              <Share2 className="text-foreground h-6 w-6" />
-            </button>
           </div>
         </div>
 
@@ -81,7 +63,7 @@ export function PlaceDetailPage({ id }: { id: string }) {
       </section>
 
       {/* Main Content */}
-      <section className="bg-background">
+      <section className="bg-background mb-18">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-12">
             {/* Left Column - Description & Highlights */}

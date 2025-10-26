@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useQuery } from "convex/react";
 import {
   Award,
   Calendar,
@@ -13,13 +14,13 @@ import {
   User,
 } from "lucide-react";
 
+import { api } from "@turi/convex/_generated/api";
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
 } from "@turi/ui/components/avatar";
 import { Badge } from "@turi/ui/components/badge";
-import { Button } from "@turi/ui/components/button";
 import { Card, CardContent } from "@turi/ui/components/card";
 import { useTuriState } from "@turi/ui/hooks/use-turi-state";
 
@@ -88,16 +89,16 @@ export default function TouristPassportPage() {
     },
   ]);
 
-  const userData = {
-    name: "María Elena Rodríguez",
-    passportNumber: "PE-127845693",
-    nationality: "Peruana",
-    dateOfBirth: "15 de Marzo, 1992",
-    issueDate: "10 de Enero, 2022",
-    expiryDate: "10 de Enero, 2032",
-    photo:
-      "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=400",
-  };
+  // const userData = {
+  //   name: "María Elena Rodríguez",
+  //   passportNumber: "PE-127845693",
+  //   nationality: "Peruana",
+  //   dateOfBirth: "15 de Marzo, 1992",
+  //   issueDate: "10 de Enero, 2022",
+  //   expiryDate: "10 de Enero, 2032",
+  //   photo:
+  //     "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=400",
+  // };
 
   const travelStamps = [
     {
@@ -161,6 +162,10 @@ export default function TouristPassportPage() {
     memberSince: "2022",
   };
 
+  const userData = useQuery(api.users.getMyProfile);
+
+  if (!userData) return null;
+
   return (
     <>
       <Card className="border-border/50 from-card via-card to-accent/5 overflow-hidden border bg-gradient-to-br shadow-2xl">
@@ -171,7 +176,7 @@ export default function TouristPassportPage() {
               <div className="relative">
                 <Avatar className="border-accent/50 ring-accent/10 h-40 w-40 border-4 shadow-2xl ring-4 lg:h-48 lg:w-48">
                   <AvatarImage
-                    src={userData.photo}
+                    src={userData.imageUrl ?? "/placeholder.png"}
                     alt={userData.name}
                     className="object-cover"
                   />
@@ -197,7 +202,7 @@ export default function TouristPassportPage() {
                 <div className="text-muted-foreground flex items-center gap-3">
                   <CreditCard className="h-4 w-4" />
                   <span className="bg-muted/50 rounded-full px-3 py-1 font-mono text-sm tracking-wider">
-                    {userData.passportNumber}
+                    {userData.profile.documentNumber}
                   </span>
                 </div>
               </div>
@@ -212,7 +217,7 @@ export default function TouristPassportPage() {
                       Nacionalidad
                     </p>
                     <p className="text-foreground text-lg font-semibold">
-                      {userData.nationality}
+                      {userData.profile.nationality}
                     </p>
                   </div>
                 </div>
@@ -226,7 +231,7 @@ export default function TouristPassportPage() {
                       Fecha de Nacimiento
                     </p>
                     <p className="text-foreground text-lg font-semibold">
-                      {userData.dateOfBirth}
+                      {userData.profile.dateOfBirth}
                     </p>
                   </div>
                 </div>
@@ -240,7 +245,7 @@ export default function TouristPassportPage() {
                       Fecha de Emisión
                     </p>
                     <p className="text-foreground text-lg font-semibold">
-                      {userData.issueDate}
+                      {userData.profile.issueDate}
                     </p>
                   </div>
                 </div>
@@ -254,7 +259,7 @@ export default function TouristPassportPage() {
                       Fecha de Vencimiento
                     </p>
                     <p className="text-foreground text-lg font-semibold">
-                      {userData.expiryDate}
+                      {userData.profile.expiryDate}
                     </p>
                   </div>
                 </div>

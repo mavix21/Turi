@@ -8,6 +8,7 @@
  * @module
  */
 
+import type * as authUtils from "../authUtils.js";
 import type * as benefits from "../benefits.js";
 import type * as http from "../http.js";
 import type * as locations from "../locations.js";
@@ -38,6 +39,7 @@ import type {
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  authUtils: typeof authUtils;
   benefits: typeof benefits;
   http: typeof http;
   locations: typeof locations;
