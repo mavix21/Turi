@@ -61,11 +61,12 @@
       "description": "Descubra los increíbles destinos de Perú, incluyendo sitios arqueológicos, maravillas naturales y santuarios históricos en todos los departamentos.",
       "filters": {
         "popular": "Popular",
-        "all": "Todos",
+        "all": "Todos los Lugares",
         "archaeological": "Sitios Arqueológicos",
         "natural": "Maravillas Naturales",
         "museums": "Museos",
         "historical": "Santuarios Históricos",
+        "historic": "Sitios Históricos",
         "more": {
           "title": "Filtros"
         }

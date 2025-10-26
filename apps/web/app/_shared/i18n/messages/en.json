@@ -60,11 +60,12 @@
       "description": "Discover Peru's incredible destinations, including archaeological sites, natural wonders, and historical sanctuaries across all departments.",
       "filters": {
         "popular": "Popular",
-        "all": "All",
+        "all": "All Places",
         "archaeological": "Archaeological Sites",
         "natural": "Natural Wonders",
         "museums": "Museums",
         "historical": "Historical Sanctuaries",
+        "historic": "Historic Sites",
         "more": {
           "title": "Filters"
         }
