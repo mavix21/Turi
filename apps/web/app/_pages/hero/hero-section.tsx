@@ -15,8 +15,8 @@ export function HeroSection({
   const t = useTranslations("home.hero");
   const [activeTab, setActiveTab] = useState<"tours" | "hostelry">("tours");
   const [destination, setDestination] = useState("Cusco, Peru");
-  const [checkIn, setCheckIn] = useState("2024-12-02");
-  const [checkOut, setCheckOut] = useState("2024-12-03");
+  const [checkIn, setCheckIn] = useState("2025-10-27");
+  const [checkOut, setCheckOut] = useState("2025-10-31");
   const [participants, setParticipants] = useState(4);
   const [guests, setGuests] = useState(2);
   const [rooms, setRooms] = useState(1);

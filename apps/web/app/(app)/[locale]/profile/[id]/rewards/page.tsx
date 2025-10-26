@@ -116,36 +116,6 @@ export default function RewardsPage() {
             description={item.description}
             image={item.imageUrl}
           />
-          // <div
-          //   key={item._id}
-          //   className="bg-card border-border overflow-hidden rounded-2xl border shadow-lg transition-all hover:shadow-xl"
-          // >
-          //   <div className="bg-muted relative h-48 overflow-hidden">
-          //     <Image
-          //       src={item.imageUrl}
-          //       alt={item.title}
-          //       width={200}
-          //       height={400}
-          //       className="h-full w-full object-cover"
-          //     />
-          //     <Badge className="absolute top-3 right-3 z-20 rounded-full px-3 py-1 text-sm font-bold shadow-lg">
-          //       {item.discountPercentage}% OFF
-          //     </Badge>
-          //     <div className="absolute bottom-3 left-3 z-20">
-          //       <h4 className="text-lg font-bold">{item.title}</h4>
-          //     </div>
-          //   </div>
-          //   <div className="p-4">
-          //     <Button
-          //       onClick={() =>
-          //         handleRedeem(item.requiredReputation, item.title)
-          //       }
-          //       className="w-full"
-          //     >
-          //       Redeem • {item.requiredReputation} pts
-          //     </Button>
-          //   </div>
-          // </div>
         ))}
       </div>
     </div>

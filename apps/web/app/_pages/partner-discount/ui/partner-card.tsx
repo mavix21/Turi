@@ -47,7 +47,7 @@ export function PartnerCard({
         </p>
 
         {/* Redeem Button */}
-        <Link href="/profile">
+        <Link href="/profile/me/rewards">
           <Button className="bg-primary hover:bg-primary/90 text-primary-foreground w-full">
             {t("redeem")} • {pointsCost} {t("points")}
           </Button>
