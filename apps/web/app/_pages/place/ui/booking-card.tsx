@@ -111,6 +111,24 @@ export function BookingCard({ location }: { location: BookingCardProps }) {
     ),
   );
 
+  // Get the currency from the provider with minimum price
+  const minPriceProvider = providers.reduce((min, p) => {
+    const price = (p.basePricePerPerson ?? 0) + (p.taxesAndFees ?? 0);
+    const minPriceCalc =
+      (min.basePricePerPerson ?? 0) + (min.taxesAndFees ?? 0);
+    return price < minPriceCalc ? p : min;
+  });
+  const currency = minPriceProvider.currency;
+
+  // Currency symbol mapper
+  const getCurrencySymbol = (curr: string) => {
+    const symbols: Record<string, string> = {
+      USX: "USX",
+      USDC: "USDC",
+    };
+    return symbols[curr] || curr;
+  };
+
   return (
     <div className="space-y-4 lg:sticky lg:top-4">
       <Card className="border-2">
@@ -118,7 +136,7 @@ export function BookingCard({ location }: { location: BookingCardProps }) {
           <div className="space-y-1">
             <p className="text-muted-foreground text-sm">{t("startingFrom")}</p>
             <CardTitle className="text-3xl">
-              ${minPrice}
+              {minPrice.toFixed(2)} {getCurrencySymbol(currency)}
               <span className="text-muted-foreground text-lg font-normal">
                 {t("perPerson")}
               </span>

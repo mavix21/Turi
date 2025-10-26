@@ -66,10 +66,10 @@ export function PlaceDetailPage({ id }: { id: string }) {
 
       {/* Main Content */}
       <section className="bg-background mb-18">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-12">
+        <div className="mx-auto max-w-6xl px-8 md:px-16">
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-5 lg:gap-12">
             {/* Left Column - Description & Highlights */}
-            <div className="lg:col-span-2">
+            <div className="lg:col-span-3">
               {/* Description */}
               <div className="mb-12">
                 <h2 className="text-foreground mb-4 text-3xl font-bold">
@@ -168,7 +168,9 @@ export function PlaceDetailPage({ id }: { id: string }) {
               </div>
             </div>
 
-            <BookingCard location={location} />
+            <div className="lg:col-span-2">
+              <BookingCard location={location} />
+            </div>
           </div>
         </div>
       </section>
