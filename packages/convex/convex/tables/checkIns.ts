@@ -5,6 +5,7 @@ export const checkIns = defineTable({
   userId: v.id("users"),
   locationId: v.id("locations"),
   numberOfVisits: v.number(),
+  collectibleId: v.id("collectibles"),
   onchainStatus: v.union(
     v.object({ status: v.literal("pending") }),
     v.object({
