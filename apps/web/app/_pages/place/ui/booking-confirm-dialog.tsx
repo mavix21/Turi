@@ -1,21 +1,21 @@
-"use client";
+"use client"
 
-import { useCallback, useEffect, useState } from "react";
-import { useMutation } from "convex/react";
-import { format } from "date-fns";
-import { useTranslations } from "next-intl";
-import { formatUnits, parseUnits } from "viem";
+import { useCallback, useEffect, useState } from "react"
+import { useMutation } from "convex/react"
+import { format } from "date-fns"
+import { useTranslations } from "next-intl"
+import { formatUnits, parseUnits } from "viem"
 import {
   useAccount,
   useReadContract,
   useWaitForTransactionReceipt,
   useWriteContract,
-} from "wagmi";
+} from "wagmi"
 
-import type { Id } from "@turi/convex/_generated/dataModel";
-import { api } from "@turi/convex/_generated/api";
-import { Button } from "@turi/ui/components/button";
-import { Card, CardContent } from "@turi/ui/components/card";
+import type { Id } from "@turi/convex/_generated/dataModel"
+import { api } from "@turi/convex/_generated/api"
+import { Button } from "@turi/ui/components/button"
+import { Card, CardContent } from "@turi/ui/components/card"
 import {
   Dialog,
   DialogContent,
@@ -23,7 +23,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@turi/ui/components/dialog";
+} from "@turi/ui/components/dialog"
 import {
   AlertCircle,
   Calendar,
@@ -32,9 +32,9 @@ import {
   Loader2,
   Users,
   Wallet,
-} from "@turi/ui/index";
+} from "@turi/ui/index"
 
-import { useAppKit } from "@/reown";
+import { useAppKit } from "@/reown"
 import {
   ProductVaultAbi,
   ProductVaultAddress,
@@ -42,27 +42,27 @@ import {
   TuriTokenAddress,
   USDXAbi,
   USDXAddress,
-} from "@/src/constants/abi";
+} from "@/src/constants/abi"
 
 interface BookingConfirmDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
+  open: boolean
+  onOpenChange: (open: boolean) => void
   provider: {
-    _id: Id<"tourPackages">;
-    name: string;
-    guarantees: string[];
+    _id: Id<"tourPackages">
+    name: string
+    guarantees: string[]
     company: {
-      slug: string;
-      name: string;
-    } | null;
+      slug: string
+      name: string
+    } | null
     mixedPayment?: {
-      turiTokens: number;
-      remainingUSX: number;
-    };
-  };
-  participants: number;
-  selectedDate: Date | undefined;
-  total: number;
+      turiTokens: number
+      remainingUSX: number
+    }
+  }
+  participants: number
+  selectedDate: Date | undefined
+  total: number
 }
 
 type PurchaseStep =
@@ -75,7 +75,7 @@ type PurchaseStep =
   | "waiting-confirmation"
   | "saving-booking"
   | "success"
-  | "error";
+  | "error"
 
 export function BookingConfirmDialog({
   open,
@@ -85,20 +85,20 @@ export function BookingConfirmDialog({
   selectedDate,
   total,
 }: BookingConfirmDialogProps) {
-  const t = useTranslations("home.placeDetail.booking.bookingConfirm");
-  const [step, setStep] = useState<PurchaseStep>("idle");
-  const [error, setError] = useState<string | null>(null);
-  const [useMixedPayment, setUseMixedPayment] = useState(true); // Default to mixed payment if available
+  const t = useTranslations("home.placeDetail.booking.bookingConfirm")
+  const [step, setStep] = useState<PurchaseStep>("idle")
+  const [error, setError] = useState<string | null>(null)
+  const [useMixedPayment, setUseMixedPayment] = useState(true) // Default to mixed payment if available
 
-  const { address, isConnected, chainId } = useAccount();
-  const { open: openWallet } = useAppKit();
-  const { writeContract, data: txHash, error: writeError } = useWriteContract();
+  const { address, isConnected, chainId } = useAccount()
+  const { open: openWallet } = useAppKit()
+  const { writeContract, data: txHash, error: writeError } = useWriteContract()
   const { data: receipt, isSuccess: isTxConfirmed } =
     useWaitForTransactionReceipt({
       hash: txHash,
-    });
+    })
 
-  const createBooking = useMutation(api.bookings.createBookingFromPurchase);
+  const createBooking = useMutation(api.bookings.createBookingFromPurchase)
 
   // Read TURI balance to check if user has enough tokens for mixed payment
   const { data: turiBalance } = useReadContract({
@@ -109,102 +109,110 @@ export function BookingConfirmDialog({
     query: {
       enabled: !!address && !!provider.mixedPayment,
     },
-  });
+  })
 
   // Calculate payment amounts based on selected payment method
   // CRITICAL: USDX has 6 decimals, TuriToken has 18 decimals
-  const hasMixedPayment = !!provider.mixedPayment;
+  const hasMixedPayment = !!provider.mixedPayment
 
   // Determine payment amounts based on user selection
   const usdxAmount =
     hasMixedPayment && useMixedPayment && provider.mixedPayment
       ? parseUnits(
-          (provider.mixedPayment.remainingUSX * participants).toString(),
-          6,
-        ) // Mixed: partial USDX
-      : parseUnits(total.toString(), 6); // Normal: full USDX
+        (provider.mixedPayment.remainingUSX * participants).toString(),
+        6,
+      ) // Mixed: partial USDX
+      : parseUnits(total.toString(), 6) // Normal: full USDX
 
-  const travelTokensRequired =
-    hasMixedPayment && useMixedPayment && provider.mixedPayment
-      ? parseUnits(
-          (provider.mixedPayment.turiTokens * participants).toString(),
-          18,
-        ) // Mixed: TURI tokens
-      : 0n; // Normal: no TURI tokens
+  // USDX amount (recalculated on render)
+  // travelTokensRequired moved to state so we can force it to 0n when switching off mixed payment
+  const [travelTokensRequired, setTravelTokensRequired] = useState<bigint>(() => {
+    if (hasMixedPayment && useMixedPayment && provider.mixedPayment) {
+      return parseUnits((provider.mixedPayment.turiTokens * participants).toString(), 18)
+    }
+    return 0n
+  })
+
+  // Keep travelTokensRequired in sync with provider / participants / payment choice
+  useEffect(() => {
+    if (hasMixedPayment && useMixedPayment && provider.mixedPayment) {
+      setTravelTokensRequired(parseUnits((provider.mixedPayment.turiTokens * participants).toString(), 18))
+    } else {
+      // IMPORTANT: when switching to non-mixed, ensure travelTokensRequired is 0n
+      setTravelTokensRequired(0n)
+    }
+  }, [hasMixedPayment, useMixedPayment, provider.mixedPayment, participants])
 
   // Check if user has enough TURI tokens for mixed payment
   const hasEnoughTuriTokens = turiBalance
     ? (turiBalance as bigint) >= travelTokensRequired
-    : false;
+    : false
 
   // Reset state when dialog opens/closes
   useEffect(() => {
     if (!open && step === "idle") {
-      setError(null);
+      setError(null)
     }
-    if (open) {
-      // Reset to mixed payment when dialog opens (if available)
-      setUseMixedPayment(true);
-    }
-  }, [open, step]);
+    // Don't reset useMixedPayment to preserve user's selection
+  }, [open, step])
 
   // Handle transaction errors
   useEffect(() => {
     if (writeError) {
-      const errorMessage = writeError.message || "Transaction failed";
+      const errorMessage = writeError.message || "Transaction failed"
       // Check if user rejected the transaction
       if (
         errorMessage.includes("User rejected") ||
         errorMessage.includes("User denied")
       ) {
-        setError("Transaction cancelled by user");
+        setError("Transaction cancelled by user")
       } else {
-        setError(errorMessage);
+        setError(errorMessage)
       }
-      setStep("error");
+      setStep("error")
     }
-  }, [writeError]);
+  }, [writeError])
 
   // Handle transaction hash received (user signed)
   useEffect(() => {
     if (txHash && !isTxConfirmed) {
       // Transaction signed, waiting for confirmation
       if (step === "approving-turi") {
-        setStep("waiting-turi-approval");
+        setStep("waiting-turi-approval")
       } else if (step === "approving-usdx") {
-        setStep("waiting-usdx-approval");
+        setStep("waiting-usdx-approval")
       } else if (step === "purchasing") {
-        setStep("waiting-confirmation");
+        setStep("waiting-confirmation")
       }
     }
-  }, [txHash, isTxConfirmed, step]);
+  }, [txHash, isTxConfirmed, step])
 
   // Approve TuriTokens (only if mixed payment)
   const approveTuriTokens = useCallback(() => {
-    if (!address || travelTokensRequired === 0n) return;
+    if (!address || travelTokensRequired === 0n) return
 
-    setStep("approving-turi");
-    setError(null);
+    setStep("approving-turi")
+    setError(null)
 
     console.log("🟣 Approving TuriTokens:", {
       amount: travelTokensRequired.toString(),
       spender: ProductVaultAddress,
-    });
+    })
 
     writeContract({
       address: TuriTokenAddress,
       abi: TuriTokenAbi,
       functionName: "approve",
       args: [ProductVaultAddress, travelTokensRequired],
-    });
-  }, [address, travelTokensRequired, writeContract]);
+    })
+  }, [address, travelTokensRequired, writeContract])
 
   // Approve USDX
   const approveUSDX = useCallback(() => {
-    if (!address) return;
+    if (!address) return
 
-    setStep("approving-usdx");
-    setError(null);
+    setStep("approving-usdx")
+    setError(null)
 
     // writeContract is async but doesn't return a promise
     // State will change to "waiting-usdx-approval" when txHash is received
@@ -213,15 +221,15 @@ export function BookingConfirmDialog({
       abi: USDXAbi,
       functionName: "approve",
       args: [ProductVaultAddress, usdxAmount],
-    });
-  }, [address, usdxAmount, writeContract]);
+    })
+  }, [address, usdxAmount, writeContract])
 
   // Execute purchase
   const executePurchase = useCallback(() => {
-    if (!address || !provider.company) return;
+    if (!address || !provider.company) return
 
-    setStep("purchasing");
-    setError(null);
+    setStep("purchasing")
+    setError(null)
 
     console.log("🔵 Executing purchase with params:", {
       productId: provider._id,
@@ -229,7 +237,7 @@ export function BookingConfirmDialog({
       usdxAmount: usdxAmount.toString(),
       travelTokensRequired: travelTokensRequired.toString(),
       contractAddress: ProductVaultAddress,
-    });
+    })
 
     // writeContract is async but doesn't return a promise
     // State will change to "waiting-confirmation" when txHash is received
@@ -243,15 +251,15 @@ export function BookingConfirmDialog({
         usdxAmount,
         travelTokensRequired,
       ],
-    });
-  }, [address, provider, usdxAmount, travelTokensRequired, writeContract]);
+    })
+  }, [address, provider, usdxAmount, travelTokensRequired, writeContract])
 
   // Save booking to Convex
   const saveBooking = useCallback(async () => {
-    if (!receipt || !selectedDate || !chainId) return;
+    if (!receipt || !selectedDate || !chainId) return
 
-    setStep("saving-booking");
-    setError(null);
+    setStep("saving-booking")
+    setError(null)
 
     console.log("💾 Saving booking to Convex:", {
       tourPackageId: provider._id,
@@ -259,7 +267,7 @@ export function BookingConfirmDialog({
       totalPricePaid: total,
       transactionHash: receipt.transactionHash,
       blockNumber: Number(receipt.blockNumber),
-    });
+    })
 
     try {
       const bookingId = await createBooking({
@@ -273,19 +281,19 @@ export function BookingConfirmDialog({
         usdxAmount: usdxAmount.toString(),
         travelTokensBurned: travelTokensRequired.toString(),
         chainId,
-      });
+      })
 
-      console.log("✅ Booking saved successfully:", bookingId);
-      setStep("success");
+      console.log("✅ Booking saved successfully:", bookingId)
+      setStep("success")
 
       // Auto close after 3 seconds
       setTimeout(() => {
-        onOpenChange(false);
-      }, 3000);
+        onOpenChange(false)
+      }, 3000)
     } catch (err: any) {
-      console.error("❌ Failed to save booking:", err);
-      setError(err.message || "Failed to save booking");
-      setStep("error");
+      console.error("❌ Failed to save booking:", err)
+      setError(err.message || "Failed to save booking")
+      setStep("error")
     }
   }, [
     receipt,
@@ -299,58 +307,58 @@ export function BookingConfirmDialog({
     usdxAmount,
     travelTokensRequired,
     onOpenChange,
-  ]);
+  ])
 
   // Handle transaction confirmation (MOVED AFTER CALLBACK DEFINITIONS)
   useEffect(() => {
     if (isTxConfirmed && receipt) {
       if (step === "waiting-turi-approval") {
         // TuriToken approval confirmed, now approve USDX
-        approveUSDX();
+        approveUSDX()
       } else if (step === "waiting-usdx-approval") {
         // USDX approval confirmed, now purchase
-        executePurchase();
+        executePurchase()
       } else if (step === "waiting-confirmation") {
         // Purchase confirmed, save to database
-        void saveBooking();
+        void saveBooking()
       }
     }
-  }, [isTxConfirmed, receipt, step, approveUSDX, executePurchase, saveBooking]);
+  }, [isTxConfirmed, receipt, step, approveUSDX, executePurchase, saveBooking])
 
   // Handle purchase flow
   const handlePurchase = () => {
     if (!isConnected) {
-      openWallet();
-      return;
+      openWallet()
+      return
     }
 
     if (!provider.company) {
-      setError("Company information not found");
-      setStep("error");
-      return;
+      setError("Company information not found")
+      setStep("error")
+      return
     }
 
     if (!selectedDate) {
-      setError("Please select a date");
-      setStep("error");
-      return;
+      setError("Please select a date")
+      setStep("error")
+      return
     }
 
     // Start flow:
     // - If mixed payment: TuriTokens → USDX → Purchase
     // - If normal payment: USDX → Purchase
     if (travelTokensRequired > 0n) {
-      approveTuriTokens();
+      approveTuriTokens()
     } else {
-      approveUSDX();
+      approveUSDX()
     }
-  };
+  }
 
   // Handle retry after error
   const handleRetry = () => {
-    setError(null);
-    setStep("idle");
-  };
+    setError(null)
+    setStep("idle")
+  }
 
   // Prevent closing dialog during active transactions
   const handleOpenChange = (newOpen: boolean) => {
@@ -365,10 +373,10 @@ export function BookingConfirmDialog({
         step === "waiting-confirmation" ||
         step === "saving-booking")
     ) {
-      return;
+      return
     }
-    onOpenChange(newOpen);
-  };
+    onOpenChange(newOpen)
+  }
 
   // Success view
   if (step === "success") {
@@ -420,92 +428,92 @@ export function BookingConfirmDialog({
           </div>
         </DialogContent>
       </Dialog>
-    );
+    )
   }
 
   const getButtonText = () => {
-    if (!isConnected) return t("connectWallet");
+    if (!isConnected) return t("connectWallet")
 
     switch (step) {
       case "approving-turi":
-        return t("buttonStates.approvingTURI");
+        return t("buttonStates.approvingTURI")
       case "waiting-turi-approval":
-        return t("buttonStates.waitingTURIApproval");
+        return t("buttonStates.waitingTURIApproval")
       case "approving-usdx":
-        return t("buttonStates.approvingUSDX");
+        return t("buttonStates.approvingUSDX")
       case "waiting-usdx-approval":
-        return t("buttonStates.waitingUSDXApproval");
+        return t("buttonStates.waitingUSDXApproval")
       case "purchasing":
-        return t("buttonStates.confirming");
+        return t("buttonStates.confirming")
       case "waiting-confirmation":
-        return t("buttonStates.waitingConfirmation");
+        return t("buttonStates.waitingConfirmation")
       case "saving-booking":
-        return t("buttonStates.savingBooking");
+        return t("buttonStates.savingBooking")
       default:
         if (hasMixedPayment && useMixedPayment && provider.mixedPayment) {
-          const turiTotal = provider.mixedPayment.turiTokens * participants;
-          const usxTotal = provider.mixedPayment.remainingUSX * participants;
+          const turiTotal = provider.mixedPayment.turiTokens * participants
+          const usxTotal = provider.mixedPayment.remainingUSX * participants
           return t("buttonStates.payMixed", {
             turi: turiTotal,
             usdx: usxTotal,
-          });
+          })
         }
-        return t("buttonStates.payUSDX", { total });
+        return t("buttonStates.payUSDX", { total })
     }
-  };
+  }
 
   const getStepMessage = () => {
-    const totalSteps = hasMixedPayment && useMixedPayment ? 3 : 2;
-    const current = hasMixedPayment && useMixedPayment ? 2 : 1;
+    const totalSteps = hasMixedPayment && useMixedPayment ? 3 : 2
+    const current = hasMixedPayment && useMixedPayment ? 2 : 1
 
     switch (step) {
       case "approving-turi":
-        return t("steps.approvingTURI", { current: 1, total: totalSteps });
+        return t("steps.approvingTURI", { current: 1, total: totalSteps })
       case "waiting-turi-approval":
         return t("steps.waitingTURIApproval", {
           current: 1,
           total: totalSteps,
-        });
+        })
       case "approving-usdx":
-        return t("steps.approvingUSDX", { current, total: totalSteps });
+        return t("steps.approvingUSDX", { current, total: totalSteps })
       case "waiting-usdx-approval":
-        return t("steps.waitingUSDXApproval", { current, total: totalSteps });
+        return t("steps.waitingUSDXApproval", { current, total: totalSteps })
       case "purchasing":
         return t("steps.confirming", {
           current: totalSteps,
           total: totalSteps,
-        });
+        })
       case "waiting-confirmation":
         return t("steps.waitingConfirmation", {
           current: totalSteps,
           total: totalSteps,
-        });
+        })
       case "saving-booking":
-        return t("steps.savingBooking");
+        return t("steps.savingBooking")
       default:
-        return null;
+        return null
     }
-  };
+  }
 
   const getStepColor = () => {
     switch (step) {
       case "approving-turi":
-        return "bg-purple-500/10 text-purple-600 dark:text-purple-400";
+        return "bg-purple-500/10 text-purple-600 dark:text-purple-400"
       case "waiting-turi-approval":
-        return "bg-purple-500/10 text-purple-600 dark:text-purple-400";
+        return "bg-purple-500/10 text-purple-600 dark:text-purple-400"
       case "approving-usdx":
       case "purchasing":
-        return "bg-blue-500/10 text-blue-600 dark:text-blue-400";
+        return "bg-blue-500/10 text-blue-600 dark:text-blue-400"
       case "waiting-usdx-approval":
       case "waiting-confirmation":
       case "saving-booking":
-        return "bg-primary/10 text-primary";
+        return "bg-primary/10 text-primary"
       default:
-        return "bg-muted text-muted-foreground";
+        return "bg-muted text-muted-foreground"
     }
-  };
+  }
 
-  const isProcessing = !["idle", "error", "success"].includes(step);
+  const isProcessing = !["idle", "error", "success"].includes(step)
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange} modal={!isProcessing}>
@@ -529,20 +537,18 @@ export function BookingConfirmDialog({
                   {/* Mixed Payment Option */}
                   <button
                     onClick={() => setUseMixedPayment(true)}
-                    className={`flex items-start justify-between rounded-lg border-2 p-3 text-left transition-all ${
-                      useMixedPayment
-                        ? "border-primary bg-primary/5"
-                        : "border-border hover:border-primary/50"
-                    }`}
+                    className={`flex items-start justify-between rounded-lg border-2 p-3 text-left transition-all ${useMixedPayment
+                      ? "border-primary bg-primary/5"
+                      : "border-border hover:border-primary/50"
+                      }`}
                   >
                     <div className="flex-1">
                       <div className="mb-1 flex items-center gap-2">
                         <div
-                          className={`flex h-4 w-4 items-center justify-center rounded-full border-2 ${
-                            useMixedPayment
-                              ? "border-primary"
-                              : "border-muted-foreground"
-                          }`}
+                          className={`flex h-4 w-4 items-center justify-center rounded-full border-2 ${useMixedPayment
+                            ? "border-primary"
+                            : "border-muted-foreground"
+                            }`}
                         >
                           {useMixedPayment && (
                             <div className="bg-primary h-2 w-2 rounded-full" />
@@ -567,20 +573,18 @@ export function BookingConfirmDialog({
                   {/* Normal Payment Option */}
                   <button
                     onClick={() => setUseMixedPayment(false)}
-                    className={`flex items-start justify-between rounded-lg border-2 p-3 text-left transition-all ${
-                      !useMixedPayment
-                        ? "border-primary bg-primary/5"
-                        : "border-border hover:border-primary/50"
-                    }`}
+                    className={`flex items-start justify-between rounded-lg border-2 p-3 text-left transition-all ${!useMixedPayment
+                      ? "border-primary bg-primary/5"
+                      : "border-border hover:border-primary/50"
+                      }`}
                   >
                     <div className="flex-1">
                       <div className="mb-1 flex items-center gap-2">
                         <div
-                          className={`flex h-4 w-4 items-center justify-center rounded-full border-2 ${
-                            !useMixedPayment
-                              ? "border-primary"
-                              : "border-muted-foreground"
-                          }`}
+                          className={`flex h-4 w-4 items-center justify-center rounded-full border-2 ${!useMixedPayment
+                            ? "border-primary"
+                            : "border-muted-foreground"
+                            }`}
                         >
                           {!useMixedPayment && (
                             <div className="bg-primary h-2 w-2 rounded-full" />
@@ -613,14 +617,14 @@ export function BookingConfirmDialog({
                           {t("insufficientTURIMessage", {
                             required: provider.mixedPayment
                               ? (
-                                  provider.mixedPayment.turiTokens *
-                                  participants
-                                ).toFixed(2)
+                                provider.mixedPayment.turiTokens *
+                                participants
+                              ).toFixed(2)
                               : "0",
                             available: turiBalance
                               ? parseFloat(
-                                  formatUnits(turiBalance as bigint, 18),
-                                ).toFixed(2)
+                                formatUnits(turiBalance as bigint, 18),
+                              ).toFixed(2)
                               : "0",
                           })}
                         </p>
@@ -658,8 +662,8 @@ export function BookingConfirmDialog({
                   <div className="flex items-center gap-2">
                     <CreditCard className="text-muted-foreground h-4 w-4" />
                     {useMixedPayment &&
-                    hasMixedPayment &&
-                    provider.mixedPayment ? (
+                      hasMixedPayment &&
+                      provider.mixedPayment ? (
                       <div className="flex flex-col">
                         <span className="text-sm font-medium text-purple-600 dark:text-purple-400">
                           {provider.mixedPayment.turiTokens * participants} TURI
@@ -780,5 +784,5 @@ export function BookingConfirmDialog({
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 }
