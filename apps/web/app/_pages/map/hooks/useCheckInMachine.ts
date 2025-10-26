@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import { useMachine } from "@xstate/react";
 import { useMutation, useQuery } from "convex/react";
-import { parseEventLogs } from "viem";
+import { parseEventLogs, parseUnits } from "viem";
 import {
   useAccount,
   useWaitForTransactionReceipt,
@@ -145,7 +145,7 @@ export function useCheckInMachine({ place }: UseCheckInMachineProps) {
         address: TravelCheckinAddress,
         abi: TravelCheckinAbi,
         functionName: "validateCheckin",
-        args: [address, place.slug, BigInt(place.points)],
+        args: [address, place.slug, parseUnits(place.points.toString(), 18)],
       },
       {
         onError: (error) => {

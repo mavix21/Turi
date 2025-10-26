@@ -93,7 +93,7 @@ export function PlaceModal({
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={onClose} modal={!checkInMachine.isLoading}>
       <DialogContent className="max-w-md">
         <DialogHeader className="pt-4">
           <div className="flex items-start justify-between gap-4">
