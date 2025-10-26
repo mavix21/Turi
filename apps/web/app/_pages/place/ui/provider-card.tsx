@@ -30,6 +30,10 @@ interface ProviderCardProps {
     slug: string;
     logoUrl?: string;
   } | null;
+  mixedPayment?: {
+    turiTokens: number;
+    remainingUSX: number;
+  };
 }
 
 export function ProviderCard({
@@ -143,6 +147,7 @@ export function ProviderCard({
                 name: provider.company.name,
               }
             : null,
+          mixedPayment: provider.mixedPayment,
         }}
         participants={participants}
         selectedDate={selectedDate}

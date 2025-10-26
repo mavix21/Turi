@@ -3187,3 +3187,5 @@ export const TuriToken = [
     type: "error",
   },
 ] as Abi;
+
+export const TuriTokenAbi = TuriToken;
