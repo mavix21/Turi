@@ -13,16 +13,26 @@ import {
 
 import { ProviderCard } from "./provider-card";
 
+type TourPackageWithCompany = Doc<"tourPackages"> & {
+  company: {
+    _id: Id<"companies">;
+    name: string;
+    slug: string;
+    logoUrl?: string;
+  } | null;
+  companyName: string;
+};
+
 export function ProviderList({
   providers,
   participants,
   selectedDate,
 }: {
-  providers: Doc<"tourPackages">[];
+  providers: TourPackageWithCompany[];
   participants: number;
   selectedDate: Date;
 }) {
-  const [selectedProvider, setSelectedProvider] = useState({});
+  const [selectedProvider, setSelectedProvider] = useState<TourPackageWithCompany | null>(null);
 
   if (!providers) {
     return <div>No providers found</div>;

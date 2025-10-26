@@ -13,14 +13,23 @@ import { Button } from "@turi/ui/components/button";
 import { Card } from "@turi/ui/components/card";
 import { Clock, Eye, Star, Ticket } from "@turi/ui/index";
 
+import type { Id } from "@turi/convex/_generated/dataModel";
+
 import { BookingConfirmDialog } from "./booking-confirm-dialog";
 
 interface ProviderCardProps {
+  _id: Id<"tourPackages">;
   name: string;
   basePricePerPerson: number;
   taxesAndFees: number;
   availableTickets: number;
   guarantees: string[];
+  company: {
+    _id: Id<"companies">;
+    name: string;
+    slug: string;
+    logoUrl?: string;
+  } | null;
 }
 
 export function ProviderCard({
@@ -124,7 +133,17 @@ export function ProviderCard({
       <BookingConfirmDialog
         open={showConfirm}
         onOpenChange={setShowConfirm}
-        provider={{ name: provider.name, guarantees: provider.guarantees }}
+        provider={{
+          _id: provider._id,
+          name: provider.name,
+          guarantees: provider.guarantees,
+          company: provider.company
+            ? {
+                slug: provider.company.slug,
+                name: provider.company.name,
+              }
+            : null,
+        }}
         participants={participants}
         selectedDate={selectedDate}
         total={total}
