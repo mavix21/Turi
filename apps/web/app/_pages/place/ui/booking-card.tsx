@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useQuery } from "convex/react";
 import { Calendar, ChevronDownIcon, PackageX } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { api } from "@turi/convex/_generated/api";
 import { Id } from "@turi/convex/_generated/dataModel";
@@ -44,6 +45,7 @@ interface BookingCardProps {
 }
 
 export function BookingCard({ location }: { location: BookingCardProps }) {
+  const t = useTranslations("home.placeDetail.booking");
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState<Date>(new Date());
   const [participants, setParticipants] = useState(1);
@@ -62,9 +64,9 @@ export function BookingCard({ location }: { location: BookingCardProps }) {
       <div className="space-y-4 lg:sticky lg:top-4">
         <Card className="border-2">
           <CardContent className="py-8 text-center">
-            <p className="text-muted-foreground">Loading packages...</p>
-            <p className="text-xs text-muted-foreground mt-2">
-              Location ID: {location._id}
+            <p className="text-muted-foreground">{t("loadingPackages")}</p>
+            <p className="text-muted-foreground mt-2 text-xs">
+              {t("locationId")}: {location._id}
             </p>
           </CardContent>
         </Card>
@@ -83,16 +85,16 @@ export function BookingCard({ location }: { location: BookingCardProps }) {
                 <EmptyMedia variant="icon">
                   <PackageX className="text-muted-foreground" />
                 </EmptyMedia>
-                <EmptyTitle>No tour packages available</EmptyTitle>
+                <EmptyTitle>{t("noPackagesTitle")}</EmptyTitle>
                 <EmptyDescription>
-                  There are currently no tour providers offering packages for{" "}
-                  {location.name}. Check back later or explore other
-                  destinations.
+                  {t("noPackagesDescription", {
+                    locationName: location.name,
+                  })}
                 </EmptyDescription>
               </EmptyHeader>
               <EmptyContent>
                 <Button variant="outline" asChild>
-                  <a href="/explore">Browse Other Locations</a>
+                  <a href="/explore">{t("browseOtherLocations")}</a>
                 </Button>
               </EmptyContent>
             </Empty>
@@ -114,11 +116,11 @@ export function BookingCard({ location }: { location: BookingCardProps }) {
       <Card className="border-2">
         <CardHeader>
           <div className="space-y-1">
-            <p className="text-muted-foreground text-sm">Starting from</p>
+            <p className="text-muted-foreground text-sm">{t("startingFrom")}</p>
             <CardTitle className="text-3xl">
               ${minPrice}
               <span className="text-muted-foreground text-lg font-normal">
-                /person
+                {t("perPerson")}
               </span>
             </CardTitle>
           </div>
@@ -127,7 +129,7 @@ export function BookingCard({ location }: { location: BookingCardProps }) {
           <div className="space-y-2">
             <Label htmlFor="date" className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
-              Select Date
+              {t("selectDate")}
             </Label>
             <Popover open={open} onOpenChange={setOpen}>
               <PopoverTrigger asChild>
@@ -156,7 +158,7 @@ export function BookingCard({ location }: { location: BookingCardProps }) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="participants">Participants</Label>
+            <Label htmlFor="participants">{t("participants")}</Label>
             <Select
               value={participants.toString()}
               onValueChange={(value) => setParticipants(parseInt(value))}
@@ -167,7 +169,7 @@ export function BookingCard({ location }: { location: BookingCardProps }) {
               <SelectContent>
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
                   <SelectItem key={num} value={num.toString()}>
-                    {num} {num === 1 ? "Person" : "People"}
+                    {num} {num === 1 ? t("person") : t("people")}
                   </SelectItem>
                 ))}
               </SelectContent>

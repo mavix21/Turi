@@ -215,6 +215,19 @@
         "title": "Colecciona Postal NFT",
         "description": "Obtén una prueba verificada en blockchain de tu visita a {locationName}. Colecciona todas las postales para desbloquear recompensas exclusivas y construye tu portafolio de viajes verificado.",
         "collectNow": "Coleccionar Ahora"
+      },
+      "booking": {
+        "loadingPackages": "Cargando paquetes...",
+        "locationId": "ID de Ubicación",
+        "noPackagesTitle": "No hay paquetes turísticos disponibles",
+        "noPackagesDescription": "Actualmente no hay proveedores de tours ofreciendo paquetes para {locationName}. Vuelve más tarde o explora otros destinos.",
+        "browseOtherLocations": "Explorar Otras Ubicaciones",
+        "startingFrom": "Desde",
+        "perPerson": "/persona",
+        "selectDate": "Seleccionar Fecha",
+        "participants": "Participantes",
+        "person": "Persona",
+        "people": "Personas"
       }
     }
   },

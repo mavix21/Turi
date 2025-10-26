@@ -214,6 +214,19 @@
         "title": "Collect NFT Postcard",
         "description": "Earn a blockchain-verified proof of your visit to {locationName}. Collect all postcards to unlock exclusive rewards and build your verified travel portfolio.",
         "collectNow": "Collect Now"
+      },
+      "booking": {
+        "loadingPackages": "Loading packages...",
+        "locationId": "Location ID",
+        "noPackagesTitle": "No tour packages available",
+        "noPackagesDescription": "There are currently no tour providers offering packages for {locationName}. Check back later or explore other destinations.",
+        "browseOtherLocations": "Browse Other Locations",
+        "startingFrom": "Starting from",
+        "perPerson": "/person",
+        "selectDate": "Select Date",
+        "participants": "Participants",
+        "person": "Person",
+        "people": "People"
       }
     }
   },
