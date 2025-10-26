@@ -99,17 +99,13 @@ export const incrementReputationScore = mutation({
       throw new Error("User not found");
     }
 
-    const newScore = user.reputationScore + args.points;
-
-    await ctx.db.patch(userId, {
-      reputationScore: newScore,
-    });
-
     // Also update userProfile reputation score
     const userProfile = await ctx.db
       .query("userProfile")
       .withIndex("by_user", (q) => q.eq("userId", userId))
       .first();
+
+    const newScore = userProfile?.reputationScore ?? 0 + args.points;
 
     if (userProfile) {
       await ctx.db.patch(userProfile._id, {
