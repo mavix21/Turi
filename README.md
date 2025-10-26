@@ -48,13 +48,13 @@ This repository is a pnpm monorepo. It consists of the following main parts:
 
 The following contracts are deployed on the Scroll network:
 
-| Contract        | Address                                      |
-| --------------- | -------------------------------------------- |
-| `USDX`          | `0xcdAc26a0D89A041Ba0034Dc056eD4Edb2Cc0298d` |
-| `TravelToken`   | `0xB3B022fC6c73eA4683882cE0F6C3a686B1616aBa` |
-| `PlaceNFT`      | `0xAC92D1dE90A040fB2df7d10A6fFF4d8B98e9cBc0` |
-| `TravelCheckin` | `0x01Eec72cB36B6c3BD9Eb35277174799960c91B90` |
-| `ProductVault`  | `0xb62EAA45FbF167D6F3f07Bf2B71E74aba40C6941` |
+| Contract        | Address                                      | Block Explorer                                                                                          |
+| --------------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `USDX`          | `0xcdAc26a0D89A041Ba0034Dc056eD4Edb2Cc0298d` | [View on Scrollscan](https://sepolia.scrollscan.com/address/0xcdAc26a0D89A041Ba0034Dc056eD4Edb2Cc0298d) |
+| `TravelToken`   | `0xB3B022fC6c73eA4683882cE0F6C3a686B1616aBa` | [View on Scrollscan](https://sepolia.scrollscan.com/address/0xB3B022fC6c73eA4683882cE0F6C3a686B1616aBa) |
+| `PlaceNFT`      | `0xAC92D1dE90A040fB2df7d10A6fFF4d8B98e9cBc0` | [View on Scrollscan](https://sepolia.scrollscan.com/address/0xAC92D1dE90A040fB2df7d10A6fFF4d8B98e9cBc0) |
+| `TravelCheckin` | `0x01Eec72cB36B6c3BD9Eb35277174799960c91B90` | [View on Scrollscan](https://sepolia.scrollscan.com/address/0x01Eec72cB36B6c3BD9Eb35277174799960c91B90) |
+| `ProductVault`  | `0xb62EAA45FbF167D6F3f07Bf2B71E74aba40C6941` | [View on Scrollscan](https://sepolia.scrollscan.com/address/0xb62EAA45FbF167D6F3f07Bf2B71E74aba40C6941) |
 
 ## 🚀 Getting Started
 
