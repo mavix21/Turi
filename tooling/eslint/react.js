@@ -3,13 +3,14 @@ import * as reactHooks from "eslint-plugin-react-hooks";
 
 /** @type {Awaited<import('typescript-eslint').Config>} */
 export default [
-  reactHooks.configs.recommended,
   {
     files: ["**/*.ts", "**/*.tsx"],
     plugins: {
       react: reactPlugin,
+      "react-hooks": reactHooks,
     },
     rules: {
+      ...reactHooks.configs.recommended.rules,
       ...reactPlugin.configs["jsx-runtime"].rules,
       "react-hooks/react-compiler": "error",
     },
