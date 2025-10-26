@@ -69,3 +69,40 @@ export const getMyProfile = query({
     };
   },
 });
+
+/**
+ * Increment user's reputation score
+ */
+export const incrementReputationScore = mutation({
+  args: {
+    points: v.number(),
+  },
+  handler: async (ctx, args) => {
+    const userId = await getUserIdentity(ctx);
+
+    const user = await ctx.db.get(userId);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const newScore = user.reputationScore + args.points;
+
+    await ctx.db.patch(userId, {
+      reputationScore: newScore,
+    });
+
+    // Also update userProfile reputation score
+    const userProfile = await ctx.db
+      .query("userProfile")
+      .withIndex("by_user", (q) => q.eq("userId", userId))
+      .first();
+
+    if (userProfile) {
+      await ctx.db.patch(userProfile._id, {
+        reputationScore: newScore,
+      });
+    }
+
+    return newScore;
+  },
+});

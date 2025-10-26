@@ -2023,6 +2023,8 @@ export const TravelTokenAbi = [
   },
 ] as Abi;
 
+export const TravelCheckinAbi = TravelTokenAbi;
+
 export const USDXAbi = [
   {
     inputs: [

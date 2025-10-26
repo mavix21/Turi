@@ -32,19 +32,38 @@ export const chains: [AppKitNetwork, ...AppKitNetwork[]] = [
   scrollSepolia,
 ];
 
-const normalizeAddress = (address: string) => {
-  try {
-    const splitAddress = address.split(":");
-    const extractedAddress = splitAddress[splitAddress.length - 1];
-    const checksumAddress = getAddress(extractedAddress!);
-    splitAddress[splitAddress.length - 1] = checksumAddress;
-    const normalizeAddress = splitAddress.join(":");
-
-    return normalizeAddress;
-  } catch (error) {
-    console.error(error);
-    return address;
+const normalizeAddress = (value: string) => {
+  if (!value) {
+    return value;
   }
+
+  if (value.startsWith("did:pkh:")) {
+    const parts = value.split(":");
+    const account = parts[parts.length - 1];
+
+    if (!account?.startsWith("0x")) {
+      console.warn("Unexpected CAIP-10 account id", value);
+      return value;
+    }
+
+    parts[parts.length - 1] = getAddress(account);
+    return parts.join(":");
+  }
+
+  return getAddress(value);
+};
+
+export const extractEvmAddress = (value: string) => {
+  if (!value) {
+    return value;
+  }
+
+  if (value.startsWith("did:pkh:")) {
+    const parts = value.split(":");
+    return parts[parts.length - 1] ?? value;
+  }
+
+  return value;
 };
 
 export const siweConfig = createSIWEConfig({

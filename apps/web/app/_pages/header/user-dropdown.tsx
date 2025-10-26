@@ -1,5 +1,7 @@
 "use client";
 
+import { useAppKit } from "@reown/appkit/react";
+import { LogOut, Settings, User, Wallet } from "lucide-react";
 import { signOut } from "next-auth/react";
 
 import { Avatar, AvatarFallback } from "@turi/ui/components/avatar";
@@ -20,6 +22,8 @@ interface UserDropdownProps {
 }
 
 export function UserDropdown({ address, username }: UserDropdownProps) {
+  const { open } = useAppKit();
+
   const handleLogout = async () => {
     await signOut();
   };
@@ -42,13 +46,24 @@ export function UserDropdown({ address, username }: UserDropdownProps) {
       <DropdownMenuContent>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <Link href={`/profile/me/tourist-passport`} className="w-full">
+        <DropdownMenuItem asChild>
+          <Link href={`/profile/me/tourist-passport`}>
+            <User className="mr-2 h-4 w-4" />
             Profile
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem>Settings</DropdownMenuItem>
-        <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
+        <DropdownMenuItem>
+          <Settings className="mr-2 h-4 w-4" />
+          Settings
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => open()}>
+          <Wallet className="mr-2 h-4 w-4" />
+          Wallet
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={handleLogout}>
+          <LogOut className="mr-2 h-4 w-4" />
+          Logout
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

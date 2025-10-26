@@ -4,10 +4,12 @@ import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "convex/react";
 import { Loader2, Locate } from "lucide-react";
 
+import type { Id } from "@turi/convex/_generated/dataModel";
 import { api } from "@turi/convex/_generated/api";
 import { Badge } from "@turi/ui/components/badge";
 import { Button } from "@turi/ui/components/button";
 
+import { useCheckInMachine } from "@/app/_pages/map/hooks/useCheckInMachine";
 import { calculateDistance, isWithinRadius } from "@/app/_pages/map/map-utils";
 import { MapView } from "@/app/_pages/map/mav-view";
 import { Place } from "@/app/_pages/map/model/types";
@@ -24,13 +26,33 @@ const DEMO_LOCATION: UserLocation = {
 
 export default function MapPage() {
   const locationsData = useQuery(api.locations.getLocationsForMap);
+  const myCheckIns = useQuery(api.checkIns.getMyCheckIns);
+
   const [userLocation, setUserLocation] = useState<UserLocation>(DEMO_LOCATION);
   const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoadingLocation, setIsLoadingLocation] = useState(false);
-  const [locationError, setLocationError] = useState<string | null>(null);
-  const [checkedInPlaces, setCheckedInPlaces] = useState<Set<string>>(
-    new Set(),
+
+  // Initialize check-in machine for selected place
+  const checkInMachine = useCheckInMachine({
+    place: selectedPlace ?? {
+      id: "",
+      name: "",
+      type: "landmark",
+      location: { lat: 0, lng: 0 },
+      address: "",
+      description: "",
+      rating: 0,
+      openingHours: "",
+      checkInRadius: 0,
+      points: 0,
+      nftReward: false,
+    },
+  });
+
+  // Get checked-in place IDs from database
+  const checkedInPlaceIds = new Set(
+    myCheckIns?.map((checkIn) => checkIn.locationId) ?? [],
   );
 
   // Transform DB data to Place format
@@ -99,10 +121,13 @@ export default function MapPage() {
     [userLocation],
   );
 
-  // Handle check-in
-  const handleCheckIn = useCallback((placeId: string) => {
-    setCheckedInPlaces((prev) => new Set(prev).add(placeId));
-  }, []);
+  const handleCloseModal = useCallback(() => {
+    setIsModalOpen(false);
+    // Reset machine when closing modal
+    if (checkInMachine.isSuccess) {
+      checkInMachine.close();
+    }
+  }, [checkInMachine]);
 
   const handleRecenter = useCallback(() => {
     setUserLocation(DEMO_LOCATION);
@@ -139,7 +164,7 @@ export default function MapPage() {
             </div>
             <div className="flex items-center gap-2">
               <Badge variant="secondary">
-                {checkedInPlaces.size} Checked In
+                {checkedInPlaceIds.size} Checked In
               </Badge>
             </div>
           </div>
@@ -164,7 +189,7 @@ export default function MapPage() {
         userLocation={userLocation}
         places={places}
         onPinClick={handlePinClick}
-        checkedInPlaces={checkedInPlaces}
+        checkedInPlaces={checkedInPlaceIds}
       />
 
       {/* Place modal */}
@@ -172,9 +197,11 @@ export default function MapPage() {
         <PlaceModal
           place={selectedPlace}
           isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          onCheckIn={handleCheckIn}
-          hasCheckedIn={checkedInPlaces.has(selectedPlace.id)}
+          onClose={handleCloseModal}
+          checkInMachine={checkInMachine}
+          hasCheckedIn={checkedInPlaceIds.has(
+            selectedPlace.id as Id<"locations">,
+          )}
         />
       )}
     </div>

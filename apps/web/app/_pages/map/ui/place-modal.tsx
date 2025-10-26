@@ -1,6 +1,13 @@
 "use client";
 
-import { CheckCircle2, Clock, MapPin, Star, XCircle } from "lucide-react";
+import {
+  CheckCircle2,
+  Clock,
+  Loader2,
+  MapPin,
+  Star,
+  XCircle,
+} from "lucide-react";
 
 import { Badge } from "@turi/ui/components/badge";
 import { Button } from "@turi/ui/components/button";
@@ -12,13 +19,15 @@ import {
   DialogTitle,
 } from "@turi/ui/components/dialog";
 
+import { useCheckInMachine } from "../hooks/useCheckInMachine";
 import { Place } from "../model/types";
+import { CheckInSuccessModal } from "./check-in-success-modal";
 
 interface PlaceModalProps {
   place: Place;
   isOpen: boolean;
   onClose: () => void;
-  onCheckIn: (placeId: string) => void;
+  checkInMachine: ReturnType<typeof useCheckInMachine>;
   hasCheckedIn: boolean;
 }
 
@@ -26,11 +35,26 @@ export function PlaceModal({
   place,
   isOpen,
   onClose,
-  onCheckIn,
+  checkInMachine,
   hasCheckedIn,
 }: PlaceModalProps) {
   const handleCheckIn = () => {
-    onCheckIn(place.id);
+    checkInMachine.checkIn();
+  };
+
+  const handleRetry = () => {
+    checkInMachine.retry();
+  };
+
+  const getLoadingMessage = () => {
+    if (checkInMachine.isValidating) return "Validating...";
+    if (checkInMachine.isPreparing) return "Preparing transaction...";
+    if (checkInMachine.isWaitingForSignature)
+      return "Please sign in your wallet...";
+    if (checkInMachine.isWaitingForConfirmation)
+      return "Confirming transaction...";
+    if (checkInMachine.isUpdatingDatabase) return "Updating your profile...";
+    return "Processing...";
   };
 
   const getTypeColor = (type: string) => {
@@ -49,6 +73,24 @@ export function PlaceModal({
         return "bg-muted text-muted-foreground";
     }
   };
+
+  // Show success modal when check-in is successful
+  if (checkInMachine.isSuccess) {
+    return (
+      <CheckInSuccessModal
+        isOpen={isOpen}
+        onClose={onClose}
+        placeName={place.name}
+        points={place.points}
+        collectibleName={
+          checkInMachine.context.collectibleName ?? "Digital Postcard"
+        }
+        collectibleImage={
+          checkInMachine.context.collectibleImage ?? place.image
+        }
+      />
+    );
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -137,14 +179,32 @@ export function PlaceModal({
             </div>
           </div>
 
+          {/* Error Alert */}
+          {checkInMachine.isError && checkInMachine.error && (
+            <div className="border-destructive/50 bg-destructive/10 flex h-24 items-start gap-2 overflow-auto rounded-lg border p-3">
+              <p className="text-destructive max-w-md text-sm">
+                {checkInMachine.error}
+              </p>
+            </div>
+          )}
+
           {/* Check-in button */}
           <Button
-            onClick={handleCheckIn}
-            disabled={!place.isInRange || hasCheckedIn}
+            onClick={checkInMachine.isError ? handleRetry : handleCheckIn}
+            disabled={
+              !place.isInRange || hasCheckedIn || checkInMachine.isLoading
+            }
             className="w-full"
             size="lg"
           >
-            {hasCheckedIn ? (
+            {checkInMachine.isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                {getLoadingMessage()}
+              </>
+            ) : checkInMachine.isError ? (
+              "Retry Check-In"
+            ) : hasCheckedIn ? (
               <>
                 <CheckCircle2 className="mr-2 h-5 w-5" />
                 Checked In
@@ -156,11 +216,19 @@ export function PlaceModal({
             )}
           </Button>
 
-          {!place.isInRange && !hasCheckedIn && (
+          {!place.isInRange && !hasCheckedIn && !checkInMachine.isLoading && (
             <p className="text-muted-foreground text-center text-xs">
               Get within {place.checkInRadius}m to check in
             </p>
           )}
+
+          {checkInMachine.isWaitingForConfirmation &&
+            checkInMachine.context.transactionHash && (
+              <p className="text-muted-foreground text-center text-xs">
+                Transaction hash:{" "}
+                {checkInMachine.context.transactionHash.slice(0, 10)}...
+              </p>
+            )}
         </div>
       </DialogContent>
     </Dialog>
