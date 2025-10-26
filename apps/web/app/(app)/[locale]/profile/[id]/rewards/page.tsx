@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { useQuery } from "convex/react";
 import { Gift, Star } from "lucide-react";
 
@@ -20,6 +21,7 @@ interface Marketplace {
 }
 
 export default function RewardsPage() {
+  const t = useTranslations("home.profile.rewards");
   const {
     user,
     claimHistory,
@@ -73,7 +75,7 @@ export default function RewardsPage() {
   if (!benefits) {
     return (
       <div className="flex min-h-[400px] items-center justify-center">
-        <div className="text-muted-foreground">Loading your benefits...</div>
+        <div className="text-muted-foreground">{t("loading")}</div>
       </div>
     );
   }
@@ -81,9 +83,9 @@ export default function RewardsPage() {
   const handleRedeem = (pointsCost: number, itemName: string) => {
     if (user.turiScore >= pointsCost) {
       updateUserPoints(-pointsCost);
-      alert(`Successfully redeemed ${itemName}!`);
+      alert(`${t("successfulRedeem")} ${itemName}!`);
     } else {
-      alert("Insufficient points!");
+      alert(t("insufficientPoints"));
     }
   };
 
@@ -91,15 +93,15 @@ export default function RewardsPage() {
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-foreground mb-2 text-3xl font-bold">Rewards</h2>
+          <h2 className="text-foreground mb-2 text-3xl font-bold">{t("title")}</h2>
           <p className="text-muted-foreground">
-            Redeem your points for exclusive offers
+            {t("subtitle")}
           </p>
         </div>
         <div className="bg-primary/10 flex items-center gap-2 rounded-full px-4 py-2">
           <Gift className="text-primary h-5 w-5" />
           <span className="text-foreground text-sm font-semibold">
-            {myPoints} pts
+            {myPoints} {t("pts")}
           </span>
         </div>
       </div>

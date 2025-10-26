@@ -182,6 +182,14 @@
         "noTrips": "No trips yet",
         "noTripsDescription": "You'll find your past reservations here after you've taken your first trip",
         "startExploring": "Start Exploring"
+      },
+      "rewards": {
+        "title": "Rewards",
+        "subtitle": "Redeem your points for exclusive offers",
+        "loading": "Loading your benefits...",
+        "pts": "pts",
+        "successfulRedeem": "Successfully redeemed",
+        "insufficientPoints": "Insufficient points!"
       }
     },
     "userDropdown": {

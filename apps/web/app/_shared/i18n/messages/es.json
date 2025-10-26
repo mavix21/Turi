@@ -183,6 +183,14 @@
         "noTrips": "Aún no hay viajes",
         "noTripsDescription": "Encontrarás tus reservas pasadas aquí después de haber realizado tu primer viaje",
         "startExploring": "Comenzar a Explorar"
+      },
+      "rewards": {
+        "title": "Recompensas",
+        "subtitle": "Canjea tus puntos por ofertas exclusivas",
+        "loading": "Cargando tus beneficios...",
+        "pts": "pts",
+        "successfulRedeem": "Canjeado exitosamente",
+        "insufficientPoints": "¡Puntos insuficientes!"
       }
     },
     "userDropdown": {
