@@ -176,7 +176,6 @@ export const checkInMachine = setup({
       on: {
         CLOSE: "idle",
       },
-      type: "final" as const,
     },
     error: {
       on: {
