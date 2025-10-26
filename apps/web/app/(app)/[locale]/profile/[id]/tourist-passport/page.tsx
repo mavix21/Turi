@@ -41,7 +41,6 @@ import { useTuriState } from "@turi/ui/hooks/use-turi-state";
 import { StatisticsPanel } from "@/app/_pages/profile/ui/statistics-panel";
 
 export default function TouristPassportPage() {
-  const { user } = useTuriState();
   const params = useParams();
   const locale = (params.locale as string) || "en";
 
@@ -84,77 +83,6 @@ export default function TouristPassportPage() {
       console.error("Failed to update profile:", error);
     }
   };
-
-  const [badges] = useState([
-    {
-      id: "1",
-      name: "First Steps",
-      description: "Complete your first experience",
-      icon: "👣",
-      tier: "bronze" as const,
-      earned: true,
-      earnedDate: "Jan 15, 2024",
-      pointsRequired: 100,
-    },
-    {
-      id: "2",
-      name: "Explorer",
-      description: "Visit 5 different locations",
-      icon: "🗺️",
-      tier: "bronze" as const,
-      earned: true,
-      earnedDate: "Feb 2, 2024",
-      pointsRequired: 500,
-    },
-    {
-      id: "3",
-      name: "Cultural Enthusiast",
-      description: "Earn 500 points from cultural experiences",
-      icon: "🎭",
-      tier: "silver" as const,
-      earned: true,
-      earnedDate: "Mar 10, 2024",
-      pointsRequired: 1000,
-    },
-    {
-      id: "4",
-      name: "Adventure Seeker",
-      description: "Complete 10 adventure activities",
-      icon: "⛰️",
-      tier: "silver" as const,
-      earned: false,
-      pointsRequired: 1500,
-    },
-    {
-      id: "5",
-      name: "Turi Master",
-      description: "Reach 2000 points",
-      icon: "👑",
-      tier: "gold" as const,
-      earned: false,
-      pointsRequired: 2000,
-    },
-    {
-      id: "6",
-      name: "Legend",
-      description: "Reach 5000 points",
-      icon: "⭐",
-      tier: "platinum" as const,
-      earned: false,
-      pointsRequired: 5000,
-    },
-  ]);
-
-  // const userData = {
-  //   name: "María Elena Rodríguez",
-  //   passportNumber: "PE-127845693",
-  //   nationality: "Peruana",
-  //   dateOfBirth: "15 de Marzo, 1992",
-  //   issueDate: "10 de Enero, 2022",
-  //   expiryDate: "10 de Enero, 2032",
-  //   photo:
-  //     "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=400",
-  // };
 
   const travelStamps = [
     {

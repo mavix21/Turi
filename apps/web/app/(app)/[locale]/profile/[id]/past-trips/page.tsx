@@ -1,12 +1,17 @@
 "use client";
 
+import { useQuery } from "convex/react";
 import { MapPin } from "lucide-react";
 
+import { api } from "@turi/convex/_generated/api";
 import { Button } from "@turi/ui/components/button";
-import { useTuriState } from "@turi/ui/hooks/use-turi-state";
 
 export default function PastTripsPage() {
-  const { claimHistory } = useTuriState();
+  const checkIns = useQuery(api.checkIns.getMyCheckIns);
+
+  if (!checkIns) {
+    return null;
+  }
 
   return (
     <div className="space-y-8">
@@ -17,11 +22,11 @@ export default function PastTripsPage() {
         </p>
       </div>
 
-      {claimHistory.length > 0 ? (
+      {checkIns.length > 0 ? (
         <div className="space-y-4">
-          {claimHistory.map((claim, idx) => (
+          {checkIns.map((checkIn) => (
             <div
-              key={idx}
+              key={checkIn._id}
               className="bg-card border-border rounded-2xl border p-6 transition-all hover:shadow-lg"
             >
               <div className="flex items-center justify-between">
@@ -31,16 +36,16 @@ export default function PastTripsPage() {
                   </div>
                   <div>
                     <p className="text-foreground font-semibold">
-                      {claim.location}
+                      {checkIn.locationName}
                     </p>
                     <p className="text-muted-foreground text-sm">
-                      {new Date(claim.timestamp).toLocaleDateString()}
+                      {new Date(checkIn._creationTime).toLocaleDateString()}
                     </p>
                   </div>
                 </div>
                 <div className="text-right">
                   <p className="text-primary text-lg font-bold">
-                    +{claim.pointsEarned}
+                    +{checkIn.points}
                   </p>
                   <p className="text-muted-foreground text-xs">points</p>
                 </div>
