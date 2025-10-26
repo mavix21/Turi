@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useParams } from "next/navigation";
 import { useMutation, useQuery } from "convex/react";
 import {
   Award,
@@ -41,6 +42,9 @@ import { StatisticsPanel } from "@/app/_pages/profile/ui/statistics-panel";
 
 export default function TouristPassportPage() {
   const { user } = useTuriState();
+  const params = useParams();
+  const locale = (params.locale as string) || "en";
+
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -66,11 +70,14 @@ export default function TouristPassportPage() {
 
   const handleSave = async () => {
     try {
+      // Fix timezone issue by appending time to the date string
+      const dateWithTime = `${formData.dateOfBirth}T00:00:00.000Z`;
+
       await updateProfile({
         name: formData.name,
         documentNumber: formData.documentNumber,
         nationality: formData.nationality,
-        dateOfBirth: new Date(formData.dateOfBirth).toISOString(),
+        dateOfBirth: dateWithTime,
       });
       setIsEditOpen(false);
     } catch (error) {
@@ -363,7 +370,7 @@ export default function TouristPassportPage() {
                     <p className="text-lg font-semibold">
                       {new Date(
                         userData.profile.dateOfBirth,
-                      ).toLocaleDateString()}
+                      ).toLocaleDateString(locale, { timeZone: "UTC" })}
                     </p>
                   </div>
                 </div>
@@ -377,9 +384,10 @@ export default function TouristPassportPage() {
                       Issue Date
                     </p>
                     <p className="text-foreground text-lg font-semibold">
-                      {new Date(
-                        userData.profile.issueDate,
-                      ).toLocaleDateString()}
+                      {new Date(userData.profile.issueDate).toLocaleDateString(
+                        locale,
+                        { timeZone: "UTC" },
+                      )}
                     </p>
                   </div>
                 </div>
@@ -393,9 +401,10 @@ export default function TouristPassportPage() {
                       Expiry Date
                     </p>
                     <p className="text-foreground text-lg font-semibold">
-                      {new Date(
-                        userData.profile.expiryDate,
-                      ).toLocaleDateString()}
+                      {new Date(userData.profile.expiryDate).toLocaleDateString(
+                        locale,
+                        { timeZone: "UTC" },
+                      )}
                     </p>
                   </div>
                 </div>
