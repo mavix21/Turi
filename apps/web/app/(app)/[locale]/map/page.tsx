@@ -1,14 +1,15 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { useQuery } from "convex/react";
 import { Loader2, Locate } from "lucide-react";
 
+import { api } from "@turi/convex/_generated/api";
 import { Badge } from "@turi/ui/components/badge";
 import { Button } from "@turi/ui/components/button";
 
 import { calculateDistance, isWithinRadius } from "@/app/_pages/map/map-utils";
 import { MapView } from "@/app/_pages/map/mav-view";
-import { mockPlaces } from "@/app/_pages/map/model/mock-places";
 import { Place } from "@/app/_pages/map/model/types";
 import { PlaceModal } from "@/app/_pages/map/ui/place-modal";
 import { UserLocation } from "@/src/lib/types";
@@ -22,6 +23,7 @@ const DEMO_LOCATION: UserLocation = {
 };
 
 export default function MapPage() {
+  const locationsData = useQuery(api.locations.getLocationsForMap);
   const [userLocation, setUserLocation] = useState<UserLocation>(DEMO_LOCATION);
   const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,6 +32,23 @@ export default function MapPage() {
   const [checkedInPlaces, setCheckedInPlaces] = useState<Set<string>>(
     new Set(),
   );
+
+  // Transform DB data to Place format
+  const places: Place[] =
+    locationsData?.map((loc: any) => ({
+      id: loc.id,
+      name: loc.name,
+      type: "landmark" as const, // Simplified
+      location: loc.location,
+      address: loc.address,
+      description: loc.description,
+      rating: loc.rating,
+      openingHours: "9:00 AM - 6:00 PM",
+      checkInRadius: 100,
+      points: loc.points,
+      nftReward: loc.nftReward,
+      image: loc.image,
+    })) || [];
 
   useEffect(() => {
     if ("geolocation" in navigator) {
@@ -89,7 +108,7 @@ export default function MapPage() {
     setUserLocation(DEMO_LOCATION);
   }, []);
 
-  if (isLoadingLocation) {
+  if (!locationsData || isLoadingLocation) {
     return (
       <div className="bg-background flex min-h-screen items-center justify-center">
         <div className="space-y-4 text-center">
@@ -116,7 +135,7 @@ export default function MapPage() {
         <div className="bg-card/95 border-border rounded-lg border p-4 shadow-lg backdrop-blur-sm">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <Badge variant="default">{mockPlaces.length} Places Nearby</Badge>
+              <Badge variant="default">{places.length} Places Nearby</Badge>
             </div>
             <div className="flex items-center gap-2">
               <Badge variant="secondary">
@@ -143,7 +162,7 @@ export default function MapPage() {
       {/* Map */}
       <MapView
         userLocation={userLocation}
-        places={mockPlaces}
+        places={places}
         onPinClick={handlePinClick}
         checkedInPlaces={checkedInPlaces}
       />
