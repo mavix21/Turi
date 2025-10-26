@@ -1,13 +1,18 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { format } from "date-fns";
-import { parseUnits, formatUnits } from "viem";
-import { useAccount, useWriteContract, useWaitForTransactionReceipt, useReadContract } from "wagmi";
+import { useCallback, useEffect, useState } from "react";
 import { useMutation } from "convex/react";
+import { format } from "date-fns";
 import { useTranslations } from "next-intl";
-import type { Id } from "@turi/convex/_generated/dataModel";
+import { formatUnits, parseUnits } from "viem";
+import {
+  useAccount,
+  useReadContract,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from "wagmi";
 
+import type { Id } from "@turi/convex/_generated/dataModel";
 import { api } from "@turi/convex/_generated/api";
 import { Button } from "@turi/ui/components/button";
 import { Card, CardContent } from "@turi/ui/components/card";
@@ -20,14 +25,15 @@ import {
   DialogTitle,
 } from "@turi/ui/components/dialog";
 import {
+  AlertCircle,
   Calendar,
   CheckCircle2,
   CreditCard,
+  Loader2,
   Users,
   Wallet,
-  AlertCircle,
-  Loader2,
 } from "@turi/ui/index";
+
 import { useAppKit } from "@/reown";
 import {
   ProductVaultAbi,
@@ -87,9 +93,10 @@ export function BookingConfirmDialog({
   const { address, isConnected, chainId } = useAccount();
   const { open: openWallet } = useAppKit();
   const { writeContract, data: txHash, error: writeError } = useWriteContract();
-  const { data: receipt, isSuccess: isTxConfirmed } = useWaitForTransactionReceipt({
-    hash: txHash
-  });
+  const { data: receipt, isSuccess: isTxConfirmed } =
+    useWaitForTransactionReceipt({
+      hash: txHash,
+    });
 
   const createBooking = useMutation(api.bookings.createBookingFromPurchase);
 
@@ -109,16 +116,26 @@ export function BookingConfirmDialog({
   const hasMixedPayment = !!provider.mixedPayment;
 
   // Determine payment amounts based on user selection
-  const usdxAmount = (hasMixedPayment && useMixedPayment && provider.mixedPayment)
-    ? parseUnits((provider.mixedPayment.remainingUSX * participants).toString(), 6) // Mixed: partial USDX
-    : parseUnits(total.toString(), 6); // Normal: full USDX
+  const usdxAmount =
+    hasMixedPayment && useMixedPayment && provider.mixedPayment
+      ? parseUnits(
+          (provider.mixedPayment.remainingUSX * participants).toString(),
+          6,
+        ) // Mixed: partial USDX
+      : parseUnits(total.toString(), 6); // Normal: full USDX
 
-  const travelTokensRequired = (hasMixedPayment && useMixedPayment && provider.mixedPayment)
-    ? parseUnits((provider.mixedPayment.turiTokens * participants).toString(), 18) // Mixed: TURI tokens
-    : 0n; // Normal: no TURI tokens
+  const travelTokensRequired =
+    hasMixedPayment && useMixedPayment && provider.mixedPayment
+      ? parseUnits(
+          (provider.mixedPayment.turiTokens * participants).toString(),
+          18,
+        ) // Mixed: TURI tokens
+      : 0n; // Normal: no TURI tokens
 
   // Check if user has enough TURI tokens for mixed payment
-  const hasEnoughTuriTokens = turiBalance ? turiBalance >= travelTokensRequired : false;
+  const hasEnoughTuriTokens = turiBalance
+    ? (turiBalance as bigint) >= travelTokensRequired
+    : false;
 
   // Reset state when dialog opens/closes
   useEffect(() => {
@@ -136,7 +153,10 @@ export function BookingConfirmDialog({
     if (writeError) {
       const errorMessage = writeError.message || "Transaction failed";
       // Check if user rejected the transaction
-      if (errorMessage.includes("User rejected") || errorMessage.includes("User denied")) {
+      if (
+        errorMessage.includes("User rejected") ||
+        errorMessage.includes("User denied")
+      ) {
         setError("Transaction cancelled by user");
       } else {
         setError(errorMessage);
@@ -267,7 +287,19 @@ export function BookingConfirmDialog({
       setError(err.message || "Failed to save booking");
       setStep("error");
     }
-  }, [receipt, selectedDate, chainId, createBooking, provider._id, participants, total, address, usdxAmount, travelTokensRequired, onOpenChange]);
+  }, [
+    receipt,
+    selectedDate,
+    chainId,
+    createBooking,
+    provider._id,
+    participants,
+    total,
+    address,
+    usdxAmount,
+    travelTokensRequired,
+    onOpenChange,
+  ]);
 
   // Handle transaction confirmation (MOVED AFTER CALLBACK DEFINITIONS)
   useEffect(() => {
@@ -323,10 +355,16 @@ export function BookingConfirmDialog({
   // Prevent closing dialog during active transactions
   const handleOpenChange = (newOpen: boolean) => {
     // Prevent closing if transaction is in progress
-    if (!newOpen && (step === "approving-turi" || step === "waiting-turi-approval" ||
-                     step === "approving-usdx" || step === "waiting-usdx-approval" ||
-                     step === "purchasing" || step === "waiting-confirmation" ||
-                     step === "saving-booking")) {
+    if (
+      !newOpen &&
+      (step === "approving-turi" ||
+        step === "waiting-turi-approval" ||
+        step === "approving-usdx" ||
+        step === "waiting-usdx-approval" ||
+        step === "purchasing" ||
+        step === "waiting-confirmation" ||
+        step === "saving-booking")
+    ) {
       return;
     }
     onOpenChange(newOpen);
@@ -336,44 +374,49 @@ export function BookingConfirmDialog({
   if (step === "success") {
     return (
       <Dialog open={open} onOpenChange={handleOpenChange} modal={true}>
-        <DialogContent className="max-w-md">
-          <div className="flex flex-col items-center justify-center space-y-4 py-8">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
-              <CheckCircle2 className="h-10 w-10 text-green-600 dark:text-green-500" />
-            </div>
-            <DialogTitle className="text-center text-2xl">
-              {t("bookingConfirmed")}
-            </DialogTitle>
-            <DialogDescription className="text-center space-y-2">
-              <p>{t("successMessage")}</p>
-              {receipt?.transactionHash && (
-                <div className="flex flex-col items-center gap-2 pt-2">
-                  <span className="text-xs text-muted-foreground">{t("transactionHash")}</span>
-                  <a
-                    href={`https://sepolia.scrollscan.com/tx/${receipt.transactionHash}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-mono text-xs text-primary hover:underline transition-all flex items-center gap-1"
-                  >
-                    {receipt.transactionHash.slice(0, 10)}...{receipt.transactionHash.slice(-8)}
-                    <svg
-                      className="h-3 w-3"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
+        <DialogContent className="max-h-[90vh] max-w-md overflow-hidden p-0">
+          <div className="max-h-[90vh] overflow-y-auto px-6 py-8">
+            <div className="flex flex-col items-center justify-center space-y-4">
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
+                <CheckCircle2 className="h-10 w-10 text-green-600 dark:text-green-500" />
+              </div>
+              <DialogTitle className="text-center text-2xl">
+                {t("bookingConfirmed")}
+              </DialogTitle>
+              <DialogDescription className="space-y-2 text-center">
+                <p>{t("successMessage")}</p>
+                {receipt?.transactionHash && (
+                  <div className="flex flex-col items-center gap-2 pt-2">
+                    <span className="text-muted-foreground text-xs">
+                      {t("transactionHash")}
+                    </span>
+                    <a
+                      href={`https://sepolia.scrollscan.com/tx/${receipt.transactionHash}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-primary flex items-center gap-1 font-mono text-xs transition-all hover:underline"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                      />
-                    </svg>
-                  </a>
-                </div>
-              )}
-            </DialogDescription>
+                      {receipt.transactionHash.slice(0, 10)}...
+                      {receipt.transactionHash.slice(-8)}
+                      <svg
+                        className="h-3 w-3"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                        />
+                      </svg>
+                    </a>
+                  </div>
+                )}
+              </DialogDescription>
+            </div>
           </div>
         </DialogContent>
       </Dialog>
@@ -402,29 +445,41 @@ export function BookingConfirmDialog({
         if (hasMixedPayment && useMixedPayment && provider.mixedPayment) {
           const turiTotal = provider.mixedPayment.turiTokens * participants;
           const usxTotal = provider.mixedPayment.remainingUSX * participants;
-          return t("buttonStates.payMixed", { turi: turiTotal, usdx: usxTotal });
+          return t("buttonStates.payMixed", {
+            turi: turiTotal,
+            usdx: usxTotal,
+          });
         }
         return t("buttonStates.payUSDX", { total });
     }
   };
 
   const getStepMessage = () => {
-    const totalSteps = (hasMixedPayment && useMixedPayment) ? 3 : 2;
-    const current = (hasMixedPayment && useMixedPayment) ? 2 : 1;
+    const totalSteps = hasMixedPayment && useMixedPayment ? 3 : 2;
+    const current = hasMixedPayment && useMixedPayment ? 2 : 1;
 
     switch (step) {
       case "approving-turi":
         return t("steps.approvingTURI", { current: 1, total: totalSteps });
       case "waiting-turi-approval":
-        return t("steps.waitingTURIApproval", { current: 1, total: totalSteps });
+        return t("steps.waitingTURIApproval", {
+          current: 1,
+          total: totalSteps,
+        });
       case "approving-usdx":
         return t("steps.approvingUSDX", { current, total: totalSteps });
       case "waiting-usdx-approval":
         return t("steps.waitingUSDXApproval", { current, total: totalSteps });
       case "purchasing":
-        return t("steps.confirming", { current: totalSteps, total: totalSteps });
+        return t("steps.confirming", {
+          current: totalSteps,
+          total: totalSteps,
+        });
       case "waiting-confirmation":
-        return t("steps.waitingConfirmation", { current: totalSteps, total: totalSteps });
+        return t("steps.waitingConfirmation", {
+          current: totalSteps,
+          total: totalSteps,
+        });
       case "saving-booking":
         return t("steps.savingBooking");
       default:
@@ -454,235 +509,275 @@ export function BookingConfirmDialog({
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange} modal={!isProcessing}>
-      <DialogContent className="max-w-md">
-        <DialogHeader>
-          <DialogTitle>{t("title")}</DialogTitle>
-          <DialogDescription>
-            {isProcessing
-              ? t("descriptionInProgress")
-              : t("descriptionIdle")
-            }
-          </DialogDescription>
-        </DialogHeader>
+      <DialogContent className="max-h-[90vh] max-w-md overflow-hidden p-0">
+        <div className="max-h-[90vh] overflow-y-auto">
+          <DialogHeader className="bg-background sticky top-0 z-10 border-b px-6 pt-6 pb-4">
+            <DialogTitle>{t("title")}</DialogTitle>
+            <DialogDescription>
+              {isProcessing ? t("descriptionInProgress") : t("descriptionIdle")}
+            </DialogDescription>
+          </DialogHeader>
 
-        {/* Payment Method Selection - Only show if mixed payment is available */}
-        {hasMixedPayment && provider.mixedPayment && !isProcessing && (
-          <div className="space-y-2">
-            <label className="text-sm font-medium">{t("paymentMethod")}</label>
-            <div className="grid grid-cols-1 gap-2">
-              {/* Mixed Payment Option */}
-              <button
-                onClick={() => setUseMixedPayment(true)}
-                className={`flex items-start justify-between rounded-lg border-2 p-3 text-left transition-all ${
-                  useMixedPayment
-                    ? "border-primary bg-primary/5"
-                    : "border-border hover:border-primary/50"
-                }`}
-              >
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <div className={`h-4 w-4 rounded-full border-2 flex items-center justify-center ${
-                      useMixedPayment ? "border-primary" : "border-muted-foreground"
-                    }`}>
-                      {useMixedPayment && (
-                        <div className="h-2 w-2 rounded-full bg-primary" />
-                      )}
+          <div className="space-y-4 px-6 pt-4 pb-6">
+            {/* Payment Method Selection - Only show if mixed payment is available */}
+            {hasMixedPayment && provider.mixedPayment && !isProcessing && (
+              <div className="space-y-2">
+                <label className="text-sm font-medium">
+                  {t("paymentMethod")}
+                </label>
+                <div className="grid grid-cols-1 gap-2">
+                  {/* Mixed Payment Option */}
+                  <button
+                    onClick={() => setUseMixedPayment(true)}
+                    className={`flex items-start justify-between rounded-lg border-2 p-3 text-left transition-all ${
+                      useMixedPayment
+                        ? "border-primary bg-primary/5"
+                        : "border-border hover:border-primary/50"
+                    }`}
+                  >
+                    <div className="flex-1">
+                      <div className="mb-1 flex items-center gap-2">
+                        <div
+                          className={`flex h-4 w-4 items-center justify-center rounded-full border-2 ${
+                            useMixedPayment
+                              ? "border-primary"
+                              : "border-muted-foreground"
+                          }`}
+                        >
+                          {useMixedPayment && (
+                            <div className="bg-primary h-2 w-2 rounded-full" />
+                          )}
+                        </div>
+                        <span className="text-sm font-semibold">
+                          {t("mixedPayment")}
+                        </span>
+                      </div>
+                      <div className="ml-6 space-y-0.5">
+                        <div className="text-sm font-medium text-purple-600 dark:text-purple-400">
+                          {provider.mixedPayment.turiTokens * participants} TURI
+                        </div>
+                        <div className="text-sm font-medium text-blue-600 dark:text-blue-400">
+                          ${provider.mixedPayment.remainingUSX * participants}{" "}
+                          USDX
+                        </div>
+                      </div>
                     </div>
-                    <span className="text-sm font-semibold">{t("mixedPayment")}</span>
-                  </div>
-                  <div className="ml-6 space-y-0.5">
-                    <div className="text-sm font-medium text-purple-600 dark:text-purple-400">
-                      {provider.mixedPayment.turiTokens * participants} TURI
-                    </div>
-                    <div className="text-sm font-medium text-blue-600 dark:text-blue-400">
-                      ${provider.mixedPayment.remainingUSX * participants} USDX
-                    </div>
-                  </div>
-                </div>
-              </button>
+                  </button>
 
-              {/* Normal Payment Option */}
-              <button
-                onClick={() => setUseMixedPayment(false)}
-                className={`flex items-start justify-between rounded-lg border-2 p-3 text-left transition-all ${
-                  !useMixedPayment
-                    ? "border-primary bg-primary/5"
-                    : "border-border hover:border-primary/50"
-                }`}
-              >
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <div className={`h-4 w-4 rounded-full border-2 flex items-center justify-center ${
-                      !useMixedPayment ? "border-primary" : "border-muted-foreground"
-                    }`}>
-                      {!useMixedPayment && (
-                        <div className="h-2 w-2 rounded-full bg-primary" />
-                      )}
+                  {/* Normal Payment Option */}
+                  <button
+                    onClick={() => setUseMixedPayment(false)}
+                    className={`flex items-start justify-between rounded-lg border-2 p-3 text-left transition-all ${
+                      !useMixedPayment
+                        ? "border-primary bg-primary/5"
+                        : "border-border hover:border-primary/50"
+                    }`}
+                  >
+                    <div className="flex-1">
+                      <div className="mb-1 flex items-center gap-2">
+                        <div
+                          className={`flex h-4 w-4 items-center justify-center rounded-full border-2 ${
+                            !useMixedPayment
+                              ? "border-primary"
+                              : "border-muted-foreground"
+                          }`}
+                        >
+                          {!useMixedPayment && (
+                            <div className="bg-primary h-2 w-2 rounded-full" />
+                          )}
+                        </div>
+                        <span className="text-sm font-semibold">
+                          {t("payWithUSDX")}
+                        </span>
+                      </div>
+                      <div className="ml-6">
+                        <div className="text-sm font-medium text-blue-600 dark:text-blue-400">
+                          ${total} USDX
+                        </div>
+                      </div>
                     </div>
-                    <span className="text-sm font-semibold">{t("payWithUSDX")}</span>
-                  </div>
-                  <div className="ml-6">
-                    <div className="text-sm font-medium text-blue-600 dark:text-blue-400">
-                      ${total} USDX
-                    </div>
-                  </div>
+                  </button>
                 </div>
-              </button>
-            </div>
 
-            {/* Warning if user doesn't have enough TURI tokens */}
-            {useMixedPayment && !hasEnoughTuriTokens && travelTokensRequired > 0n && (
-              <div className="bg-yellow-500/10 text-yellow-600 dark:text-yellow-500 rounded-lg p-3 text-sm flex items-start gap-2 border border-yellow-500/20">
-                <AlertCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                <div className="text-xs">
-                  <p className="font-semibold mb-1">
-                    {t("insufficientTURITitle")}
-                  </p>
-                  <p>
-                    {t("insufficientTURIMessage", {
-                      required: provider.mixedPayment ? (provider.mixedPayment.turiTokens * participants).toFixed(2) : "0",
-                      available: turiBalance ? parseFloat(formatUnits(turiBalance, 18)).toFixed(2) : "0"
-                    })}
-                  </p>
-                </div>
+                {/* Warning if user doesn't have enough TURI tokens */}
+                {useMixedPayment &&
+                  !hasEnoughTuriTokens &&
+                  travelTokensRequired > 0n && (
+                    <div className="flex items-start gap-2 rounded-lg border border-yellow-500/20 bg-yellow-500/10 p-3 text-sm text-yellow-600 dark:text-yellow-500">
+                      <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+                      <div className="text-xs">
+                        <p className="mb-1 font-semibold">
+                          {t("insufficientTURITitle")}
+                        </p>
+                        <p>
+                          {t("insufficientTURIMessage", {
+                            required: provider.mixedPayment
+                              ? (
+                                  provider.mixedPayment.turiTokens *
+                                  participants
+                                ).toFixed(2)
+                              : "0",
+                            available: turiBalance
+                              ? parseFloat(
+                                  formatUnits(turiBalance as bigint, 18),
+                                ).toFixed(2)
+                              : "0",
+                          })}
+                        </p>
+                      </div>
+                    </div>
+                  )}
               </div>
             )}
-          </div>
-        )}
 
-        <Card>
-          <CardContent className="space-y-4 pt-6">
-            <div>
-              <h3 className="mb-1 font-semibold">{provider.name}</h3>
-              <p className="text-muted-foreground text-sm">
-                {t("by")} {provider.company?.name || t("unknown")}
-              </p>
-            </div>
+            <Card>
+              <CardContent className="space-y-4 pt-6">
+                <div>
+                  <h3 className="mb-1 font-semibold">{provider.name}</h3>
+                  <p className="text-muted-foreground text-sm">
+                    {t("by")} {provider.company?.name || t("unknown")}
+                  </p>
+                </div>
 
-            <div className="space-y-2 text-sm">
-              <div className="flex items-center gap-2">
-                <Calendar className="text-muted-foreground h-4 w-4" />
-                <span>
-                  {selectedDate
-                    ? format(selectedDate, "EEEE, MMMM d, yyyy")
-                    : t("noDateSelected")}
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Users className="text-muted-foreground h-4 w-4" />
-                <span>
-                  {participants} {participants === 1 ? t("person") : t("people")}
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CreditCard className="text-muted-foreground h-4 w-4" />
-                {useMixedPayment && hasMixedPayment && provider.mixedPayment ? (
-                  <div className="flex flex-col">
-                    <span className="text-sm font-medium text-purple-600 dark:text-purple-400">
-                      {provider.mixedPayment.turiTokens * participants} TURI
-                    </span>
-                    <span className="text-sm font-medium text-blue-600 dark:text-blue-400">
-                      ${provider.mixedPayment.remainingUSX * participants} USDX
+                <div className="space-y-2 text-sm">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="text-muted-foreground h-4 w-4" />
+                    <span>
+                      {selectedDate
+                        ? format(selectedDate, "EEEE, MMMM d, yyyy")
+                        : t("noDateSelected")}
                     </span>
                   </div>
-                ) : (
-                  <span className="text-lg font-semibold">${total} USDX</span>
+                  <div className="flex items-center gap-2">
+                    <Users className="text-muted-foreground h-4 w-4" />
+                    <span>
+                      {participants}{" "}
+                      {participants === 1 ? t("person") : t("people")}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CreditCard className="text-muted-foreground h-4 w-4" />
+                    {useMixedPayment &&
+                    hasMixedPayment &&
+                    provider.mixedPayment ? (
+                      <div className="flex flex-col">
+                        <span className="text-sm font-medium text-purple-600 dark:text-purple-400">
+                          {provider.mixedPayment.turiTokens * participants} TURI
+                        </span>
+                        <span className="text-sm font-medium text-blue-600 dark:text-blue-400">
+                          ${provider.mixedPayment.remainingUSX * participants}{" "}
+                          USDX
+                        </span>
+                      </div>
+                    ) : (
+                      <span className="text-lg font-semibold">
+                        ${total} USDX
+                      </span>
+                    )}
+                  </div>
+                  {isConnected && address && (
+                    <div className="flex items-center gap-2">
+                      <Wallet className="text-muted-foreground h-4 w-4" />
+                      <span className="font-mono text-xs">
+                        {address.slice(0, 6)}...{address.slice(-4)}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Progress indicator */}
+            {isProcessing && getStepMessage() && (
+              <div className={`${getStepColor()} rounded-lg p-3 text-sm`}>
+                <div className="flex items-center gap-2">
+                  <Loader2 className="h-4 w-4 shrink-0 animate-spin" />
+                  <span className="font-medium">{getStepMessage()}</span>
+                </div>
+                {txHash && (
+                  <div className="mt-2 border-t border-current/20 pt-2">
+                    <a
+                      href={`https://sepolia.scrollscan.com/tx/${txHash}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 font-mono text-xs transition-all hover:underline"
+                    >
+                      {t("viewTransaction")} {txHash.slice(0, 10)}...
+                      {txHash.slice(-8)}
+                      <svg
+                        className="h-3 w-3"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                        />
+                      </svg>
+                    </a>
+                  </div>
                 )}
               </div>
-              {isConnected && address && (
-                <div className="flex items-center gap-2">
-                  <Wallet className="text-muted-foreground h-4 w-4" />
-                  <span className="font-mono text-xs">
-                    {address.slice(0, 6)}...{address.slice(-4)}
-                  </span>
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
+            )}
 
-        {/* Progress indicator */}
-        {isProcessing && getStepMessage() && (
-          <div className={`${getStepColor()} rounded-lg p-3 text-sm`}>
-            <div className="flex items-center gap-2">
-              <Loader2 className="h-4 w-4 animate-spin flex-shrink-0" />
-              <span className="font-medium">{getStepMessage()}</span>
+            <div className="bg-muted/50 space-y-1 rounded-lg p-4 text-sm">
+              <div className="flex flex-col items-start gap-2">
+                {provider.guarantees.map((guarantee) => (
+                  <div className="flex items-start gap-2" key={guarantee}>
+                    <CheckCircle2 className="text-primary mt-0.5 h-4 w-4 shrink-0" />
+                    <span className="text-muted-foreground text-xs">
+                      {guarantee}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
-            {txHash && (
-              <div className="mt-2 pt-2 border-t border-current/20">
-                <a
-                  href={`https://sepolia.scrollscan.com/tx/${txHash}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-mono text-xs hover:underline transition-all flex items-center gap-1"
-                >
-                  {t("viewTransaction")} {txHash.slice(0, 10)}...{txHash.slice(-8)}
-                  <svg
-                    className="h-3 w-3"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                    />
-                  </svg>
-                </a>
+
+            {/* Error message */}
+            {error && step === "error" && (
+              <div className="bg-destructive/10 text-destructive flex items-start gap-2 rounded-lg p-3 text-sm">
+                <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+                <div className="min-w-0 flex-1">
+                  <p className="overflow-wrap-anywhere max-h-32 overflow-y-auto text-xs wrap-break-word">
+                    {error}
+                  </p>
+                </div>
               </div>
             )}
-          </div>
-        )}
 
-        <div className="bg-muted/50 space-y-1 rounded-lg p-4 text-sm">
-          <div className="flex flex-col items-start gap-2">
-            {provider.guarantees.map((guarantee) => (
-              <div className="flex items-start gap-2" key={guarantee}>
-                <CheckCircle2 className="text-primary mt-0.5 h-4 w-4 flex-shrink-0" />
-                <span className="text-muted-foreground text-xs">{guarantee}</span>
-              </div>
-            ))}
+            <DialogFooter className="flex-col gap-2 sm:flex-row">
+              <Button
+                variant="outline"
+                onClick={() => handleOpenChange(false)}
+                disabled={isProcessing}
+              >
+                {t("cancel")}
+              </Button>
+              {step === "error" ? (
+                <Button onClick={handleRetry} className="w-full sm:w-auto">
+                  {t("tryAgain")}
+                </Button>
+              ) : (
+                <Button
+                  onClick={handlePurchase}
+                  disabled={
+                    isProcessing ||
+                    (useMixedPayment &&
+                      !hasEnoughTuriTokens &&
+                      travelTokensRequired > 0n)
+                  }
+                  className="w-full sm:w-auto"
+                >
+                  {getButtonText()}
+                </Button>
+              )}
+            </DialogFooter>
           </div>
         </div>
-
-        {/* Error message */}
-        {error && step === "error" && (
-          <div className="bg-destructive/10 text-destructive rounded-lg p-3 text-sm flex items-start gap-2">
-            <AlertCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
-            <div className="flex-1">
-              <p className="text-xs">{error}</p>
-            </div>
-          </div>
-        )}
-
-        <DialogFooter className="flex-col gap-2 sm:flex-row">
-          <Button
-            variant="outline"
-            onClick={() => handleOpenChange(false)}
-            disabled={isProcessing}
-          >
-            {t("cancel")}
-          </Button>
-          {step === "error" ? (
-            <Button
-              onClick={handleRetry}
-              className="w-full sm:w-auto"
-            >
-              {t("tryAgain")}
-            </Button>
-          ) : (
-            <Button
-              onClick={handlePurchase}
-              disabled={isProcessing || (useMixedPayment && !hasEnoughTuriTokens && travelTokensRequired > 0n)}
-              className="w-full sm:w-auto"
-            >
-              {getButtonText()}
-            </Button>
-          )}
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
