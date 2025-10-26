@@ -52,11 +52,28 @@ export function BookingCard({ location }: { location: BookingCardProps }) {
     locationId: location._id as Id<"locations">,
   });
 
-  if (!providers) {
-    return <div>Loading...</div>;
+  // Debug logging
+  console.log("BookingCard - Location ID:", location._id);
+  console.log("BookingCard - Providers:", providers);
+
+  // Show loading state
+  if (providers === undefined) {
+    return (
+      <div className="space-y-4 lg:sticky lg:top-4">
+        <Card className="border-2">
+          <CardContent className="py-8 text-center">
+            <p className="text-muted-foreground">Loading packages...</p>
+            <p className="text-xs text-muted-foreground mt-2">
+              Location ID: {location._id}
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    );
   }
 
-  if (providers.length === 0) {
+  // Show empty state
+  if (providers === null || providers.length === 0) {
     return (
       <div className="space-y-4 lg:sticky lg:top-4">
         <Card className="border-2">
@@ -85,6 +102,7 @@ export function BookingCard({ location }: { location: BookingCardProps }) {
     );
   }
 
+  // Calculate minimum price from all providers
   const minPrice = Math.min(
     ...providers.map(
       (p) => (p.basePricePerPerson ?? 0) + (p.taxesAndFees ?? 0),
