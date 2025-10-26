@@ -25,6 +25,33 @@
       "cta": {
         "primary": "Get Started",
         "secondary": "Learn More"
+      },
+      "tabs": {
+        "tours": "Tours",
+        "hostelry": "Hostelry"
+      },
+      "labels": {
+        "destination": "Destination",
+        "tourDate": "Tour Date",
+        "participants": "Participants",
+        "checkIn": "Check-in",
+        "checkOut": "Check-out",
+        "roomGuest": "Room & Guest"
+      },
+      "participantsCount": {
+        "one": "Person",
+        "other": "People"
+      },
+      "roomGuestOptions": {
+        "oneRoomOneGuest": "1 Room, 1 Guest",
+        "oneRoomTwoGuests": "1 Room, 2 Guests",
+        "twoRoomsTwoGuests": "2 Rooms, 2 Guests",
+        "twoRoomsFourGuests": "2 Rooms, 4 Guests"
+      },
+      "search": "Search",
+      "badges": {
+        "unesco": "UNESCO World Heritage",
+        "archaeological": "Archaeological Site"
       }
     },
     "explore": {

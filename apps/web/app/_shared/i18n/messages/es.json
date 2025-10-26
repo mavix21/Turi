@@ -26,6 +26,33 @@
       "cta": {
         "primary": "Empieza ahora",
         "secondary": "Saber más"
+      },
+      "tabs": {
+        "tours": "Tours",
+        "hostelry": "Hospedaje"
+      },
+      "labels": {
+        "destination": "Destino",
+        "tourDate": "Fecha del Tour",
+        "participants": "Participantes",
+        "checkIn": "Entrada",
+        "checkOut": "Salida",
+        "roomGuest": "Habitación y Huéspedes"
+      },
+      "participantsCount": {
+        "one": "Persona",
+        "other": "Personas"
+      },
+      "roomGuestOptions": {
+        "oneRoomOneGuest": "1 Habitación, 1 Huésped",
+        "oneRoomTwoGuests": "1 Habitación, 2 Huéspedes",
+        "twoRoomsTwoGuests": "2 Habitaciones, 2 Huéspedes",
+        "twoRoomsFourGuests": "2 Habitaciones, 4 Huéspedes"
+      },
+      "search": "Buscar",
+      "badges": {
+        "unesco": "Patrimonio Mundial UNESCO",
+        "archaeological": "Sitio Arqueológico"
       }
     },
     "explore": {

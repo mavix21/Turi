@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Calendar, MapPin, Users } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@turi/ui/components/button";
 
@@ -11,6 +12,7 @@ export function HeroSection({
 }: {
   peruDestinations: string[];
 }) {
+  const t = useTranslations("home.hero");
   const [activeTab, setActiveTab] = useState<"tours" | "hostelry">("tours");
   const [destination, setDestination] = useState("Cusco, Peru");
   const [checkIn, setCheckIn] = useState("2024-12-02");
@@ -36,7 +38,7 @@ export function HeroSection({
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-12 text-center">
           <h1 className="text-foreground mb-6 text-6xl leading-tight font-extrabold md:text-8xl">
-            Discover Peru
+            {t("title")}
           </h1>
         </div>
 
@@ -86,10 +88,10 @@ export function HeroSection({
 
           <div className="absolute top-6 left-6 flex gap-3">
             <span className="bg-card/95 text-foreground border-border rounded-full border px-4 py-2 text-sm font-medium shadow-lg backdrop-blur-sm">
-              UNESCO World Heritage
+              {t("badges.unesco")}
             </span>
             <span className="bg-card/95 text-foreground border-border rounded-full border px-4 py-2 text-sm font-medium shadow-lg backdrop-blur-sm">
-              Archaeological Site
+              {t("badges.archaeological")}
             </span>
           </div>
 
@@ -125,7 +127,7 @@ export function HeroSection({
                   : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
             >
-              Tours
+              {t("tabs.tours")}
             </button>
             <button
               onClick={() => setActiveTab("hostelry")}
@@ -135,7 +137,7 @@ export function HeroSection({
                   : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
             >
-              Hostelry
+              {t("tabs.hostelry")}
             </button>
           </div>
 
@@ -143,7 +145,7 @@ export function HeroSection({
             <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-3">
               <div>
                 <label className="text-muted-foreground mb-1.5 block text-xs font-semibold tracking-wide uppercase">
-                  Destination
+                  {t("labels.destination")}
                 </label>
                 <div className="relative">
                   <MapPin className="text-primary absolute top-1/2 left-0 h-4 w-4 -translate-y-1/2" />
@@ -166,7 +168,7 @@ export function HeroSection({
               </div>
               <div>
                 <label className="text-muted-foreground mb-1.5 block text-xs font-semibold tracking-wide uppercase">
-                  Tour Date
+                  {t("labels.tourDate")}
                 </label>
                 <div className="relative">
                   <Calendar className="text-primary absolute top-1/2 left-0 h-4 w-4 -translate-y-1/2" />
@@ -180,7 +182,7 @@ export function HeroSection({
               </div>
               <div>
                 <label className="text-muted-foreground mb-1.5 block text-xs font-semibold tracking-wide uppercase">
-                  Participants
+                  {t("labels.participants")}
                 </label>
                 <div className="relative">
                   <Users className="text-primary absolute top-1/2 left-0 h-4 w-4 -translate-y-1/2" />
@@ -195,7 +197,10 @@ export function HeroSection({
                         value={num}
                         className="bg-card text-foreground"
                       >
-                        {num} {num === 1 ? "Person" : "People"}
+                        {num}{" "}
+                        {num === 1
+                          ? t("participantsCount.one")
+                          : t("participantsCount.other")}
                       </option>
                     ))}
                   </select>
@@ -206,7 +211,7 @@ export function HeroSection({
             <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-4">
               <div>
                 <label className="text-muted-foreground mb-1.5 block text-xs font-semibold tracking-wide uppercase">
-                  Destination
+                  {t("labels.destination")}
                 </label>
                 <div className="relative">
                   <MapPin className="text-primary absolute top-1/2 left-0 h-4 w-4 -translate-y-1/2" />
@@ -229,7 +234,7 @@ export function HeroSection({
               </div>
               <div>
                 <label className="text-muted-foreground mb-1.5 block text-xs font-semibold tracking-wide uppercase">
-                  Check-in
+                  {t("labels.checkIn")}
                 </label>
                 <div className="relative">
                   <Calendar className="text-primary absolute top-1/2 left-0 h-4 w-4 -translate-y-1/2" />
@@ -243,7 +248,7 @@ export function HeroSection({
               </div>
               <div>
                 <label className="text-muted-foreground mb-1.5 block text-xs font-semibold tracking-wide uppercase">
-                  Check-out
+                  {t("labels.checkOut")}
                 </label>
                 <div className="relative">
                   <Calendar className="text-primary absolute top-1/2 left-0 h-4 w-4 -translate-y-1/2" />
@@ -257,7 +262,7 @@ export function HeroSection({
               </div>
               <div>
                 <label className="text-muted-foreground mb-1.5 block text-xs font-semibold tracking-wide uppercase">
-                  Room & Guest
+                  {t("labels.roomGuest")}
                 </label>
                 <div className="relative">
                   <Users className="text-primary absolute top-1/2 left-0 h-4 w-4 -translate-y-1/2" />
@@ -271,16 +276,16 @@ export function HeroSection({
                     className="text-foreground w-full cursor-pointer bg-transparent pl-6 text-sm font-medium outline-none"
                   >
                     <option value="1-1" className="bg-card text-foreground">
-                      1 Room, 1 Guest
+                      {t("roomGuestOptions.oneRoomOneGuest")}
                     </option>
                     <option value="1-2" className="bg-card text-foreground">
-                      1 Room, 2 Guests
+                      {t("roomGuestOptions.oneRoomTwoGuests")}
                     </option>
                     <option value="2-2" className="bg-card text-foreground">
-                      2 Rooms, 2 Guests
+                      {t("roomGuestOptions.twoRoomsTwoGuests")}
                     </option>
                     <option value="2-4" className="bg-card text-foreground">
-                      2 Rooms, 4 Guests
+                      {t("roomGuestOptions.twoRoomsFourGuests")}
                     </option>
                   </select>
                 </div>
@@ -293,7 +298,7 @@ export function HeroSection({
               onClick={handleSearch}
               className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-2.5 text-sm shadow-lg transition-all hover:shadow-xl"
             >
-              Search
+              {t("search")}
             </Button>
           </div>
         </div>
