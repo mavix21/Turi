@@ -25,3 +25,6 @@ format :; forge fmt
 
 deploy:
 	forge script script/Deploy.s.sol:Deploy --rpc-url $(SEPOLIA_RPC_URL) --account dev --verify --etherscan-api-key $(ETHERSCAN_API_KEY) --broadcast -vvvv
+
+add-places:
+	forge script script/RegisterPlaces.s.sol:RegisterPlaces --rpc-url $(SEPOLIA_RPC_URL) --account dev --broadcast -vvvv
