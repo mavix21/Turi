@@ -1,10 +1,11 @@
 import { Abi } from "viem";
 
-export const PlaceNFTAddress = "0xYourPlaceNFTContractAddress";
-export const ProductVaultAddress = "0xYourProductVaultContractAddress";
-export const TravelCheckinAddress = "0xYourTravelCheckinContractAddress";
-export const TuriTokenAddress = "0xYourTravelTokenContractAddress";
-export const USDXAddress = "0xYourUSDXContractAddress";
+export const PlaceNFTAddress = "0xAC92D1dE90A040fB2df7d10A6fFF4d8B98e9cBc0";
+export const ProductVaultAddress = "0xb62EAA45FbF167D6F3f07Bf2B71E74aba40C6941";
+export const TravelCheckinAddress =
+  "0x01Eec72cB36B6c3BD9Eb35277174799960c91B90";
+export const TuriTokenAddress = "0xB3B022fC6c73eA4683882cE0F6C3a686B1616aBa";
+export const USDXAddress = "0xcdAc26a0D89A041Ba0034Dc056eD4Edb2Cc0298d";
 
 export const PlaceNFTAbi = [
   {
