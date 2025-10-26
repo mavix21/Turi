@@ -24,6 +24,7 @@ import type * as tables_tourPackages from "../tables/tourPackages.js";
 import type * as tables_userProfile from "../tables/userProfile.js";
 import type * as tables_users from "../tables/users.js";
 import type * as tourPackages from "../tourPackages.js";
+import type * as userProfile from "../userProfile.js";
 import type * as users from "../users.js";
 
 import type {
@@ -57,6 +58,7 @@ declare const fullApi: ApiFromModules<{
   "tables/userProfile": typeof tables_userProfile;
   "tables/users": typeof tables_users;
   tourPackages: typeof tourPackages;
+  userProfile: typeof userProfile;
   users: typeof users;
 }>;
 declare const fullApiWithMounts: typeof fullApi;

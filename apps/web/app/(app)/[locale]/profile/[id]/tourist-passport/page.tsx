@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import {
   Award,
   Calendar,
   CheckCircle2,
   CreditCard,
+  Edit,
   Globe,
   MapPin,
   Shield,
@@ -21,13 +22,61 @@ import {
   AvatarImage,
 } from "@turi/ui/components/avatar";
 import { Badge } from "@turi/ui/components/badge";
+import { Button } from "@turi/ui/components/button";
 import { Card, CardContent } from "@turi/ui/components/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@turi/ui/components/dialog";
+import { Input } from "@turi/ui/components/input";
+import { Label } from "@turi/ui/components/label";
 import { useTuriState } from "@turi/ui/hooks/use-turi-state";
 
 import { StatisticsPanel } from "@/app/_pages/profile/ui/statistics-panel";
 
 export default function TouristPassportPage() {
   const { user } = useTuriState();
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    documentNumber: "",
+    nationality: "",
+    dateOfBirth: "",
+  });
+
+  const updateProfile = useMutation(api.userProfile.updateProfile);
+  const userData = useQuery(api.users.getMyProfile);
+
+  const handleEdit = () => {
+    if (userData) {
+      setFormData({
+        name: userData.name,
+        documentNumber: userData.profile.documentNumber,
+        nationality: userData.profile.nationality,
+        dateOfBirth: userData.profile.dateOfBirth.split("T")[0] || "",
+      });
+      setIsEditOpen(true);
+    }
+  };
+
+  const handleSave = async () => {
+    try {
+      await updateProfile({
+        name: formData.name,
+        documentNumber: formData.documentNumber,
+        nationality: formData.nationality,
+        dateOfBirth: new Date(formData.dateOfBirth).toISOString(),
+      });
+      setIsEditOpen(false);
+    } catch (error) {
+      console.error("Failed to update profile:", error);
+    }
+  };
 
   const [badges] = useState([
     {
@@ -162,8 +211,6 @@ export default function TouristPassportPage() {
     memberSince: "2022",
   };
 
-  const userData = useQuery(api.users.getMyProfile);
-
   if (!userData) return null;
 
   return (
@@ -194,16 +241,100 @@ export default function TouristPassportPage() {
             </div>
 
             <div className="flex-1 space-y-6">
-              <div className="space-y-2">
-                <h2 className="bg-clip-text font-serif text-4xl font-bold lg:text-5xl">
-                  {userData.name}
-                </h2>
-                <div className="text-muted-foreground flex items-center gap-3">
-                  <CreditCard className="h-4 w-4" />
-                  <span className="bg-muted/50 rounded-full px-3 py-1 font-mono text-sm tracking-wider">
-                    {userData.profile.documentNumber}
-                  </span>
+              <div className="flex items-start justify-between">
+                <div className="space-y-2">
+                  <h2 className="bg-clip-text font-serif text-4xl font-bold lg:text-5xl">
+                    {userData.name}
+                  </h2>
+                  <div className="text-muted-foreground flex items-center gap-3">
+                    <CreditCard className="h-4 w-4" />
+                    <span className="bg-muted/50 rounded-full px-3 py-1 font-mono text-sm tracking-wider">
+                      {userData.profile.documentNumber}
+                    </span>
+                  </div>
                 </div>
+
+                <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
+                  <DialogTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="rounded-full"
+                      onClick={handleEdit}
+                    >
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[500px]">
+                    <DialogHeader>
+                      <DialogTitle>Edit Profile</DialogTitle>
+                      <DialogDescription>
+                        Update your profile information here.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-4">
+                      <div className="grid gap-2">
+                        <Label htmlFor="name">Name</Label>
+                        <Input
+                          id="name"
+                          value={formData.name}
+                          onChange={(e) =>
+                            setFormData({ ...formData, name: e.target.value })
+                          }
+                        />
+                      </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="documentNumber">Document Number</Label>
+                        <Input
+                          id="documentNumber"
+                          value={formData.documentNumber}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              documentNumber: e.target.value,
+                            })
+                          }
+                        />
+                      </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="nationality">Nationality</Label>
+                        <Input
+                          id="nationality"
+                          value={formData.nationality}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              nationality: e.target.value,
+                            })
+                          }
+                        />
+                      </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="dateOfBirth">Date of Birth</Label>
+                        <Input
+                          id="dateOfBirth"
+                          type="date"
+                          value={formData.dateOfBirth}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              dateOfBirth: e.target.value,
+                            })
+                          }
+                        />
+                      </div>
+                    </div>
+                    <DialogFooter>
+                      <Button
+                        variant="outline"
+                        onClick={() => setIsEditOpen(false)}
+                      >
+                        Cancel
+                      </Button>
+                      <Button onClick={handleSave}>Save changes</Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
               </div>
 
               <div className="grid grid-cols-1 gap-4 pt-4 sm:grid-cols-2">
