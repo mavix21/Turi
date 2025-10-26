@@ -3,6 +3,7 @@
 import { useAppKit } from "@reown/appkit/react";
 import { LogOut, Settings, User, Wallet } from "lucide-react";
 import { signOut } from "next-auth/react";
+import { useTranslations } from "next-intl";
 
 import { Avatar, AvatarFallback } from "@turi/ui/components/avatar";
 import {
@@ -23,6 +24,7 @@ interface UserDropdownProps {
 
 export function UserDropdown({ address, username }: UserDropdownProps) {
   const { open } = useAppKit();
+  const t = useTranslations("home.userDropdown");
 
   const handleLogout = async () => {
     await signOut();
@@ -37,32 +39,32 @@ export function UserDropdown({ address, username }: UserDropdownProps) {
           </AvatarFallback>
         </Avatar>
         <div className="flex flex-col text-start">
-          <p className="text-sm font-medium">{username ?? "Anonymous"}</p>
+          <p className="text-sm font-medium">{username ?? t("anonymous")}</p>
           <p className="text-muted-foreground max-w-32 truncate text-xs">
             {address}
           </p>
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuLabel>{t("myAccount")}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
           <Link href={`/profile/me/tourist-passport`}>
             <User className="mr-2 h-4 w-4" />
-            Profile
+            {t("profile")}
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
           <Settings className="mr-2 h-4 w-4" />
-          Settings
+          {t("settings")}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => open()}>
           <Wallet className="mr-2 h-4 w-4" />
-          Wallet
+          {t("wallet")}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={handleLogout}>
           <LogOut className="mr-2 h-4 w-4" />
-          Logout
+          {t("logout")}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

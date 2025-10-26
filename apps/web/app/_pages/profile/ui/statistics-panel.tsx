@@ -1,4 +1,5 @@
 import { Award, MapPin, Shield, TrendingUp } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Card, CardContent } from "@turi/ui/components/card";
 
@@ -14,6 +15,8 @@ interface StatisticsPanelProps {
 }
 
 export function StatisticsPanel({ statistics }: StatisticsPanelProps) {
+  const t = useTranslations("profile.statistics");
+
   return (
     <div className="mt-10 grid grid-cols-2 gap-6 lg:grid-cols-4">
       <Card>
@@ -24,7 +27,7 @@ export function StatisticsPanel({ statistics }: StatisticsPanelProps) {
             </div>
           </div>
           <p className="text-muted-foreground mb-2 text-xs font-medium tracking-widest uppercase">
-            Destinos
+            {t("destinations")}
           </p>
           <p className="text-4xl font-bold">{statistics.totalCheckIns}</p>
         </CardContent>
@@ -38,7 +41,7 @@ export function StatisticsPanel({ statistics }: StatisticsPanelProps) {
             </div>
           </div>
           <p className="text-muted-foreground mb-2 text-xs font-medium tracking-widest uppercase">
-            Verificados
+            {t("verified")}
           </p>
           <p className="text-4xl font-bold">{statistics.totalVerifiedStamps}</p>
         </CardContent>
@@ -52,7 +55,7 @@ export function StatisticsPanel({ statistics }: StatisticsPanelProps) {
             </div>
           </div>
           <p className="text-muted-foreground mb-2 text-xs font-medium tracking-widest uppercase">
-            Puntuación
+            {t("score")}
           </p>
           <p className="text-4xl font-bold">
             {statistics.totalScorePercentage}%
@@ -68,7 +71,7 @@ export function StatisticsPanel({ statistics }: StatisticsPanelProps) {
             </div>
           </div>
           <p className="text-muted-foreground mb-2 text-xs font-medium tracking-widest uppercase">
-            Miembro desde
+            {t("memberSince")}
           </p>
           <p className="text-4xl font-bold">{new Date().getFullYear()}</p>
         </CardContent>

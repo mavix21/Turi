@@ -76,7 +76,10 @@
     "partnerDiscounts": {
       "title": "Paquetes de Descuentos de Socios",
       "description": "Ofertas exclusivas de viaje a Perú para miembros de Turi",
-      "loading": "Cargando..."
+      "loading": "Cargando...",
+      "off": "DESC",
+      "redeem": "Canjear",
+      "points": "pts"
     },
     "visitAndCollect": {
       "title": "Visita y Colecciona",
@@ -89,7 +92,8 @@
         "title": "Prueba de Viaje Verificada en Blockchain",
         "description": "Cada postal digital es un NFT único que certifica tu visita a destinos icónicos peruanos. Colecciónalas todas mientras exploras Perú y construye tu portafolio de viajes verificado en cadena."
       },
-      "viewCollection": "Ver Colección"
+      "viewCollection": "Ver Colección",
+      "verifiedOnChain": "Verificado on-chain"
     },
     "footer": {
       "about": {
@@ -120,6 +124,22 @@
         "instagram": "Instagram",
         "linkedin": "LinkedIn"
       }
+    },
+    "profile": {
+      "statistics": {
+        "destinations": "Destinos",
+        "verified": "Verificados",
+        "score": "Puntuación",
+        "memberSince": "Miembro desde"
+      }
+    },
+    "userDropdown": {
+      "myAccount": "Mi Cuenta",
+      "profile": "Perfil",
+      "settings": "Configuración",
+      "wallet": "Billetera",
+      "logout": "Cerrar sesión",
+      "anonymous": "Anónimo"
     }
   },
 

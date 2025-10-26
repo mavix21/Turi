@@ -75,7 +75,10 @@
     "partnerDiscounts": {
       "title": "Partner Discount Bundles",
       "description": "Exclusive Peru travel offers for Turi members",
-      "loading": "Loading..."
+      "loading": "Loading...",
+      "off": "OFF",
+      "redeem": "Redeem",
+      "points": "pts"
     },
     "visitAndCollect": {
       "title": "Visit and Collect",
@@ -88,7 +91,8 @@
         "title": "Blockchain-Verified Travel Proof",
         "description": "Each digital postcard is a unique NFT that certifies your visit to iconic Peruvian destinations. Collect them all as you explore Peru and build your verified travel portfolio on-chain."
       },
-      "viewCollection": "View Collection"
+      "viewCollection": "View Collection",
+      "verifiedOnChain": "Verified on-chain"
     },
     "footer": {
       "about": {
@@ -119,6 +123,22 @@
         "instagram": "Instagram",
         "linkedin": "LinkedIn"
       }
+    },
+    "profile": {
+      "statistics": {
+        "destinations": "Destinations",
+        "verified": "Verified",
+        "score": "Score",
+        "memberSince": "Member Since"
+      }
+    },
+    "userDropdown": {
+      "myAccount": "My Account",
+      "profile": "Profile",
+      "settings": "Settings",
+      "wallet": "Wallet",
+      "logout": "Logout",
+      "anonymous": "Anonymous"
     }
   },
 

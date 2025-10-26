@@ -1,4 +1,5 @@
 import { Check } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface PostcardCardProps {
   name: string;
@@ -15,6 +16,8 @@ export function PostcardCard({
   collectionProgress = 0,
   totalInCollection = 5,
 }: PostcardCardProps) {
+  const t = useTranslations("home.collection");
+
   return (
     <div className="group relative">
       {/* Card Container */}
@@ -65,7 +68,7 @@ export function PostcardCard({
       {collected && (
         <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
           <div className="bg-primary text-primary-foreground rounded-full px-3 py-1 text-xs font-bold whitespace-nowrap shadow-lg">
-            Verified On-Chain
+            {t("verifiedOnChain")}
           </div>
         </div>
       )}

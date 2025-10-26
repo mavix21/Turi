@@ -11,15 +11,11 @@ import { UserDropdown } from "./user-dropdown";
 
 export function AuthMenu() {
   const { data: session } = useSession();
-  const user = useQuery(api.users.getMyProfile);
 
   return (
     <div className="flex items-center gap-3">
       {session ? (
-        <UserDropdown
-          username={user?.name ?? "Anonymous"}
-          address={session.address}
-        />
+        <UserDropdown username={"Turi Traveler"} address={session.address} />
       ) : (
         <ConnectButton />
       )}

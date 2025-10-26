@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@turi/ui/components/button";
 
@@ -18,6 +19,8 @@ export function PartnerCard({
   description,
   image,
 }: PartnerCardProps) {
+  const t = useTranslations("home.partnerDiscounts");
+
   return (
     <div className="bg-card card-shadow group overflow-hidden rounded-2xl border transition-all duration-300 hover:shadow-xl">
       {/* Image */}
@@ -31,7 +34,7 @@ export function PartnerCard({
         {/* Discount Badge */}
         <div className="bg-card absolute top-4 right-4 rounded-full px-3 py-1.5 shadow-lg">
           <span className="text-primary text-sm font-bold">
-            {discount}% OFF
+            {discount}% {t("off")}
           </span>
         </div>
       </div>
@@ -46,7 +49,7 @@ export function PartnerCard({
         {/* Redeem Button */}
         <Link href="/profile">
           <Button className="bg-primary hover:bg-primary/90 text-primary-foreground w-full">
-            Redeem • {pointsCost} pts
+            {t("redeem")} • {pointsCost} {t("points")}
           </Button>
         </Link>
       </div>
