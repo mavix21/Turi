@@ -60,7 +60,7 @@ export function PlaceCard({
           {rating && (
             <div className="bg-background/90 absolute top-3 right-3 flex items-center gap-1 rounded-full border px-3 py-1.5 backdrop-blur-2xl">
               <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-              <span className="text-sm font-semibold text-gray-900">
+              <span className="text-foreground text-sm font-semibold">
                 {rating.toFixed(1)}
               </span>
             </div>

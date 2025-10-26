@@ -84,8 +84,8 @@ export function ExploreSection({
   }
 
   return (
-    <section className="bg-card rounded-3xl py-16 md:py-0">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section className="bg-card rounded-3xl">
+      <div className="mx-auto max-w-7xl px-8 py-8 sm:px-6 md:py-18 lg:px-8">
         <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <h2 className="text-foreground mb-3 text-4xl font-bold md:text-5xl">
@@ -99,19 +99,16 @@ export function ExploreSection({
         </div>
         <div className="mb-8 flex flex-wrap items-center gap-3">
           {exploreCategories.map((category) => (
-            <button
+            <Button
               key={category.id}
               onClick={() => setExploreFilter(category.id)}
-              className={`rounded-full px-5 py-2.5 text-sm font-medium transition ${
-                exploreFilter === category.id
-                  ? "bg-foreground text-background"
-                  : "bg-background text-muted-foreground hover:bg-muted hover:text-foreground"
-              }`}
+              className="rounded-full"
+              variant={exploreFilter === category.id ? "default" : "outline"}
             >
               {t(`filters.${category.id}`)}
-            </button>
+            </Button>
           ))}
-          <button className="bg-background text-muted-foreground hover:bg-muted hover:text-foreground ml-auto flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition">
+          {/* <button className="bg-background text-muted-foreground hover:bg-muted hover:text-foreground ml-auto flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition">
             {t("filters.more.title")}
             <svg
               className="h-4 w-4"
@@ -127,7 +124,7 @@ export function ExploreSection({
                 d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
               />
             </svg>
-          </button>
+          </button> */}
         </div>
         <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filteredPlaces.map((location) => (

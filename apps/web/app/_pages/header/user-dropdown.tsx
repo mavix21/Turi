@@ -1,7 +1,7 @@
 "use client";
 
 import { useAppKit } from "@reown/appkit/react";
-import { LogOut, Settings, User, Wallet } from "lucide-react";
+import { LogOut, User, Wallet } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { useTranslations } from "next-intl";
 
@@ -53,10 +53,6 @@ export function UserDropdown({ address, username }: UserDropdownProps) {
             <User className="mr-2 h-4 w-4" />
             {t("profile")}
           </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Settings className="mr-2 h-4 w-4" />
-          {t("settings")}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => open()}>
           <Wallet className="mr-2 h-4 w-4" />

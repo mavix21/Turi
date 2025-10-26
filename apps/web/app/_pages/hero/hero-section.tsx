@@ -1,11 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
-import { Calendar, MapPin, Users } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-import { Button } from "@turi/ui/components/button";
+import { FiltersWidget } from "./filters-widget";
 
 export function HeroSection({
   peruDestinations,
@@ -13,31 +11,12 @@ export function HeroSection({
   peruDestinations: string[];
 }) {
   const t = useTranslations("home.hero");
-  const [activeTab, setActiveTab] = useState<"tours" | "hostelry">("tours");
-  const [destination, setDestination] = useState("Cusco, Peru");
-  const [checkIn, setCheckIn] = useState("2025-10-27");
-  const [checkOut, setCheckOut] = useState("2025-10-31");
-  const [participants, setParticipants] = useState(4);
-  const [guests, setGuests] = useState(2);
-  const [rooms, setRooms] = useState(1);
-
-  const handleSearch = () => {
-    const searchData = {
-      type: activeTab,
-      destination,
-      ...(activeTab === "hostelry"
-        ? { checkIn, checkOut, rooms, guests }
-        : { checkIn, participants }),
-    };
-    console.log("[v0] Search initiated:", searchData);
-    alert(`Searching for ${activeTab} in ${destination}`);
-  };
 
   return (
-    <section className="bg-background relative py-24">
+    <section className="bg-background relative pt-24 pb-8 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-12 text-center">
-          <h1 className="text-foreground mb-6 text-6xl leading-tight font-extrabold md:text-8xl">
+        <div className="mb-4 text-center md:mb-12">
+          <h1 className="text-foreground mb-6 text-5xl leading-tight font-extrabold md:text-8xl">
             {t("title")}
           </h1>
         </div>
@@ -46,24 +25,24 @@ export function HeroSection({
           <Image
             src="/images/design-mode/machu-pichu-optimized.jpg"
             alt="Machu Picchu"
-            className="aspect-video w-full object-cover"
+            className="h-[400px] w-full object-cover sm:h-[500px] md:aspect-video md:h-auto"
             width={1600}
             height={900}
             priority
           />
 
-          <div className="absolute top-1/2 right-8 hidden -translate-y-1/2 lg:block">
+          <div className="absolute top-1/2 right-2 -translate-y-1/2 sm:right-4 md:right-8">
             <div className="relative">
-              <div className="bg-card border-border w-40 rotate-3 transform overflow-hidden rounded-lg border-2 shadow-2xl transition-transform duration-300 hover:rotate-0">
+              <div className="bg-card border-border w-24 rotate-3 transform overflow-hidden rounded-lg border-2 shadow-2xl transition-transform duration-300 hover:rotate-0 sm:w-32 md:w-40">
                 <div className="relative">
                   <img
                     src="/flat-vector-illustration-of-machu-picchu-peru-with.jpg"
                     alt="Machu Picchu Postcard"
-                    className="h-48 w-full object-cover"
+                    className="h-28 w-full object-cover sm:h-36 md:h-48"
                   />
-                  <div className="bg-primary absolute top-2 left-2 flex h-6 w-6 items-center justify-center rounded-full shadow-lg">
+                  <div className="bg-primary absolute top-1 left-1 flex h-4 w-4 items-center justify-center rounded-full shadow-lg sm:top-2 sm:left-2 sm:h-5 sm:w-5 md:h-6 md:w-6">
                     <svg
-                      className="text-primary-foreground h-4 w-4"
+                      className="text-primary-foreground h-2.5 w-2.5 sm:h-3 sm:w-3 md:h-4 md:w-4"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -77,8 +56,8 @@ export function HeroSection({
                     </svg>
                   </div>
                 </div>
-                <div className="bg-card p-2">
-                  <p className="text-foreground text-center text-xs font-bold tracking-wide uppercase">
+                <div className="bg-card p-1 sm:p-1.5 md:p-2">
+                  <p className="text-foreground text-center text-[0.5rem] font-bold tracking-wide uppercase sm:text-xs">
                     Machu Picchu
                   </p>
                 </div>
@@ -86,220 +65,17 @@ export function HeroSection({
             </div>
           </div>
 
-          <div className="absolute top-6 left-6 flex gap-3">
-            <span className="bg-card/95 text-foreground border-border rounded-full border px-4 py-2 text-sm font-medium shadow-lg backdrop-blur-sm">
+          <div className="absolute top-3 left-3 flex flex-wrap gap-1.5 sm:top-4 sm:left-4 sm:gap-2 md:top-6 md:left-6 md:gap-3">
+            <span className="bg-card/95 text-foreground border-border rounded-full border px-2 py-1 text-[0.625rem] font-medium shadow-lg backdrop-blur-sm sm:px-3 sm:py-1.5 sm:text-xs md:px-4 md:py-2 md:text-sm">
               {t("badges.unesco")}
             </span>
-            <span className="bg-card/95 text-foreground border-border rounded-full border px-4 py-2 text-sm font-medium shadow-lg backdrop-blur-sm">
+            <span className="bg-card/95 text-foreground border-border rounded-full border px-2 py-1 text-[0.625rem] font-medium shadow-lg backdrop-blur-sm sm:px-3 sm:py-1.5 sm:text-xs md:px-4 md:py-2 md:text-sm">
               {t("badges.archaeological")}
             </span>
           </div>
 
-          {/* <div className="bg-card/95 border-border absolute top-6 right-6 max-w-xs rounded-xl border p-4 shadow-lg backdrop-blur-sm">
-            <div className="flex items-start gap-3">
-              <img
-                src="/flat-vector-illustration-of-machu-picchu-peru-with.jpg"
-                alt="Machu Picchu NFT"
-                className="h-16 w-16 rounded-lg object-cover"
-              />
-              <div>
-                <p className="text-muted-foreground mb-1 text-xs">
-                  Collect NFT Postcard
-                </p>
-                <p className="text-foreground text-sm font-bold">
-                  Machu Picchu
-                </p>
-                <p className="text-muted-foreground text-xs">Cusco, Peru</p>
-              </div>
-            </div>
-          </div> */}
-        </div>
-      </div>
-
-      <div className="relative z-20 mx-auto -mt-32 max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="bg-card/95 border-border rounded-2xl border p-6 shadow-2xl backdrop-blur-xl">
-          <div className="border-border mb-6 flex gap-2 border-b pb-4">
-            <button
-              onClick={() => setActiveTab("tours")}
-              className={`rounded-lg px-6 py-2.5 text-sm font-semibold transition ${
-                activeTab === "tours"
-                  ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
-              }`}
-            >
-              {t("tabs.tours")}
-            </button>
-            <button
-              onClick={() => setActiveTab("hostelry")}
-              className={`rounded-lg px-6 py-2.5 text-sm font-semibold transition ${
-                activeTab === "hostelry"
-                  ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
-              }`}
-            >
-              {t("tabs.hostelry")}
-            </button>
-          </div>
-
-          {activeTab === "tours" ? (
-            <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-3">
-              <div>
-                <label className="text-muted-foreground mb-1.5 block text-xs font-semibold tracking-wide uppercase">
-                  {t("labels.destination")}
-                </label>
-                <div className="relative">
-                  <MapPin className="text-primary absolute top-1/2 left-0 h-4 w-4 -translate-y-1/2" />
-                  <select
-                    value={destination}
-                    onChange={(e) => setDestination(e.target.value)}
-                    className="text-foreground w-full cursor-pointer bg-transparent pl-6 text-sm font-medium outline-none"
-                  >
-                    {peruDestinations.map((dest) => (
-                      <option
-                        key={dest}
-                        value={dest}
-                        className="bg-card text-foreground"
-                      >
-                        {dest}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-              <div>
-                <label className="text-muted-foreground mb-1.5 block text-xs font-semibold tracking-wide uppercase">
-                  {t("labels.tourDate")}
-                </label>
-                <div className="relative">
-                  <Calendar className="text-primary absolute top-1/2 left-0 h-4 w-4 -translate-y-1/2" />
-                  <input
-                    type="date"
-                    value={checkIn}
-                    onChange={(e) => setCheckIn(e.target.value)}
-                    className="text-foreground w-full cursor-pointer bg-transparent pl-6 text-sm font-medium outline-none"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="text-muted-foreground mb-1.5 block text-xs font-semibold tracking-wide uppercase">
-                  {t("labels.participants")}
-                </label>
-                <div className="relative">
-                  <Users className="text-primary absolute top-1/2 left-0 h-4 w-4 -translate-y-1/2" />
-                  <select
-                    value={participants}
-                    onChange={(e) => setParticipants(Number(e.target.value))}
-                    className="text-foreground w-full cursor-pointer bg-transparent pl-6 text-sm font-medium outline-none"
-                  >
-                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
-                      <option
-                        key={num}
-                        value={num}
-                        className="bg-card text-foreground"
-                      >
-                        {num}{" "}
-                        {num === 1
-                          ? t("participantsCount.one")
-                          : t("participantsCount.other")}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-4">
-              <div>
-                <label className="text-muted-foreground mb-1.5 block text-xs font-semibold tracking-wide uppercase">
-                  {t("labels.destination")}
-                </label>
-                <div className="relative">
-                  <MapPin className="text-primary absolute top-1/2 left-0 h-4 w-4 -translate-y-1/2" />
-                  <select
-                    value={destination}
-                    onChange={(e) => setDestination(e.target.value)}
-                    className="text-foreground w-full cursor-pointer bg-transparent pl-6 text-sm font-medium outline-none"
-                  >
-                    {peruDestinations.map((dest) => (
-                      <option
-                        key={dest}
-                        value={dest}
-                        className="bg-card text-foreground"
-                      >
-                        {dest}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-              <div>
-                <label className="text-muted-foreground mb-1.5 block text-xs font-semibold tracking-wide uppercase">
-                  {t("labels.checkIn")}
-                </label>
-                <div className="relative">
-                  <Calendar className="text-primary absolute top-1/2 left-0 h-4 w-4 -translate-y-1/2" />
-                  <input
-                    type="date"
-                    value={checkIn}
-                    onChange={(e) => setCheckIn(e.target.value)}
-                    className="text-foreground w-full cursor-pointer bg-transparent pl-6 text-sm font-medium outline-none"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="text-muted-foreground mb-1.5 block text-xs font-semibold tracking-wide uppercase">
-                  {t("labels.checkOut")}
-                </label>
-                <div className="relative">
-                  <Calendar className="text-primary absolute top-1/2 left-0 h-4 w-4 -translate-y-1/2" />
-                  <input
-                    type="date"
-                    value={checkOut}
-                    onChange={(e) => setCheckOut(e.target.value)}
-                    className="text-foreground w-full cursor-pointer bg-transparent pl-6 text-sm font-medium outline-none"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="text-muted-foreground mb-1.5 block text-xs font-semibold tracking-wide uppercase">
-                  {t("labels.roomGuest")}
-                </label>
-                <div className="relative">
-                  <Users className="text-primary absolute top-1/2 left-0 h-4 w-4 -translate-y-1/2" />
-                  <select
-                    value={`${rooms}-${guests}`}
-                    onChange={(e) => {
-                      const [r, g] = e.target.value.split("-").map(Number);
-                      setRooms(r ?? 1);
-                      setGuests(g ?? 1);
-                    }}
-                    className="text-foreground w-full cursor-pointer bg-transparent pl-6 text-sm font-medium outline-none"
-                  >
-                    <option value="1-1" className="bg-card text-foreground">
-                      {t("roomGuestOptions.oneRoomOneGuest")}
-                    </option>
-                    <option value="1-2" className="bg-card text-foreground">
-                      {t("roomGuestOptions.oneRoomTwoGuests")}
-                    </option>
-                    <option value="2-2" className="bg-card text-foreground">
-                      {t("roomGuestOptions.twoRoomsTwoGuests")}
-                    </option>
-                    <option value="2-4" className="bg-card text-foreground">
-                      {t("roomGuestOptions.twoRoomsFourGuests")}
-                    </option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          )}
-
-          <div className="flex justify-end">
-            <Button
-              onClick={handleSearch}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-2.5 text-sm shadow-lg transition-all hover:shadow-xl"
-            >
-              {t("search")}
-            </Button>
+          <div className="hidden lg:block">
+            <FiltersWidget peruDestinations={peruDestinations} />
           </div>
         </div>
       </div>

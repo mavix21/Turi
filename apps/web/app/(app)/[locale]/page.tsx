@@ -21,7 +21,7 @@ export default function HomePage() {
       <HeroSection peruDestinations={peruDestinations} />
 
       {/* Main Content */}
-      <main className="container mx-auto mb-24">
+      <main className="mx-auto mb-24 w-full px-4 lg:container">
         {/* Explore Section */}
         <ExploreSection exploreCategories={exploreCategories} />
         <CollectionSection nftPostcards={nftPostcards} />
