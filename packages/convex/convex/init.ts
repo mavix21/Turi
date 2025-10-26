@@ -7,6 +7,7 @@ const seedLocations = mutation({
       {
         location: {
           name: "Plaza de Armas",
+          slug: "plaza-de-armas",
           description:
             "The historic main square of Cusco, surrounded by colonial arcades and the magnificent Cusco Cathedral. A UNESCO World Heritage site and the heart of the ancient Inca capital.",
           rating: 4.8,
@@ -48,6 +49,7 @@ const seedLocations = mutation({
       {
         location: {
           name: "Qorikancha Temple",
+          slug: "qorikancha-temple",
           description:
             "The Temple of the Sun, once the most important temple in the Inca Empire. Its walls were covered in gold, and it housed the mummies of previous Inca rulers.",
           rating: 4.7,
@@ -89,6 +91,7 @@ const seedLocations = mutation({
       {
         location: {
           name: "Chicha por Gastón Acurio",
+          slug: "chicha-por-gaston-acurio",
           description:
             "Contemporary Peruvian cuisine by renowned chef Gastón Acurio. Experience traditional flavors with a modern twist in a beautiful colonial setting.",
           rating: 4.6,
@@ -130,6 +133,7 @@ const seedLocations = mutation({
       {
         location: {
           name: "Belmond Hotel Monasterio",
+          slug: "belmond-hotel-monasterio",
           description:
             "A luxury hotel set in a 16th-century monastery. Features beautiful courtyards, colonial architecture, and world-class amenities.",
           rating: 4.9,
@@ -171,6 +175,7 @@ const seedLocations = mutation({
       {
         location: {
           name: "San Pedro Market",
+          slug: "san-pedro-market",
           description:
             "The largest and most vibrant market in Cusco. Find fresh produce, local crafts, traditional foods, and experience authentic Peruvian culture.",
           rating: 4.5,
@@ -212,6 +217,7 @@ const seedLocations = mutation({
       {
         location: {
           name: "Sacsayhuamán",
+          slug: "sacsayhuaman",
           description:
             "Impressive Inca fortress with massive stone walls. The precision of the stonework is remarkable, with some stones weighing over 100 tons.",
           rating: 4.8,
@@ -253,6 +259,7 @@ const seedLocations = mutation({
       {
         location: {
           name: "Museo Inka",
+          slug: "museo-inka",
           description:
             "Comprehensive museum showcasing Inca artifacts, textiles, ceramics, and mummies. Learn about the rich history and culture of the Inca civilization.",
           rating: 4.6,
@@ -294,6 +301,7 @@ const seedLocations = mutation({
       {
         location: {
           name: "Limo Cocina Peruana",
+          slug: "limo-cocina-peruana",
           description:
             "Upscale restaurant offering innovative Peruvian-Japanese fusion cuisine with stunning views of Plaza de Armas.",
           rating: 4.7,
@@ -335,6 +343,7 @@ const seedLocations = mutation({
       {
         location: {
           name: "Centro Artesanal Cusco",
+          slug: "centro-artesanal-cusco",
           description:
             "Artisan market featuring high-quality handmade crafts, textiles, jewelry, and souvenirs from local Peruvian artisans.",
           rating: 4.4,
@@ -376,6 +385,7 @@ const seedLocations = mutation({
       {
         location: {
           name: "Twelve-Angled Stone",
+          slug: "twelve-angled-stone",
           description:
             "Famous Inca stone with twelve angles, showcasing the incredible precision of Inca masonry. A popular photo spot and testament to Inca engineering.",
           rating: 4.5,
