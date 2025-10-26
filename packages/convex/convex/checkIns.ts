@@ -19,8 +19,8 @@ export const getMyCheckIns = query({
         const collectible = await ctx.db.get(checkIn.collectibleId);
         return {
           ...checkIn,
+          ...collectible,
           locationName: location ? location.name : "Unknown location",
-          points: collectible ? collectible.pointsValue : "0",
         };
       }),
     );

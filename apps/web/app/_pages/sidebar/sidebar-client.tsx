@@ -18,13 +18,13 @@ export function SidebarClient() {
       label: "My Turi Passport",
       icon: "Ticket",
     },
+    {
+      id: "collectibles",
+      label: "Collectibles",
+      icon: "SquareStar",
+    },
     { id: "past-trips", label: "Past trips", icon: "Luggage" },
     { id: "rewards", label: "Rewards", icon: "Gift" },
-    {
-      id: "certified-providers",
-      label: "Certified Providers",
-      icon: "Store",
-    },
   ];
 
   return (
@@ -40,7 +40,7 @@ export function SidebarClient() {
             asChild
           >
             <Link href={href}>
-              <Icon className="h-5 w-5 flex-shrink-0" />
+              <Icon className="h-5 w-5 shrink-0" />
               <span className="text-sm">{item.label}</span>
             </Link>
           </Button>

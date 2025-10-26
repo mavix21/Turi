@@ -45,7 +45,7 @@ export default function PastTripsPage() {
                 </div>
                 <div className="text-right">
                   <p className="text-primary text-lg font-bold">
-                    +{checkIn.points}
+                    +{checkIn.pointsValue}
                   </p>
                   <p className="text-muted-foreground text-xs">points</p>
                 </div>

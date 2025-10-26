@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { useQuery } from "convex/react";
 import { CheckCircle2, MapPin, Star, TrendingUp } from "lucide-react";
 
+import { api } from "@turi/convex/_generated/api";
 import { Button } from "@turi/ui/components/button";
 
 interface CertifiedProvider {
@@ -59,6 +61,8 @@ export default function CertifiedProvidersPage() {
       verified: true,
     },
   ]);
+
+  const collectiblesWithCheckIns = useQuery(api.checkIns.getMyCheckIns);
 
   return (
     <div className="space-y-8">
