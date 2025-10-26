@@ -32,24 +32,24 @@ export function ExploreSection({
   } else if (exploreFilter === "archaeological") {
     filteredPlaces = locations.filter(
       (location) =>
-        location.category.type === "Attraction" &&
-        location.category.kind.subtype === "Archaeological Site",
+        location.category.type === "Atracción" &&
+        location.category.kind.subtype === "Sitio Arqueológico",
     );
   } else if (exploreFilter === "historic") {
     filteredPlaces = locations.filter(
       (location) =>
-        location.category.type === "Attraction" &&
-        location.category.kind.subtype === "Historical Site",
+        location.category.type === "Atracción" &&
+        location.category.kind.subtype === "Sitio Arqueológico",
     );
   } else if (exploreFilter === "museums") {
     filteredPlaces = locations.filter(
       (location) =>
-        location.category.type === "Attraction" &&
-        location.category.kind.subtype === "Museum",
+        location.category.type === "Atracción" &&
+        location.category.kind.subtype === "Museo",
     );
   } else if (exploreFilter === "natural") {
     filteredPlaces = locations.filter(
-      (location) => location.category.type === "Attraction",
+      (location) => location.category.type === "Atracción",
     );
   }
 
