@@ -8,6 +8,41 @@ export const getAllLocations = query({
   },
 });
 
+export const getLocationsForMap = query({
+  handler: async (ctx) => {
+    const locations = await ctx.db.query("locations").collect();
+
+    const locationsWithCollectibles = await Promise.all(
+      locations.map(async (location) => {
+        const collectible = await ctx.db
+          .query("collectibles")
+          .withIndex("by_location", (q) => q.eq("locationId", location._id))
+          .first();
+
+        return {
+          id: location._id,
+          name: location.name,
+          description: location.description,
+          address: location.address.name || location.address.city,
+          rating: location.rating || 0,
+          location: {
+            lat: location.address.coordinates.latitude,
+            lng: location.address.coordinates.longitude,
+          },
+          image: location.imageUrl,
+          points: collectible?.pointsValue || 0,
+          nftReward: !!collectible,
+          nftPostcard: collectible
+            ? { image: collectible.imageUrl, name: collectible.name }
+            : null,
+        };
+      }),
+    );
+
+    return locationsWithCollectibles;
+  },
+});
+
 export const getLocationById = query({
   handler: async (ctx, args: { id: string }) => {
     const location = await ctx.db.get(args.id as Id<"locations">);
