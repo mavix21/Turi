@@ -168,26 +168,25 @@ export default function TouristPassportPage() {
 
   return (
     <>
-      <Card className="border-border/50 from-card via-card to-accent/5 overflow-hidden border bg-gradient-to-br shadow-2xl">
+      <Card>
         <CardContent className="p-8 lg:p-10">
           <div className="flex flex-col items-start gap-8 lg:flex-row">
             <div className="group relative">
-              <div className="from-accent via-primary to-accent absolute -inset-4 rounded-2xl bg-gradient-to-r opacity-20 blur-2xl transition-all duration-500 group-hover:opacity-30"></div>
               <div className="relative">
-                <Avatar className="border-accent/50 ring-accent/10 h-40 w-40 border-4 shadow-2xl ring-4 lg:h-48 lg:w-48">
+                <Avatar className="border-accent/50 ring-accent/10 h-40 w-40 ring-4 lg:h-48 lg:w-48">
                   <AvatarImage
                     src={userData.imageUrl ?? "/placeholder.png"}
                     alt={userData.name}
                     className="object-cover"
                   />
-                  <AvatarFallback className="from-primary to-primary/80 text-secondary bg-gradient-to-br font-serif text-4xl">
+                  <AvatarFallback className="font-serif text-4xl">
                     {userData.name
                       .split(" ")
                       .map((n) => n[0])
                       .join("")}
                   </AvatarFallback>
                 </Avatar>
-                <Badge className="bg-accent text-accent-foreground absolute -bottom-2 left-1/2 -translate-x-1/2 border-0 px-4 py-1 shadow-lg">
+                <Badge className="absolute -bottom-2 left-1/2 -translate-x-1/2 border-0 px-4 py-1 shadow-lg">
                   <Shield className="mr-1 h-3 w-3" />
                   Verificado
                 </Badge>
@@ -208,13 +207,13 @@ export default function TouristPassportPage() {
               </div>
 
               <div className="grid grid-cols-1 gap-4 pt-4 sm:grid-cols-2">
-                <div className="group from-muted/30 to-muted/10 border-border/50 hover:border-accent/30 flex items-start gap-4 rounded-xl border bg-gradient-to-br p-5 transition-all duration-300 hover:shadow-lg">
-                  <div className="from-accent/20 to-accent/5 rounded-lg bg-gradient-to-br p-2.5 transition-transform duration-300 group-hover:scale-110">
-                    <Globe className="text-primary h-5 w-5" />
+                <div className="group flex items-start gap-4 rounded-xl border p-5 transition-all duration-300 hover:shadow-lg">
+                  <div className="rounded-lg p-2.5 transition-transform duration-300 group-hover:scale-110">
+                    <Globe className="h-5 w-5" />
                   </div>
                   <div>
                     <p className="text-muted-foreground mb-1 text-xs font-medium tracking-widest uppercase">
-                      Nacionalidad
+                      Nationality
                     </p>
                     <p className="text-foreground text-lg font-semibold">
                       {userData.profile.nationality}
@@ -222,44 +221,50 @@ export default function TouristPassportPage() {
                   </div>
                 </div>
 
-                <div className="group from-muted/30 to-muted/10 border-border/50 hover:border-accent/30 flex items-start gap-4 rounded-xl border bg-gradient-to-br p-5 transition-all duration-300 hover:shadow-lg">
-                  <div className="from-accent/20 to-accent/5 rounded-lg bg-gradient-to-br p-2.5 transition-transform duration-300 group-hover:scale-110">
-                    <User className="text-primary h-5 w-5" />
+                <div className="group flex items-start gap-4 rounded-xl border p-5 transition-all duration-300 hover:shadow-lg">
+                  <div className="rounded-lg p-2.5 transition-transform duration-300 group-hover:scale-110">
+                    <User className="h-5 w-5" />
                   </div>
                   <div>
                     <p className="text-muted-foreground mb-1 text-xs font-medium tracking-widest uppercase">
-                      Fecha de Nacimiento
+                      Date of Birth
                     </p>
-                    <p className="text-foreground text-lg font-semibold">
-                      {userData.profile.dateOfBirth}
+                    <p className="text-lg font-semibold">
+                      {new Date(
+                        userData.profile.dateOfBirth,
+                      ).toLocaleDateString()}
                     </p>
                   </div>
                 </div>
 
-                <div className="group from-muted/30 to-muted/10 border-border/50 hover:border-accent/30 flex items-start gap-4 rounded-xl border bg-gradient-to-br p-5 transition-all duration-300 hover:shadow-lg">
-                  <div className="from-accent/20 to-accent/5 rounded-lg bg-gradient-to-br p-2.5 transition-transform duration-300 group-hover:scale-110">
-                    <Calendar className="text-primary h-5 w-5" />
+                <div className="group flex items-start gap-4 rounded-xl border p-5 transition-all duration-300 hover:shadow-lg">
+                  <div className="rounded-lg p-2.5 transition-transform duration-300 group-hover:scale-110">
+                    <Calendar className="h-5 w-5" />
                   </div>
                   <div>
                     <p className="text-muted-foreground mb-1 text-xs font-medium tracking-widest uppercase">
-                      Fecha de Emisión
+                      Issue Date
                     </p>
                     <p className="text-foreground text-lg font-semibold">
-                      {userData.profile.issueDate}
+                      {new Date(
+                        userData.profile.issueDate,
+                      ).toLocaleDateString()}
                     </p>
                   </div>
                 </div>
 
-                <div className="group from-muted/30 to-muted/10 border-border/50 hover:border-accent/30 flex items-start gap-4 rounded-xl border bg-gradient-to-br p-5 transition-all duration-300 hover:shadow-lg">
-                  <div className="from-accent/20 to-accent/5 rounded-lg bg-gradient-to-br p-2.5 transition-transform duration-300 group-hover:scale-110">
-                    <Calendar className="text-primary h-5 w-5" />
+                <div className="group flex items-start gap-4 rounded-xl border p-5 transition-all duration-300 hover:shadow-lg">
+                  <div className="rounded-lg p-2.5 transition-transform duration-300 group-hover:scale-110">
+                    <Calendar className="h-5 w-5" />
                   </div>
                   <div>
                     <p className="text-muted-foreground mb-1 text-xs font-medium tracking-widest uppercase">
-                      Fecha de Vencimiento
+                      Expiry Date
                     </p>
                     <p className="text-foreground text-lg font-semibold">
-                      {userData.profile.expiryDate}
+                      {new Date(
+                        userData.profile.expiryDate,
+                      ).toLocaleDateString()}
                     </p>
                   </div>
                 </div>
