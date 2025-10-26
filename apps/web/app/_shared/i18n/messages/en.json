@@ -125,11 +125,32 @@
       }
     },
     "profile": {
+      "title": "Profile",
+      "navigation": {
+        "touristPassport": "My Turi Passport",
+        "collectibles": "Collectibles",
+        "pastTrips": "Past trips",
+        "rewards": "Rewards"
+      },
       "statistics": {
         "destinations": "Destinations",
         "verified": "Verified",
         "score": "Score",
         "memberSince": "Member Since"
+      },
+      "touristPassport": {
+        "loading": "Loading your tourist passport...",
+        "verified": "Verified",
+        "editProfile": "Edit Profile",
+        "updateInfo": "Update your profile information here.",
+        "name": "Name",
+        "documentNumber": "Document Number",
+        "nationality": "Nationality",
+        "dateOfBirth": "Date of Birth",
+        "issueDate": "Issue Date",
+        "expiryDate": "Expiry Date",
+        "cancel": "Cancel",
+        "saveChanges": "Save changes"
       }
     },
     "userDropdown": {

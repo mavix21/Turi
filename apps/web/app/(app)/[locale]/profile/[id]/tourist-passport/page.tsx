@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useParams } from "next/navigation";
 import { useMutation, useQuery } from "convex/react";
 import { Calendar, CreditCard, Edit, Globe, Shield, User } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { api } from "@turi/convex/_generated/api";
 import {
@@ -31,6 +32,7 @@ import { StatisticsPanel } from "@/app/_pages/profile/ui/statistics-panel";
 export default function TouristPassportPage() {
   const params = useParams();
   const locale = (params.locale as string) || "en";
+  const t = useTranslations("home.profile.touristPassport");
 
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -75,9 +77,7 @@ export default function TouristPassportPage() {
   if (!userData) {
     return (
       <div className="flex min-h-[400px] items-center justify-center">
-        <div className="text-muted-foreground">
-          Loading your tourist passport...
-        </div>
+        <div className="text-muted-foreground">{t("loading")}</div>
       </div>
     );
   }
@@ -104,7 +104,7 @@ export default function TouristPassportPage() {
                 </Avatar>
                 <Badge className="absolute -bottom-2 left-1/2 -translate-x-1/2 border-0 px-4 py-1 shadow-lg">
                   <Shield className="mr-1 h-3 w-3" />
-                  Verificado
+                  {t("verified")}
                 </Badge>
               </div>
             </div>
@@ -136,14 +136,12 @@ export default function TouristPassportPage() {
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[500px]">
                     <DialogHeader>
-                      <DialogTitle>Edit Profile</DialogTitle>
-                      <DialogDescription>
-                        Update your profile information here.
-                      </DialogDescription>
+                      <DialogTitle>{t("editProfile")}</DialogTitle>
+                      <DialogDescription>{t("updateInfo")}</DialogDescription>
                     </DialogHeader>
                     <div className="grid gap-4 py-4">
                       <div className="grid gap-2">
-                        <Label htmlFor="name">Name</Label>
+                        <Label htmlFor="name">{t("name")}</Label>
                         <Input
                           id="name"
                           value={formData.name}
@@ -153,7 +151,9 @@ export default function TouristPassportPage() {
                         />
                       </div>
                       <div className="grid gap-2">
-                        <Label htmlFor="documentNumber">Document Number</Label>
+                        <Label htmlFor="documentNumber">
+                          {t("documentNumber")}
+                        </Label>
                         <Input
                           id="documentNumber"
                           value={formData.documentNumber}
@@ -166,7 +166,7 @@ export default function TouristPassportPage() {
                         />
                       </div>
                       <div className="grid gap-2">
-                        <Label htmlFor="nationality">Nationality</Label>
+                        <Label htmlFor="nationality">{t("nationality")}</Label>
                         <Input
                           id="nationality"
                           value={formData.nationality}
@@ -179,7 +179,7 @@ export default function TouristPassportPage() {
                         />
                       </div>
                       <div className="grid gap-2">
-                        <Label htmlFor="dateOfBirth">Date of Birth</Label>
+                        <Label htmlFor="dateOfBirth">{t("dateOfBirth")}</Label>
                         <Input
                           id="dateOfBirth"
                           type="date"
@@ -198,9 +198,9 @@ export default function TouristPassportPage() {
                         variant="outline"
                         onClick={() => setIsEditOpen(false)}
                       >
-                        Cancel
+                        {t("cancel")}
                       </Button>
-                      <Button onClick={handleSave}>Save changes</Button>
+                      <Button onClick={handleSave}>{t("saveChanges")}</Button>
                     </DialogFooter>
                   </DialogContent>
                 </Dialog>
@@ -213,7 +213,7 @@ export default function TouristPassportPage() {
                   </div>
                   <div>
                     <p className="text-muted-foreground mb-1 text-xs font-medium tracking-widest uppercase">
-                      Nationality
+                      {t("nationality")}
                     </p>
                     <p className="text-foreground text-lg font-semibold">
                       {userData.profile.nationality}
@@ -227,7 +227,7 @@ export default function TouristPassportPage() {
                   </div>
                   <div>
                     <p className="text-muted-foreground mb-1 text-xs font-medium tracking-widest uppercase">
-                      Date of Birth
+                      {t("dateOfBirth")}
                     </p>
                     <p className="text-lg font-semibold">
                       {new Date(
@@ -243,7 +243,7 @@ export default function TouristPassportPage() {
                   </div>
                   <div>
                     <p className="text-muted-foreground mb-1 text-xs font-medium tracking-widest uppercase">
-                      Issue Date
+                      {t("issueDate")}
                     </p>
                     <p className="text-foreground text-lg font-semibold">
                       {new Date(userData.profile.issueDate).toLocaleDateString(
@@ -260,7 +260,7 @@ export default function TouristPassportPage() {
                   </div>
                   <div>
                     <p className="text-muted-foreground mb-1 text-xs font-medium tracking-widest uppercase">
-                      Expiry Date
+                      {t("expiryDate")}
                     </p>
                     <p className="text-foreground text-lg font-semibold">
                       {new Date(userData.profile.expiryDate).toLocaleDateString(

@@ -126,11 +126,32 @@
       }
     },
     "profile": {
+      "title": "Perfil",
+      "navigation": {
+        "touristPassport": "Mi Pasaporte Turi",
+        "collectibles": "Coleccionables",
+        "pastTrips": "Viajes pasados",
+        "rewards": "Recompensas"
+      },
       "statistics": {
         "destinations": "Destinos",
         "verified": "Verificados",
         "score": "Puntuación",
         "memberSince": "Miembro desde"
+      },
+      "touristPassport": {
+        "loading": "Cargando tu pasaporte turístico...",
+        "verified": "Verificado",
+        "editProfile": "Editar Perfil",
+        "updateInfo": "Actualiza tu información de perfil aquí.",
+        "name": "Nombre",
+        "documentNumber": "Número de Documento",
+        "nationality": "Nacionalidad",
+        "dateOfBirth": "Fecha de Nacimiento",
+        "issueDate": "Fecha de Emisión",
+        "expiryDate": "Fecha de Vencimiento",
+        "cancel": "Cancelar",
+        "saveChanges": "Guardar cambios"
       }
     },
     "userDropdown": {

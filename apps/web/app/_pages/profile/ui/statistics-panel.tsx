@@ -15,7 +15,7 @@ interface StatisticsPanelProps {
 }
 
 export function StatisticsPanel({ statistics }: StatisticsPanelProps) {
-  const t = useTranslations("profile.statistics");
+  const t = useTranslations("home.profile.statistics");
 
   return (
     <div className="mt-10 grid grid-cols-2 gap-6 lg:grid-cols-4">

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import * as Icons from "lucide-react";
 import { LucideIcon } from "lucide-react";
 
@@ -11,20 +12,21 @@ export function SidebarClient() {
   const pathname = usePathname();
   const params = useParams();
   const profileId = params.id as string;
+  const t = useTranslations("home.profile.navigation");
 
   const navigationItems = [
     {
       id: "tourist-passport",
-      label: "My Turi Passport",
+      labelKey: "touristPassport",
       icon: "Ticket",
     },
     {
       id: "collectibles",
-      label: "Collectibles",
+      labelKey: "collectibles",
       icon: "SquareStar",
     },
-    { id: "past-trips", label: "Past trips", icon: "Luggage" },
-    { id: "rewards", label: "Rewards", icon: "Gift" },
+    { id: "past-trips", labelKey: "pastTrips", icon: "Luggage" },
+    { id: "rewards", labelKey: "rewards", icon: "Gift" },
   ];
 
   return (
@@ -41,7 +43,7 @@ export function SidebarClient() {
           >
             <Link href={href}>
               <Icon className="h-5 w-5 shrink-0" />
-              <span className="text-sm">{item.label}</span>
+              <span className="text-sm">{t(item.labelKey as any)}</span>
             </Link>
           </Button>
         );
