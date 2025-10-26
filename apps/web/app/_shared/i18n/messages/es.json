@@ -90,6 +90,36 @@
         "description": "Cada postal digital es un NFT único que certifica tu visita a destinos icónicos peruanos. Colecciónalas todas mientras exploras Perú y construye tu portafolio de viajes verificado en cadena."
       },
       "viewCollection": "Ver Colección"
+    },
+    "footer": {
+      "about": {
+        "title": "Acerca de",
+        "description": "Descubre las maravillas de Perú y gana recompensas con Turi"
+      },
+      "company": {
+        "title": "Compañía",
+        "aboutUs": "Sobre Nosotros",
+        "careers": "Carreras",
+        "blog": "Blog"
+      },
+      "support": {
+        "title": "Soporte",
+        "helpCenter": "Centro de Ayuda",
+        "contact": "Contacto",
+        "faq": "Preguntas Frecuentes"
+      },
+      "legal": {
+        "title": "Legal",
+        "privacy": "Privacidad",
+        "terms": "Términos",
+        "cookies": "Cookies"
+      },
+      "copyright": "© 2025 Turi. Todos los derechos reservados.",
+      "social": {
+        "x": "X",
+        "instagram": "Instagram",
+        "linkedin": "LinkedIn"
+      }
     }
   },
 

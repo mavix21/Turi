@@ -89,6 +89,36 @@
         "description": "Each digital postcard is a unique NFT that certifies your visit to iconic Peruvian destinations. Collect them all as you explore Peru and build your verified travel portfolio on-chain."
       },
       "viewCollection": "View Collection"
+    },
+    "footer": {
+      "about": {
+        "title": "About",
+        "description": "Discover Peru's wonders and earn rewards with Turi"
+      },
+      "company": {
+        "title": "Company",
+        "aboutUs": "About Us",
+        "careers": "Careers",
+        "blog": "Blog"
+      },
+      "support": {
+        "title": "Support",
+        "helpCenter": "Help Center",
+        "contact": "Contact",
+        "faq": "FAQ"
+      },
+      "legal": {
+        "title": "Legal",
+        "privacy": "Privacy",
+        "terms": "Terms",
+        "cookies": "Cookies"
+      },
+      "copyright": "© 2025 Turi. All rights reserved.",
+      "social": {
+        "x": "X",
+        "instagram": "Instagram",
+        "linkedin": "LinkedIn"
+      }
     }
   },
 
