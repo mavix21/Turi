@@ -1,12 +1,16 @@
 "use client";
 
-import { useQuery } from "convex/react";
-
-import { api } from "@turi/convex/_generated/api";
-import { Button } from "@turi/ui/components/button";
+import { useAccount } from "wagmi";
 
 export default function TestPage() {
-  const viewInfo = useQuery(api.debug.viewerInfo);
-  console.log("Viewer Info:", viewInfo);
-  return <Button>View Infor</Button>;
+  const { address, chainId, isConnected } = useAccount();
+
+  return (
+    <div>
+      <h1>Test Page</h1>
+      <p>Address: {address}</p>
+      <p>Chain ID: {chainId}</p>
+      <p>Connected: {isConnected ? "Yes" : "No"}</p>
+    </div>
+  );
 }
