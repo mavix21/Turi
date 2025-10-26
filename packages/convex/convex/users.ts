@@ -78,8 +78,7 @@ export const getMyProfile = query({
       statistics: {
         totalCheckIns: checkIns.length || 0,
         totalVerifiedStamps: verifiedStamps || 0,
-        totalScorePercentage:
-          (userProfile.reputationScore / 100) * (checkIns.length || 0),
+        totalScorePercentage: (verifiedStamps / checkIns.length) * 100,
       },
     };
   },
