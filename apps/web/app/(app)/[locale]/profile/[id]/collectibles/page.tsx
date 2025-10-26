@@ -5,6 +5,12 @@ import { useQuery } from "convex/react";
 import { AlertCircle, CheckCircle2, Hash, Link2, MapPin } from "lucide-react";
 
 import { api } from "@turi/convex/_generated/api";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@turi/ui/components/accordion";
 import { Badge } from "@turi/ui/components/badge";
 
 export default function CollectiblesPage() {
@@ -134,42 +140,57 @@ export default function CollectiblesPage() {
 
                 {/* Blockchain Info - Only show if synced */}
                 {isSynced && collectible.onchainStatus.status === "synced" && (
-                  <div className="border-border bg-muted/30 space-y-2 rounded-lg border p-3 text-xs">
-                    <div className="text-foreground mb-1 flex items-center gap-1 font-semibold">
-                      <Link2 className="h-3 w-3" />
-                      <span>On-Chain Details</span>
-                    </div>
-                    <div className="space-y-1.5">
-                      <div className="flex items-start gap-2">
-                        <Hash className="text-muted-foreground mt-0.5 h-3 w-3 shrink-0" />
-                        <div className="min-w-0 flex-1">
-                          <p className="text-muted-foreground mb-0.5">
-                            Token ID
-                          </p>
-                          <p className="text-foreground font-mono break-all">
-                            {collectible.onchainStatus.tokenId}
-                          </p>
+                  <Accordion
+                    type="single"
+                    collapsible
+                    className="border-border bg-muted/30 mt-4 rounded-lg border"
+                  >
+                    <AccordionItem
+                      value="blockchain-details"
+                      className="border-b-0"
+                    >
+                      <AccordionTrigger className="px-3 py-2 text-xs font-semibold hover:no-underline">
+                        <div className="flex items-center gap-1">
+                          <Link2 className="h-3 w-3" />
+                          <span>On-Chain Details</span>
                         </div>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <Link2 className="text-muted-foreground mt-0.5 h-3 w-3 shrink-0" />
-                        <div className="min-w-0 flex-1">
-                          <p className="text-muted-foreground mb-0.5">
-                            Contract
-                          </p>
-                          <p className="text-foreground font-mono text-[10px] break-all">
-                            {collectible.onchainStatus.contractAddress}
-                          </p>
+                      </AccordionTrigger>
+                      <AccordionContent className="px-3 pb-3">
+                        <div className="space-y-1.5 text-xs">
+                          <div className="flex items-start gap-2">
+                            <Hash className="text-muted-foreground mt-0.5 h-3 w-3 shrink-0" />
+                            <div className="min-w-0 flex-1">
+                              <p className="text-muted-foreground mb-0.5">
+                                Token ID
+                              </p>
+                              <p className="text-foreground font-mono break-all">
+                                {collectible.onchainStatus.tokenId}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-start gap-2">
+                            <Link2 className="text-muted-foreground mt-0.5 h-3 w-3 shrink-0" />
+                            <div className="min-w-0 flex-1">
+                              <p className="text-muted-foreground mb-0.5">
+                                Contract
+                              </p>
+                              <p className="text-foreground font-mono text-[10px] break-all">
+                                {collectible.onchainStatus.contractAddress}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-muted-foreground">
+                              Chain ID
+                            </span>
+                            <span className="text-foreground font-mono">
+                              {collectible.onchainStatus.chainId}
+                            </span>
+                          </div>
                         </div>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-muted-foreground">Chain ID</span>
-                        <span className="text-foreground font-mono">
-                          {collectible.onchainStatus.chainId}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
                 )}
 
                 {/* Error Message */}
