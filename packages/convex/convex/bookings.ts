@@ -1,6 +1,7 @@
 import { v } from "convex/values";
+
 import { mutation, query } from "./_generated/server";
-import { getAuthUserId } from "@convex-dev/auth/server";
+import { getUserIdentity } from "./authUtils";
 
 // Create booking from blockchain purchase
 export const createBookingFromPurchase = mutation({
@@ -17,7 +18,7 @@ export const createBookingFromPurchase = mutation({
     chainId: v.number(),
   },
   handler: async (ctx, args) => {
-    const userId = await getAuthUserId(ctx);
+    const userId = await getUserIdentity(ctx);
 
     if (!userId) {
       throw new Error("User not authenticated");
@@ -70,7 +71,7 @@ export const createBookingFromPurchase = mutation({
 export const getUserBookings = query({
   args: {},
   handler: async (ctx) => {
-    const userId = await getAuthUserId(ctx);
+    const userId = await getUserIdentity(ctx);
 
     if (!userId) {
       return [];
