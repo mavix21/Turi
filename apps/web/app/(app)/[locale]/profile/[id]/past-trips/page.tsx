@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useQuery } from "convex/react";
 import { MapPin } from "lucide-react";
 
@@ -8,9 +9,14 @@ import { Button } from "@turi/ui/components/button";
 
 export default function PastTripsPage() {
   const checkIns = useQuery(api.checkIns.getMyCheckIns);
+  const router = useRouter();
 
   if (!checkIns) {
-    return null;
+    return (
+      <div className="flex min-h-[400px] items-center justify-center">
+        <div className="text-muted-foreground">Loading your past trips...</div>
+      </div>
+    );
   }
 
   return (
@@ -107,7 +113,9 @@ export default function PastTripsPage() {
             You'll find your past reservations here after you've taken your
             first trip
           </p>
-          <Button size="lg">Start Exploring</Button>
+          <Button size="lg" onClick={() => router.push("/")}>
+            Start Exploring
+          </Button>
         </div>
       )}
     </div>

@@ -53,6 +53,15 @@ export const getMyProfile = query({
       return null;
     }
 
+    const checkIns = await ctx.db
+      .query("checkIns")
+      .withIndex("by_user", (q) => q.eq("userId", userId))
+      .collect();
+
+    const verifiedStamps = checkIns.filter(
+      (checkIn) => checkIn.onchainStatus.status === "synced",
+    ).length;
+
     return {
       id: userId,
       name: user.name,
@@ -65,6 +74,12 @@ export const getMyProfile = query({
         nationality: userProfile.nationality,
         reputationScore: userProfile.reputationScore,
         expiryDate: userProfile.expiryDate,
+      },
+      statistics: {
+        totalCheckIns: checkIns.length || 0,
+        totalVerifiedStamps: verifiedStamps || 0,
+        totalScorePercentage:
+          (userProfile.reputationScore / 100) * (checkIns.length || 0),
       },
     };
   },

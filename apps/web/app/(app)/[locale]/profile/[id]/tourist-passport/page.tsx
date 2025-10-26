@@ -3,18 +3,7 @@
 import { useState } from "react";
 import { useParams } from "next/navigation";
 import { useMutation, useQuery } from "convex/react";
-import {
-  Award,
-  Calendar,
-  CheckCircle2,
-  CreditCard,
-  Edit,
-  Globe,
-  MapPin,
-  Shield,
-  Ticket,
-  User,
-} from "lucide-react";
+import { Calendar, CreditCard, Edit, Globe, Shield, User } from "lucide-react";
 
 import { api } from "@turi/convex/_generated/api";
 import {
@@ -36,7 +25,6 @@ import {
 } from "@turi/ui/components/dialog";
 import { Input } from "@turi/ui/components/input";
 import { Label } from "@turi/ui/components/label";
-import { useTuriState } from "@turi/ui/hooks/use-turi-state";
 
 import { StatisticsPanel } from "@/app/_pages/profile/ui/statistics-panel";
 
@@ -84,69 +72,15 @@ export default function TouristPassportPage() {
     }
   };
 
-  const travelStamps = [
-    {
-      id: "0x7f9c8e2a1b5d3f6e",
-      destination: "Machu Picchu",
-      location: "Cusco",
-      visitDate: "2024-03-15",
-      verificationStatus: "verified",
-      image:
-        "https://images.pexels.com/photos/2356045/pexels-photo-2356045.jpeg?auto=compress&cs=tinysrgb&w=600",
-      blockchainHash: "0x7f9c8e2a1b5d3f6e4c8a9d2b7f1e5c3a",
-    },
-    {
-      id: "0x3a6d8f1c2e5b9a4d",
-      destination: "Líneas de Nazca",
-      location: "Nazca",
-      visitDate: "2024-05-22",
-      verificationStatus: "verified",
-      image:
-        "https://images.pexels.com/photos/14654471/pexels-photo-14654471.jpeg?auto=compress&cs=tinysrgb&w=600",
-      blockchainHash: "0x3a6d8f1c2e5b9a4d7e2f8c1b6a3d9e5c",
-    },
-    {
-      id: "0x9e4b2f7a1d6c8e3b",
-      destination: "Lago Titicaca",
-      location: "Puno",
-      visitDate: "2024-07-08",
-      verificationStatus: "verified",
-      image:
-        "https://images.pexels.com/photos/12697283/pexels-photo-12697283.jpeg?auto=compress&cs=tinysrgb&w=600",
-      blockchainHash: "0x9e4b2f7a1d6c8e3b5a9d2f7c1e4b8a6d",
-    },
-    {
-      id: "0x5c8a3e9f2b1d7a4c",
-      destination: "Cañón del Colca",
-      location: "Arequipa",
-      visitDate: "2024-08-19",
-      verificationStatus: "verified",
-      image:
-        "https://images.pexels.com/photos/19058522/pexels-photo-19058522.jpeg?auto=compress&cs=tinysrgb&w=600",
-      blockchainHash: "0x5c8a3e9f2b1d7a4c6e8b3f9d2a7c5e1b",
-    },
-    {
-      id: "0x2d7f4b8e1c6a9d3f",
-      destination: "Reserva Nacional Paracas",
-      location: "Ica",
-      visitDate: "2024-09-30",
-      verificationStatus: "verified",
-      image:
-        "https://images.pexels.com/photos/19638308/pexels-photo-19638308.jpeg?auto=compress&cs=tinysrgb&w=600",
-      blockchainHash: "0x2d7f4b8e1c6a9d3f5b7e2a8c4d9f1e6a",
-    },
-  ];
-
-  const statistics = {
-    totalDestinations: travelStamps.length,
-    verifiedStamps: travelStamps.filter(
-      (s) => s.verificationStatus === "verified",
-    ).length,
-    verificationScore: 98.5,
-    memberSince: "2022",
-  };
-
-  if (!userData) return null;
+  if (!userData) {
+    return (
+      <div className="flex min-h-[400px] items-center justify-center">
+        <div className="text-muted-foreground">
+          Loading your tourist passport...
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -342,7 +276,7 @@ export default function TouristPassportPage() {
         </CardContent>
       </Card>
 
-      <StatisticsPanel statistics={statistics} />
+      <StatisticsPanel statistics={userData.statistics} />
     </>
   );
 }

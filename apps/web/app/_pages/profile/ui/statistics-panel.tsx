@@ -1,13 +1,12 @@
 import { Award, MapPin, Shield, TrendingUp } from "lucide-react";
 
-import { Badge } from "@turi/ui/components/badge";
 import { Card, CardContent } from "@turi/ui/components/card";
 
 interface Statistics {
-  totalDestinations: number;
-  verifiedStamps: number;
-  verificationScore: number;
-  memberSince: string;
+  totalCheckIns: number;
+  totalVerifiedStamps: number;
+  totalScorePercentage: number;
+  memberSince?: string;
 }
 
 interface StatisticsPanelProps {
@@ -27,7 +26,7 @@ export function StatisticsPanel({ statistics }: StatisticsPanelProps) {
           <p className="text-muted-foreground mb-2 text-xs font-medium tracking-widest uppercase">
             Destinos
           </p>
-          <p className="text-4xl font-bold">{statistics.totalDestinations}</p>
+          <p className="text-4xl font-bold">{statistics.totalCheckIns}</p>
         </CardContent>
       </Card>
 
@@ -41,7 +40,7 @@ export function StatisticsPanel({ statistics }: StatisticsPanelProps) {
           <p className="text-muted-foreground mb-2 text-xs font-medium tracking-widest uppercase">
             Verificados
           </p>
-          <p className="text-4xl font-bold">{statistics.verifiedStamps}</p>
+          <p className="text-4xl font-bold">{statistics.totalVerifiedStamps}</p>
         </CardContent>
       </Card>
 
@@ -55,7 +54,9 @@ export function StatisticsPanel({ statistics }: StatisticsPanelProps) {
           <p className="text-muted-foreground mb-2 text-xs font-medium tracking-widest uppercase">
             Puntuación
           </p>
-          <p className="text-4xl font-bold">{statistics.verificationScore}%</p>
+          <p className="text-4xl font-bold">
+            {statistics.totalScorePercentage}%
+          </p>
         </CardContent>
       </Card>
 

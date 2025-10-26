@@ -74,7 +74,11 @@ export default function RewardsPage() {
   const myPoints = useQuery(api.users.getMyProfile)?.reputationScore;
 
   if (!benefits) {
-    return null;
+    return (
+      <div className="flex min-h-[400px] items-center justify-center">
+        <div className="text-muted-foreground">Loading your benefits...</div>
+      </div>
+    );
   }
 
   const handleRedeem = (pointsCost: number, itemName: string) => {
