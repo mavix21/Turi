@@ -231,7 +231,55 @@
         "selectDate": "Select Date",
         "participants": "Participants",
         "person": "Person",
-        "people": "People"
+        "people": "People",
+        "noProvidersFound": "No providers found",
+        "chooseProvider": "Choose Your Provider",
+        "total": "total",
+        "ticketsLeft": "left",
+        "viewPriceBreakdown": "View price breakdown",
+        "taxesAndFees": "Taxes & fees",
+        "bookNow": "Book Now",
+        "selectDatePrompt": "Select a date to book",
+        "bookingConfirm": {
+          "title": "Confirm Your Booking",
+          "descriptionInProgress": "Transaction in progress - do not close this window",
+          "descriptionIdle": "Complete the blockchain transaction to confirm your booking",
+          "connectWallet": "Connect Wallet",
+          "bookingConfirmed": "Booking Confirmed!",
+          "successMessage": "Your tour has been successfully purchased on-chain.",
+          "transactionHash": "Transaction Hash:",
+          "paymentMethod": "Payment Method",
+          "mixedPayment": "Mixed Payment (Save with TURI)",
+          "payWithUSDX": "Pay with USDX Only",
+          "insufficientTURITitle": "Insufficient TURI Tokens",
+          "insufficientTURIMessage": "You need {required} TURI but only have {available} TURI. Please select \"Pay with USDX Only\" or earn more TURI tokens by checking in at tourist locations.",
+          "by": "by",
+          "unknown": "Unknown",
+          "noDateSelected": "No date selected",
+          "cancel": "Cancel",
+          "tryAgain": "Try Again",
+          "viewTransaction": "View transaction:",
+          "steps": {
+            "approvingTURI": "Step {current}/{total}: Please approve TURI tokens in your wallet...",
+            "waitingTURIApproval": "Step {current}/{total}: Waiting for TURI approval confirmation...",
+            "approvingUSDX": "Step {current}/{total}: Please approve USDX in your wallet...",
+            "waitingUSDXApproval": "Step {current}/{total}: Waiting for USDX approval confirmation...",
+            "confirming": "Step {current}/{total}: Please confirm purchase in your wallet...",
+            "waitingConfirmation": "Step {current}/{total}: Waiting for transaction confirmation...",
+            "savingBooking": "Saving booking to database..."
+          },
+          "buttonStates": {
+            "approvingTURI": "Approving TURI...",
+            "waitingTURIApproval": "Waiting for TURI Approval...",
+            "approvingUSDX": "Approving USDX...",
+            "waitingUSDXApproval": "Waiting for USDX Approval...",
+            "confirming": "Confirming Purchase...",
+            "waitingConfirmation": "Waiting for Confirmation...",
+            "savingBooking": "Saving Booking...",
+            "payMixed": "Pay {turi} TURI + ${usdx} USDX",
+            "payUSDX": "Pay ${total} USDX"
+          }
+        }
       }
     }
   },

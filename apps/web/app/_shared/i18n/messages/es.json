@@ -232,7 +232,55 @@
         "selectDate": "Seleccionar Fecha",
         "participants": "Participantes",
         "person": "Persona",
-        "people": "Personas"
+        "people": "Personas",
+        "noProvidersFound": "No se encontraron proveedores",
+        "chooseProvider": "Elige Tu Proveedor",
+        "total": "total",
+        "ticketsLeft": "restantes",
+        "viewPriceBreakdown": "Ver desglose de precio",
+        "taxesAndFees": "Impuestos y tarifas",
+        "bookNow": "Reservar Ahora",
+        "selectDatePrompt": "Selecciona una fecha para reservar",
+        "bookingConfirm": {
+          "title": "Confirma Tu Reserva",
+          "descriptionInProgress": "Transacción en progreso - no cierres esta ventana",
+          "descriptionIdle": "Completa la transacción blockchain para confirmar tu reserva",
+          "connectWallet": "Conectar Billetera",
+          "bookingConfirmed": "¡Reserva Confirmada!",
+          "successMessage": "Tu tour ha sido comprado exitosamente en blockchain.",
+          "transactionHash": "Hash de Transacción:",
+          "paymentMethod": "Método de Pago",
+          "mixedPayment": "Pago Mixto (Ahorra con TURI)",
+          "payWithUSDX": "Pagar Solo con USDX",
+          "insufficientTURITitle": "Tokens TURI Insuficientes",
+          "insufficientTURIMessage": "Necesitas {required} TURI pero solo tienes {available} TURI. Por favor selecciona \"Pagar Solo con USDX\" o gana más tokens TURI haciendo check-in en ubicaciones turísticas.",
+          "by": "por",
+          "unknown": "Desconocido",
+          "noDateSelected": "No se seleccionó fecha",
+          "cancel": "Cancelar",
+          "tryAgain": "Intentar de Nuevo",
+          "viewTransaction": "Ver transacción:",
+          "steps": {
+            "approvingTURI": "Paso {current}/{total}: Por favor aprueba tokens TURI en tu billetera...",
+            "waitingTURIApproval": "Paso {current}/{total}: Esperando confirmación de aprobación TURI...",
+            "approvingUSDX": "Paso {current}/{total}: Por favor aprueba USDX en tu billetera...",
+            "waitingUSDXApproval": "Paso {current}/{total}: Esperando confirmación de aprobación USDX...",
+            "confirming": "Paso {current}/{total}: Por favor confirma la compra en tu billetera...",
+            "waitingConfirmation": "Paso {current}/{total}: Esperando confirmación de transacción...",
+            "savingBooking": "Guardando reserva en base de datos..."
+          },
+          "buttonStates": {
+            "approvingTURI": "Aprobando TURI...",
+            "waitingTURIApproval": "Esperando Aprobación TURI...",
+            "approvingUSDX": "Aprobando USDX...",
+            "waitingUSDXApproval": "Esperando Aprobación USDX...",
+            "confirming": "Confirmando Compra...",
+            "waitingConfirmation": "Esperando Confirmación...",
+            "savingBooking": "Guardando Reserva...",
+            "payMixed": "Pagar {turi} TURI + ${usdx} USDX",
+            "payUSDX": "Pagar ${total} USDX"
+          }
+        }
       }
     }
   },

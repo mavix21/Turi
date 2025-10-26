@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 import type { Id } from "@turi/convex/_generated/dataModel";
 import {
@@ -47,6 +48,7 @@ export function ProviderCard({
   selectedDate: Date;
   onViewDetails: () => void;
 }) {
+  const t = useTranslations("home.placeDetail.booking");
   const [showConfirm, setShowConfirm] = useState(false);
   const subtotal = provider.basePricePerPerson * participants;
   const taxes = provider.taxesAndFees;
@@ -88,19 +90,19 @@ export function ProviderCard({
               <div className="text-lg font-bold">
                 {total.toFixed(2)} {currencySymbol}
               </div>
-              <div className="text-muted-foreground text-[10px]">total</div>
+              <div className="text-muted-foreground text-[10px]">{t("total")}</div>
             </div>
           </div>
 
           <Badge variant="secondary" className="h-5 text-[10px]">
             <Ticket className="mr-1 h-2.5 w-2.5" />
-            {provider.availableTickets} left
+            {provider.availableTickets} {t("ticketsLeft")}
           </Badge>
 
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="pricing" className="border-none">
               <AccordionTrigger className="text-muted-foreground py-2 text-xs hover:no-underline">
-                View price breakdown
+                {t("viewPriceBreakdown")}
               </AccordionTrigger>
               <AccordionContent className="pb-2">
                 <div className="space-y-1 text-xs">
@@ -114,7 +116,7 @@ export function ProviderCard({
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Taxes & fees</span>
+                    <span className="text-muted-foreground">{t("taxesAndFees")}</span>
                     <span>
                       {currencySymbol} {taxes.toFixed(2)}
                     </span>
@@ -140,13 +142,13 @@ export function ProviderCard({
               disabled={!canBook}
               className="h-8 w-full text-xs"
             >
-              Book Now
+              {t("bookNow")}
             </Button>
           </div>
 
           {!selectedDate && (
             <p className="text-muted-foreground text-center text-[10px]">
-              Select a date to book
+              {t("selectDatePrompt")}
             </p>
           )}
         </div>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "convex/react";
 import { Users } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { api } from "@turi/convex/_generated/api";
 import { Doc, Id } from "@turi/convex/_generated/dataModel";
@@ -32,10 +33,11 @@ export function ProviderList({
   participants: number;
   selectedDate: Date;
 }) {
+  const t = useTranslations("home.placeDetail.booking");
   const [selectedProvider, setSelectedProvider] = useState<TourPackageWithCompany | null>(null);
 
   if (!providers) {
-    return <div>No providers found</div>;
+    return <div>{t("noProvidersFound")}</div>;
   }
 
   return (
@@ -43,7 +45,7 @@ export function ProviderList({
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-lg">
           <Users className="h-5 w-5" />
-          Choose Your Provider
+          {t("chooseProvider")}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3 px-4">

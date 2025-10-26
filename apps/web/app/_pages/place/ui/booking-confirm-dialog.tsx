@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import { parseUnits, formatUnits } from "viem";
 import { useAccount, useWriteContract, useWaitForTransactionReceipt, useReadContract } from "wagmi";
 import { useMutation } from "convex/react";
+import { useTranslations } from "next-intl";
 import type { Id } from "@turi/convex/_generated/dataModel";
 
 import { api } from "@turi/convex/_generated/api";
@@ -78,6 +79,7 @@ export function BookingConfirmDialog({
   selectedDate,
   total,
 }: BookingConfirmDialogProps) {
+  const t = useTranslations("home.placeDetail.booking.bookingConfirm");
   const [step, setStep] = useState<PurchaseStep>("idle");
   const [error, setError] = useState<string | null>(null);
   const [useMixedPayment, setUseMixedPayment] = useState(true); // Default to mixed payment if available
@@ -340,13 +342,13 @@ export function BookingConfirmDialog({
               <CheckCircle2 className="h-10 w-10 text-green-600 dark:text-green-500" />
             </div>
             <DialogTitle className="text-center text-2xl">
-              Booking Confirmed!
+              {t("bookingConfirmed")}
             </DialogTitle>
             <DialogDescription className="text-center space-y-2">
-              <p>Your tour has been successfully purchased on-chain.</p>
+              <p>{t("successMessage")}</p>
               {receipt?.transactionHash && (
                 <div className="flex flex-col items-center gap-2 pt-2">
-                  <span className="text-xs text-muted-foreground">Transaction Hash:</span>
+                  <span className="text-xs text-muted-foreground">{t("transactionHash")}</span>
                   <a
                     href={`https://sepolia.scrollscan.com/tx/${receipt.transactionHash}`}
                     target="_blank"
@@ -379,51 +381,52 @@ export function BookingConfirmDialog({
   }
 
   const getButtonText = () => {
-    if (!isConnected) return "Connect Wallet";
+    if (!isConnected) return t("connectWallet");
 
     switch (step) {
       case "approving-turi":
-        return "Approving TURI...";
+        return t("buttonStates.approvingTURI");
       case "waiting-turi-approval":
-        return "Waiting for TURI Approval...";
+        return t("buttonStates.waitingTURIApproval");
       case "approving-usdx":
-        return "Approving USDX...";
+        return t("buttonStates.approvingUSDX");
       case "waiting-usdx-approval":
-        return "Waiting for USDX Approval...";
+        return t("buttonStates.waitingUSDXApproval");
       case "purchasing":
-        return "Confirming Purchase...";
+        return t("buttonStates.confirming");
       case "waiting-confirmation":
-        return "Waiting for Confirmation...";
+        return t("buttonStates.waitingConfirmation");
       case "saving-booking":
-        return "Saving Booking...";
+        return t("buttonStates.savingBooking");
       default:
         if (hasMixedPayment && useMixedPayment && provider.mixedPayment) {
           const turiTotal = provider.mixedPayment.turiTokens * participants;
           const usxTotal = provider.mixedPayment.remainingUSX * participants;
-          return `Pay ${turiTotal} TURI + $${usxTotal} USDX`;
+          return t("buttonStates.payMixed", { turi: turiTotal, usdx: usxTotal });
         }
-        return `Pay $${total} USDX`;
+        return t("buttonStates.payUSDX", { total });
     }
   };
 
   const getStepMessage = () => {
     const totalSteps = (hasMixedPayment && useMixedPayment) ? 3 : 2;
+    const current = (hasMixedPayment && useMixedPayment) ? 2 : 1;
 
     switch (step) {
       case "approving-turi":
-        return `Step 1/${totalSteps}: Please approve TURI tokens in your wallet...`;
+        return t("steps.approvingTURI", { current: 1, total: totalSteps });
       case "waiting-turi-approval":
-        return `Step 1/${totalSteps}: Waiting for TURI approval confirmation...`;
+        return t("steps.waitingTURIApproval", { current: 1, total: totalSteps });
       case "approving-usdx":
-        return `Step ${(hasMixedPayment && useMixedPayment) ? 2 : 1}/${totalSteps}: Please approve USDX in your wallet...`;
+        return t("steps.approvingUSDX", { current, total: totalSteps });
       case "waiting-usdx-approval":
-        return `Step ${(hasMixedPayment && useMixedPayment) ? 2 : 1}/${totalSteps}: Waiting for USDX approval confirmation...`;
+        return t("steps.waitingUSDXApproval", { current, total: totalSteps });
       case "purchasing":
-        return `Step ${totalSteps}/${totalSteps}: Please confirm purchase in your wallet...`;
+        return t("steps.confirming", { current: totalSteps, total: totalSteps });
       case "waiting-confirmation":
-        return `Step ${totalSteps}/${totalSteps}: Waiting for transaction confirmation...`;
+        return t("steps.waitingConfirmation", { current: totalSteps, total: totalSteps });
       case "saving-booking":
-        return "Saving booking to database...";
+        return t("steps.savingBooking");
       default:
         return null;
     }
@@ -453,11 +456,11 @@ export function BookingConfirmDialog({
     <Dialog open={open} onOpenChange={handleOpenChange} modal={!isProcessing}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Confirm Your Booking</DialogTitle>
+          <DialogTitle>{t("title")}</DialogTitle>
           <DialogDescription>
             {isProcessing
-              ? "Transaction in progress - do not close this window"
-              : "Complete the blockchain transaction to confirm your booking"
+              ? t("descriptionInProgress")
+              : t("descriptionIdle")
             }
           </DialogDescription>
         </DialogHeader>
@@ -465,7 +468,7 @@ export function BookingConfirmDialog({
         {/* Payment Method Selection - Only show if mixed payment is available */}
         {hasMixedPayment && provider.mixedPayment && !isProcessing && (
           <div className="space-y-2">
-            <label className="text-sm font-medium">Payment Method</label>
+            <label className="text-sm font-medium">{t("paymentMethod")}</label>
             <div className="grid grid-cols-1 gap-2">
               {/* Mixed Payment Option */}
               <button
@@ -485,7 +488,7 @@ export function BookingConfirmDialog({
                         <div className="h-2 w-2 rounded-full bg-primary" />
                       )}
                     </div>
-                    <span className="text-sm font-semibold">Mixed Payment (Save with TURI)</span>
+                    <span className="text-sm font-semibold">{t("mixedPayment")}</span>
                   </div>
                   <div className="ml-6 space-y-0.5">
                     <div className="text-sm font-medium text-purple-600 dark:text-purple-400">
@@ -516,7 +519,7 @@ export function BookingConfirmDialog({
                         <div className="h-2 w-2 rounded-full bg-primary" />
                       )}
                     </div>
-                    <span className="text-sm font-semibold">Pay with USDX Only</span>
+                    <span className="text-sm font-semibold">{t("payWithUSDX")}</span>
                   </div>
                   <div className="ml-6">
                     <div className="text-sm font-medium text-blue-600 dark:text-blue-400">
@@ -533,12 +536,13 @@ export function BookingConfirmDialog({
                 <AlertCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
                 <div className="text-xs">
                   <p className="font-semibold mb-1">
-                    Insufficient TURI Tokens
+                    {t("insufficientTURITitle")}
                   </p>
                   <p>
-                    You need {provider.mixedPayment ? (provider.mixedPayment.turiTokens * participants).toFixed(2) : "0"} TURI but only have{" "}
-                    {turiBalance ? parseFloat(formatUnits(turiBalance, 18)).toFixed(2) : "0"} TURI.
-                    Please select "Pay with USDX Only" or earn more TURI tokens by checking in at tourist locations.
+                    {t("insufficientTURIMessage", {
+                      required: provider.mixedPayment ? (provider.mixedPayment.turiTokens * participants).toFixed(2) : "0",
+                      available: turiBalance ? parseFloat(formatUnits(turiBalance, 18)).toFixed(2) : "0"
+                    })}
                   </p>
                 </div>
               </div>
@@ -551,7 +555,7 @@ export function BookingConfirmDialog({
             <div>
               <h3 className="mb-1 font-semibold">{provider.name}</h3>
               <p className="text-muted-foreground text-sm">
-                by {provider.company?.name || "Unknown"}
+                {t("by")} {provider.company?.name || t("unknown")}
               </p>
             </div>
 
@@ -561,13 +565,13 @@ export function BookingConfirmDialog({
                 <span>
                   {selectedDate
                     ? format(selectedDate, "EEEE, MMMM d, yyyy")
-                    : "No date selected"}
+                    : t("noDateSelected")}
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <Users className="text-muted-foreground h-4 w-4" />
                 <span>
-                  {participants} {participants === 1 ? "Person" : "People"}
+                  {participants} {participants === 1 ? t("person") : t("people")}
                 </span>
               </div>
               <div className="flex items-center gap-2">
@@ -612,7 +616,7 @@ export function BookingConfirmDialog({
                   rel="noopener noreferrer"
                   className="font-mono text-xs hover:underline transition-all flex items-center gap-1"
                 >
-                  View transaction: {txHash.slice(0, 10)}...{txHash.slice(-8)}
+                  {t("viewTransaction")} {txHash.slice(0, 10)}...{txHash.slice(-8)}
                   <svg
                     className="h-3 w-3"
                     fill="none"
@@ -660,14 +664,14 @@ export function BookingConfirmDialog({
             onClick={() => handleOpenChange(false)}
             disabled={isProcessing}
           >
-            Cancel
+            {t("cancel")}
           </Button>
           {step === "error" ? (
             <Button
               onClick={handleRetry}
               className="w-full sm:w-auto"
             >
-              Try Again
+              {t("tryAgain")}
             </Button>
           ) : (
             <Button
