@@ -1,4 +1,4 @@
-import { Award, MapPin, Shield, TrendingUp } from "lucide-react";
+import { Award, MapPin, Shield, Wallet } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { Card, CardContent } from "@turi/ui/components/card";
@@ -12,9 +12,11 @@ interface Statistics {
 
 interface StatisticsPanelProps {
   statistics: Statistics;
+  turiBalance?: string;
+  reputationScore?: number;
 }
 
-export function StatisticsPanel({ statistics }: StatisticsPanelProps) {
+export function StatisticsPanel({ statistics, turiBalance = "0.00", reputationScore = 0 }: StatisticsPanelProps) {
   const t = useTranslations("home.profile.statistics");
 
   return (
@@ -41,9 +43,9 @@ export function StatisticsPanel({ statistics }: StatisticsPanelProps) {
             </div>
           </div>
           <p className="text-muted-foreground mb-2 text-xs font-medium tracking-widest uppercase">
-            {t("verified")}
+            {t("reputation")}
           </p>
-          <p className="text-4xl font-bold">{statistics.totalVerifiedStamps}</p>
+          <p className="text-4xl font-bold">{reputationScore}</p>
         </CardContent>
       </Card>
 
@@ -51,17 +53,14 @@ export function StatisticsPanel({ statistics }: StatisticsPanelProps) {
         <CardContent className="relative px-5">
           <div className="mb-4 flex items-center justify-between">
             <div className="bg-primary rounded-xl p-3 transition-transform duration-300 group-hover:scale-110">
-              <TrendingUp className="text-background h-6 w-6" />
+              <Wallet className="text-background h-6 w-6" />
             </div>
           </div>
           <p className="text-muted-foreground mb-2 text-xs font-medium tracking-widest uppercase">
-            {t("score")}
+            {t("turiBalance")}
           </p>
-          <p className="text-4xl font-bold">
-            {isNaN(statistics.totalScorePercentage)
-              ? 0
-              : statistics.totalScorePercentage}
-            %
+          <p className="font-mono text-4xl font-bold">
+            {turiBalance}
           </p>
         </CardContent>
       </Card>

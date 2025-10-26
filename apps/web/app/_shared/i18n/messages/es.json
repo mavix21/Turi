@@ -137,7 +137,9 @@
       "statistics": {
         "destinations": "Destinos",
         "verified": "Verificados",
+        "reputation": "Reputación",
         "score": "Puntuación",
+        "turiBalance": "Saldo TURI",
         "memberSince": "Miembro desde"
       },
       "touristPassport": {
@@ -152,7 +154,10 @@
         "issueDate": "Fecha de Emisión",
         "expiryDate": "Fecha de Vencimiento",
         "cancel": "Cancelar",
-        "saveChanges": "Guardar cambios"
+        "saveChanges": "Guardar cambios",
+        "usdxBalance": "Saldo USDX",
+        "turiBalance": "Saldo TURI",
+        "walletNotConnected": "Conecta tu billetera para ver saldos"
       },
       "collectibles": {
         "title": "Mis Coleccionables",

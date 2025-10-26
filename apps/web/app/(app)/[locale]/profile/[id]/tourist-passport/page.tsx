@@ -3,8 +3,10 @@
 import { useState } from "react";
 import { useParams } from "next/navigation";
 import { useMutation, useQuery } from "convex/react";
-import { Calendar, CreditCard, Edit, Globe, Shield, User } from "lucide-react";
+import { Calendar, CreditCard, Edit, Globe, Shield, User, Wallet } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useAccount, useReadContract } from "wagmi";
+import { formatUnits } from "viem";
 
 import { api } from "@turi/convex/_generated/api";
 import {
@@ -28,6 +30,12 @@ import { Input } from "@turi/ui/components/input";
 import { Label } from "@turi/ui/components/label";
 
 import { StatisticsPanel } from "@/app/_pages/profile/ui/statistics-panel";
+import {
+  TuriTokenAbi,
+  TuriTokenAddress,
+  USDXAbi,
+  USDXAddress,
+} from "@/src/constants/abi";
 
 export default function TouristPassportPage() {
   const params = useParams();
@@ -44,6 +52,43 @@ export default function TouristPassportPage() {
 
   const updateProfile = useMutation(api.userProfile.updateProfile);
   const userData = useQuery(api.users.getMyProfile);
+
+  // Wallet connection and token balances
+  const { address, isConnected } = useAccount();
+
+  // Read USDX balance (6 decimals)
+  const { data: usdxBalance } = useReadContract({
+    address: USDXAddress,
+    abi: USDXAbi,
+    functionName: "balanceOf",
+    args: address ? [address] : undefined,
+    query: {
+      enabled: !!address && isConnected,
+      refetchInterval: 10000,
+    },
+  });
+
+  // Read TURI balance (18 decimals)
+  const { data: turiBalance } = useReadContract({
+    address: TuriTokenAddress,
+    abi: TuriTokenAbi,
+    functionName: "balanceOf",
+    args: address ? [address] : undefined,
+    query: {
+      enabled: !!address && isConnected,
+      refetchInterval: 10000,
+    },
+  });
+
+  // Format balances for display
+  const formattedUSDX =
+    usdxBalance && typeof usdxBalance === "bigint"
+      ? parseFloat(formatUnits(usdxBalance, 6)).toFixed(2)
+      : "0.00";
+  const formattedTURI =
+    turiBalance && typeof turiBalance === "bigint"
+      ? parseFloat(formatUnits(turiBalance, 18)).toFixed(2)
+      : "0.00";
 
   const handleEdit = () => {
     if (userData) {
@@ -110,8 +155,8 @@ export default function TouristPassportPage() {
             </div>
 
             <div className="flex-1 space-y-6">
-              <div className="flex items-start justify-between">
-                <div className="space-y-2">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1 space-y-2">
                   <h2 className="max-w-80 truncate bg-clip-text font-serif text-4xl font-bold lg:text-5xl">
                     {userData.name}
                   </h2>
@@ -123,87 +168,105 @@ export default function TouristPassportPage() {
                   </div>
                 </div>
 
-                <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
-                  <DialogTrigger asChild>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="rounded-full"
-                      onClick={handleEdit}
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-[500px]">
-                    <DialogHeader>
-                      <DialogTitle>{t("editProfile")}</DialogTitle>
-                      <DialogDescription>{t("updateInfo")}</DialogDescription>
-                    </DialogHeader>
-                    <div className="grid gap-4 py-4">
-                      <div className="grid gap-2">
-                        <Label htmlFor="name">{t("name")}</Label>
-                        <Input
-                          id="name"
-                          value={formData.name}
-                          onChange={(e) =>
-                            setFormData({ ...formData, name: e.target.value })
-                          }
-                        />
+                <div className="flex items-start gap-3">
+                  {isConnected && address ? (
+                    <div className="flex items-center gap-2 rounded-lg border bg-blue-500/5 px-3 py-2">
+                      <div className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-500/10">
+                        <Wallet className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
                       </div>
-                      <div className="grid gap-2">
-                        <Label htmlFor="documentNumber">
-                          {t("documentNumber")}
-                        </Label>
-                        <Input
-                          id="documentNumber"
-                          value={formData.documentNumber}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              documentNumber: e.target.value,
-                            })
-                          }
-                        />
-                      </div>
-                      <div className="grid gap-2">
-                        <Label htmlFor="nationality">{t("nationality")}</Label>
-                        <Input
-                          id="nationality"
-                          value={formData.nationality}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              nationality: e.target.value,
-                            })
-                          }
-                        />
-                      </div>
-                      <div className="grid gap-2">
-                        <Label htmlFor="dateOfBirth">{t("dateOfBirth")}</Label>
-                        <Input
-                          id="dateOfBirth"
-                          type="date"
-                          value={formData.dateOfBirth}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              dateOfBirth: e.target.value,
-                            })
-                          }
-                        />
+                      <div className="flex flex-col">
+                        <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+                          USDX
+                        </span>
+                        <span className="font-mono text-sm font-bold text-blue-600 dark:text-blue-400">
+                          ${formattedUSDX}
+                        </span>
                       </div>
                     </div>
-                    <DialogFooter>
+                  ) : null}
+
+                  <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
+                    <DialogTrigger asChild>
                       <Button
                         variant="outline"
-                        onClick={() => setIsEditOpen(false)}
+                        size="icon"
+                        className="rounded-full"
+                        onClick={handleEdit}
                       >
-                        {t("cancel")}
+                        <Edit className="h-4 w-4" />
                       </Button>
-                      <Button onClick={handleSave}>{t("saveChanges")}</Button>
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[500px]">
+                      <DialogHeader>
+                        <DialogTitle>{t("editProfile")}</DialogTitle>
+                        <DialogDescription>{t("updateInfo")}</DialogDescription>
+                      </DialogHeader>
+                      <div className="grid gap-4 py-4">
+                        <div className="grid gap-2">
+                          <Label htmlFor="name">{t("name")}</Label>
+                          <Input
+                            id="name"
+                            value={formData.name}
+                            onChange={(e) =>
+                              setFormData({ ...formData, name: e.target.value })
+                            }
+                          />
+                        </div>
+                        <div className="grid gap-2">
+                          <Label htmlFor="documentNumber">
+                            {t("documentNumber")}
+                          </Label>
+                          <Input
+                            id="documentNumber"
+                            value={formData.documentNumber}
+                            onChange={(e) =>
+                              setFormData({
+                                ...formData,
+                                documentNumber: e.target.value,
+                              })
+                            }
+                          />
+                        </div>
+                        <div className="grid gap-2">
+                          <Label htmlFor="nationality">{t("nationality")}</Label>
+                          <Input
+                            id="nationality"
+                            value={formData.nationality}
+                            onChange={(e) =>
+                              setFormData({
+                                ...formData,
+                                nationality: e.target.value,
+                              })
+                            }
+                          />
+                        </div>
+                        <div className="grid gap-2">
+                          <Label htmlFor="dateOfBirth">{t("dateOfBirth")}</Label>
+                          <Input
+                            id="dateOfBirth"
+                            type="date"
+                            value={formData.dateOfBirth}
+                            onChange={(e) =>
+                              setFormData({
+                                ...formData,
+                                dateOfBirth: e.target.value,
+                              })
+                            }
+                          />
+                        </div>
+                      </div>
+                      <DialogFooter>
+                        <Button
+                          variant="outline"
+                          onClick={() => setIsEditOpen(false)}
+                        >
+                          {t("cancel")}
+                        </Button>
+                        <Button onClick={handleSave}>{t("saveChanges")}</Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 gap-4 pt-4 sm:grid-cols-2">
@@ -276,7 +339,11 @@ export default function TouristPassportPage() {
         </CardContent>
       </Card>
 
-      <StatisticsPanel statistics={userData.statistics} />
+      <StatisticsPanel
+        statistics={userData.statistics}
+        turiBalance={formattedTURI}
+        reputationScore={userData.profile.reputationScore}
+      />
     </>
   );
 }
