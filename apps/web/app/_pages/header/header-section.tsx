@@ -32,6 +32,12 @@ export function HeaderSection() {
             >
               {t("map")}
             </Link>
+            <Link
+              href="/test"
+              className="text-muted-foreground hover:text-foreground text-sm transition"
+            >
+              💧 Faucet
+            </Link>
           </nav>
         </div>
         <div className="flex items-center justify-end gap-3">
