@@ -201,6 +201,21 @@
       "wallet": "Billetera",
       "logout": "Cerrar sesión",
       "anonymous": "Anónimo"
+    },
+    "placeDetail": {
+      "loading": "Cargando...",
+      "about": "Acerca de",
+      "highlights": "Destacados",
+      "details": "Detalles",
+      "bestTimeToVisit": "Mejor Época para Visitar",
+      "duration": "Duración",
+      "difficultyLevel": "Nivel de Dificultad",
+      "accessibility": "Accesibilidad",
+      "nftPostcard": {
+        "title": "Colecciona Postal NFT",
+        "description": "Obtén una prueba verificada en blockchain de tu visita a {locationName}. Colecciona todas las postales para desbloquear recompensas exclusivas y construye tu portafolio de viajes verificado.",
+        "collectNow": "Coleccionar Ahora"
+      }
     }
   },
 

@@ -200,6 +200,21 @@
       "wallet": "Wallet",
       "logout": "Logout",
       "anonymous": "Anonymous"
+    },
+    "placeDetail": {
+      "loading": "Loading...",
+      "about": "About",
+      "highlights": "Highlights",
+      "details": "Details",
+      "bestTimeToVisit": "Best Time to Visit",
+      "duration": "Duration",
+      "difficultyLevel": "Difficulty Level",
+      "accessibility": "Accessibility",
+      "nftPostcard": {
+        "title": "Collect NFT Postcard",
+        "description": "Earn a blockchain-verified proof of your visit to {locationName}. Collect all postcards to unlock exclusive rewards and build your verified travel portfolio.",
+        "collectNow": "Collect Now"
+      }
     }
   },
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "convex/react";
+import { useTranslations } from "next-intl";
 
 import { api } from "@turi/convex/_generated/api";
 import { Button } from "@turi/ui/components/button";
@@ -9,10 +10,11 @@ import { MapPin } from "@turi/ui/index";
 import { BookingCard } from "./ui/booking-card";
 
 export function PlaceDetailPage({ id }: { id: string }) {
+  const t = useTranslations("home.placeDetail");
   const location = useQuery(api.locations.getLocationById, { id });
 
   if (!location) {
-    return <div>Loading...</div>;
+    return <div>{t("loading")}</div>;
   }
 
   return (
@@ -71,7 +73,7 @@ export function PlaceDetailPage({ id }: { id: string }) {
               {/* Description */}
               <div className="mb-12">
                 <h2 className="text-foreground mb-4 text-3xl font-bold">
-                  About
+                  {t("about")}
                 </h2>
                 <p className="text-muted-foreground text-lg leading-relaxed">
                   {location.description}
@@ -81,7 +83,7 @@ export function PlaceDetailPage({ id }: { id: string }) {
               {/* Highlights Grid */}
               <div className="mb-12">
                 <h2 className="text-foreground mb-8 text-3xl font-bold">
-                  Highlights
+                  {t("highlights")}
                 </h2>
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                   {location.highlights.map((highlight, index: number) => (
@@ -151,15 +153,15 @@ export function PlaceDetailPage({ id }: { id: string }) {
                   />
                   <div className="flex-1">
                     <h3 className="text-foreground mb-2 text-2xl font-bold">
-                      Collect NFT Postcard
+                      {t("nftPostcard.title")}
                     </h3>
                     <p className="text-muted-foreground mb-4">
-                      Earn a blockchain-verified proof of your visit to{" "}
-                      {location.name}. Collect all postcards to unlock exclusive
-                      rewards and build your verified travel portfolio.
+                      {t("nftPostcard.description", {
+                        locationName: location.name,
+                      })}
                     </p>
                     <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                      Collect Now
+                      {t("nftPostcard.collectNow")}
                     </Button>
                   </div>
                 </div>
