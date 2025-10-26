@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useQuery } from "convex/react";
-import { Calendar, ChevronDown, ChevronDownIcon, Users } from "lucide-react";
+import { Calendar, ChevronDownIcon } from "lucide-react";
 
 import { api } from "@turi/convex/_generated/api";
 import { Id } from "@turi/convex/_generated/dataModel";

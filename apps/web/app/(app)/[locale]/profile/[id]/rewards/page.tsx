@@ -1,13 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { useQuery } from "convex/react";
 import { Gift, Star } from "lucide-react";
 
 import { api } from "@turi/convex/_generated/api";
-import { Badge } from "@turi/ui/components/badge";
-import { Button } from "@turi/ui/components/button";
 import { useTuriState } from "@turi/ui/hooks/use-turi-state";
 
 import { PartnerCard } from "@/app/_pages/partner-discount/ui/partner-card";

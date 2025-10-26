@@ -8,18 +8,6 @@ import { Button } from "@turi/ui/components/button";
 
 import { PlaceCard } from "./ui/place-card";
 
-interface PlaceProp {
-  id: string;
-  name: string;
-  province: string;
-  department: string;
-  rating: number;
-  price: number;
-  image: string;
-  category: string;
-  popular: boolean;
-}
-
 export function ExploreSection({
   exploreCategories,
 }: {
@@ -32,14 +20,36 @@ export function ExploreSection({
     return <div>Loading...</div>;
   }
 
-  const filteredPlaces =
-    exploreFilter === "all"
-      ? locations
-      : exploreFilter === "popular"
-        ? locations.filter((location) => location.category.type)
-        : locations.filter(
-            (location) => location.category.type === exploreFilter,
-          );
+  // Simple client-side filtering based on current filter state
+  let filteredPlaces = locations;
+
+  if (exploreFilter === "popular") {
+    filteredPlaces = locations.filter(
+      (location) => (location.rating ?? 0) >= 4.5,
+    );
+  } else if (exploreFilter === "archaeological") {
+    filteredPlaces = locations.filter(
+      (location) =>
+        location.category.type === "Attraction" &&
+        location.category.kind.subtype === "Archaeological Site",
+    );
+  } else if (exploreFilter === "historic") {
+    filteredPlaces = locations.filter(
+      (location) =>
+        location.category.type === "Attraction" &&
+        location.category.kind.subtype === "Historical Site",
+    );
+  } else if (exploreFilter === "museums") {
+    filteredPlaces = locations.filter(
+      (location) =>
+        location.category.type === "Attraction" &&
+        location.category.kind.subtype === "Museum",
+    );
+  } else if (exploreFilter === "natural") {
+    filteredPlaces = locations.filter(
+      (location) => location.category.type === "Attraction",
+    );
+  }
 
   return (
     <section className="bg-card rounded-3xl py-16 md:py-0">
@@ -92,7 +102,7 @@ export function ExploreSection({
           </button>
         </div>
         <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {locations.map((location) => (
+          {filteredPlaces.map((location) => (
             <PlaceCard
               key={location._id}
               id={location._id}
