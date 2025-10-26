@@ -12,6 +12,7 @@ import type * as authUtils from "../authUtils.js";
 import type * as benefits from "../benefits.js";
 import type * as debug from "../debug.js";
 import type * as http from "../http.js";
+import type * as init from "../init.js";
 import type * as locations from "../locations.js";
 import type * as tables_benefits from "../tables/benefits.js";
 import type * as tables_bookings from "../tables/bookings.js";
@@ -44,6 +45,7 @@ declare const fullApi: ApiFromModules<{
   benefits: typeof benefits;
   debug: typeof debug;
   http: typeof http;
+  init: typeof init;
   locations: typeof locations;
   "tables/benefits": typeof tables_benefits;
   "tables/bookings": typeof tables_bookings;

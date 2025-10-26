@@ -4,10 +4,12 @@ import { v } from "convex/values";
 export const locations = defineTable({
   name: v.string(),
   description: v.string(),
+  rating: v.optional(v.number()),
   address: v.object({
     country: v.string(),
     state: v.string(),
     city: v.string(),
+    name: v.optional(v.string()),
     coordinates: v.object({
       latitude: v.number(),
       longitude: v.number(),
