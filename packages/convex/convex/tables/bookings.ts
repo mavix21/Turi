@@ -14,4 +14,13 @@ export const bookings = defineTable({
     v.literal("pending"),
     v.literal("cancelled"),
   ),
+
+  // Blockchain data
+  transactionHash: v.optional(v.string()),
+  blockNumber: v.optional(v.number()),
+  buyerAddress: v.optional(v.string()),
+  usdxAmount: v.optional(v.string()),
+  travelTokensBurned: v.optional(v.string()),
+  chainId: v.optional(v.number()),
+  purchasedAt: v.optional(v.number()),
 }).index("by_user", ["userId"]);

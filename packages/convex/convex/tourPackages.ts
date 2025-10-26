@@ -14,7 +14,18 @@ export const getTourPackagesByLocation = query({
         .collect(),
       async (q) => {
         const company = await ctx.db.get(q.companyId);
-        return { ...q, companyName: company?.name || "Unknown Company" };
+        return {
+          ...q,
+          company: company
+            ? {
+                _id: company._id,
+                name: company.name,
+                slug: company.slug,
+                logoUrl: company.logoUrl,
+              }
+            : null,
+          companyName: company?.name || "Unknown Company",
+        };
       },
     );
 
